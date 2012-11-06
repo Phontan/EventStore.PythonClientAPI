@@ -1,7 +1,7 @@
 import sys;
 import http.client;
-import EventType;
 import Event;
+
 
 class EventStoreClient:
     __headers ={"content-type" : "application/json","accept" :  "application/json","extensions" : "json"};
