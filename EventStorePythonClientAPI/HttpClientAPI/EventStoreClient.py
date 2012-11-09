@@ -45,7 +45,10 @@ class EventStoreClient:
         self.__Connect();
         self.__connection.request("GET", "/streams/"+streamId+"/event/"+str(eventId)+"?resolve="+"yes",headers=self.__headers);
         responce = self.__connection.getresponse();
-        event = json.loads(responce.read().decode('utf-8'))
+        responceContent = responce.read().decode('utf-8');
+        if responceContent == '':
+            return;
+        event = json.loads(responceContent)
         self.__Disconnect();
         return event;
 
@@ -74,8 +77,9 @@ class EventStoreClient:
         return events;
 
     def ReadStreamEventsForward(self, streamId, startPosition, count):
-        result = self.ReadStreamEventsBackward(streamId, count+startPosition, count);
-        return list.reverse(result);
+        result = self.ReadStreamEventsBackward(streamId, count+startPosition-1, count);
+        result = list(reversed(result));
+        return result;
 
     def ReadAllEventsBackward(self,preparePosition, commitPosition, count):
         self.__Connect();
@@ -85,6 +89,9 @@ class EventStoreClient:
         if readLine == "":
             return;
         responce = json.loads(readLine);
+
+        newPreparePosition = self.__GetPreparePosition(responce['links'][3]["uri"]);
+        newCommitPosition = self.__GetCommitPosition(responce['links'][3]["uri"])
         events = [];
         for uri in responce['entries']:
             self.__connection.request("GET", uri['links'][2]['uri'], headers = self.__headers);
@@ -92,7 +99,7 @@ class EventStoreClient:
             if readObj!='':
                 events.append( json.loads(readObj));
         self.__Disconnect();
-        return events;
+        return {"preparePosition": newPreparePosition, "commitPosition" : newCommitPosition, "events":events};
 
     def ReadAllEventsForward(self,preparePosition, commitPosition, count):
         self.__Connect();
@@ -102,6 +109,9 @@ class EventStoreClient:
         if readLine == "":
             return;
         responce = json.loads(readLine);
+
+        newPreparePosition = self.__GetPreparePosition(responce['links'][3]["uri"]);
+        newCommitPosition = self.__GetCommitPosition(responce['links'][3]["uri"])
         events = [];
         for uri in responce['entries']:
             self.__connection.request("GET", uri['links'][2]['uri'], headers = self.__headers);
@@ -109,7 +119,35 @@ class EventStoreClient:
             if readObj!='':
                 events.append( json.loads(readObj));
         self.__Disconnect();
-        return events;
+        return {"preparePosition": newPreparePosition, "commitPosition" : newCommitPosition, "events":list(reversed(events))};
+
+    def ReadAllEvents(self):
+        self.__Connect();
+        self.__connection.request("GET","/streams/$all",headers = self.__headers );
+        readLine = self.__connection.getresponse().read().decode('utf-8');
+        if readLine == "":
+            return;
+        responce = json.loads(readLine);
+        newPreparePosition = self.__GetPreparePosition(responce['links'][3]["uri"]);
+        newCommitPosition = self.__GetCommitPosition(responce['links'][3]["uri"]);
+        events = [];
+        for uri in responce['entries']:
+            self.__connection.request("GET", uri['links'][2]['uri'], headers = self.__headers);
+            readObj = self.__connection.getresponse().read().decode('utf-8');
+            if readObj!='':
+                events.append( json.loads(readObj));
+        self.__Disconnect();
+        return {"preparePosition": newPreparePosition, "commitPosition" : newCommitPosition, "events": events};
+
+    def __GetPreparePosition(self, link):
+        position = link.split('/')[6];
+        result =int(position[0:16], 16);
+        return result;
+
+    def __GetCommitPosition(self, link):
+        position = link.split('/')[6];
+        result =int(position[16:32], 16);
+        return result;
 
     def __GetStreamsCount(self, streamId):
         self.__Connect();
@@ -119,7 +157,10 @@ class EventStoreClient:
         return int(str.split(summary, " #")[1]);
 
     def __ConvrtToHex16(self, number):
-        number = str(hex(number)).split('x')[1];
+        if number<0:
+            hexVal = hex(number & 0xffffffffffffffff);
+        else: hexVal = hex(number);
+        number = str(hexVal).split('x')[1];
         while len(number)!=16:
             number = "0"+number;
         return number;
