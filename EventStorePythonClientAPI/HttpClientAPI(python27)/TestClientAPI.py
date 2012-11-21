@@ -27,11 +27,14 @@ def onAppendEventFaild(msg):
 def readEvent_handle(msg):
     print("Read event msg: "+str(msg))
     tornado.ioloop.IOLoop.instance().stop()
+def onSth():
+    print("sth");
 
 client = ClientAPI();
 #client.CreateStreamAsync("SomeNewStream1", "", onStreamCreatedSuccess, onStreamCreatedFaild)
-client.DeleteStreamAsync("SomeNewStream",deleteSuccess, deleteFaild)
+#client.DeleteStreamAsync("SomeNewStream",deleteSuccess, deleteFaild)
 #client.AppendToStreamAsync("SomeNewStream", Event("EventData", "EventMetadata"),onAppendEventSuccess, onAppendEventFaild)
 #client.ReadEventAsync("SomeNewStream", 2,readEvent_handle, readEvent_handle)
-#client.ReadStreamEventsBackwardAsync("SomeNewStream", 5,5,createStream_handle)
+#client.ReadStreamEventsBackwardAsync("SomeNewStream", 5,5,readEvent_handle, readEvent_handle)
+client.ReadAllEventsForwardAsync(0,-0,10,readEvent_handle,readEvent_handle)
 tornado.ioloop.IOLoop.instance().start()

@@ -3,3 +3,4 @@ sys.path.append("D:\\apps\\EventStore.PythonClientAPI\\EventStorePythonClientAPI
 from ErrorAnswer import *
 from SimplyAnswer import *
 from EventsAnswer import *
+from AllEventsAnswer import *
