@@ -19,7 +19,7 @@ class ClientAPI:
         if response.code==201:
             onSuccess(SimplyAnswer(201, response.body));
         else:
-            onFailed(ErrorAnswer(response.error));
+            onFailed(FailedAnswer(response.code,response.error.message));
 
     def DeleteStreamAsync(self,streamId , onSuccess, onFailed,expectedVersion=-2):
         url = self.__baseUrl+"/streams/"+streamId;
@@ -29,8 +29,8 @@ class ClientAPI:
         if response.code==204:
             onSuccess(SimplyAnswer(response.code, response.body));
         else:
-            a = ErrorAnswer(response.error.__doc__)
-            onFailed(ErrorAnswer(response.error));
+            a = FailedAnswer(response.code,response.error.message)
+            onFailed(FailedAnswer(response.code,response.error.message));
 
     def AppendToStreamAsync(self,streamId, data, onSuccess, onFailed, expectedVersion=-2):
         if(type(list())!= type(data)):
@@ -44,14 +44,14 @@ class ClientAPI:
         if response.code==201:
             onSuccess(SimplyAnswer(response.code, response.body));
         else:
-            onFailed(ErrorAnswer(response.error));
+            onFailed(FailedAnswer(response.code,response.error.message))
 
     def ReadEventAsync(self,streamId , eventId,  onSuccess, onFailed):
         url = self.__baseUrl+"/streams/"+streamId+"/event/"+str(eventId)+"?resolve="+"yes"
         SendAsync(url, "GET", self.__headers, None, lambda x: self.__ReadEventCallback(x, onSuccess, onFailed))
     def __ReadEventCallback(self, response, onSuccess, onFailed):
         if response.code!=200:
-            onFailed(ErrorAnswer(response.error));
+            onFailed(FailedAnswer(response.code,response.error.message))
             return;
         responseContent = response.body
         if responseContent == '':
@@ -66,7 +66,7 @@ class ClientAPI:
         SendAsync(url, "GET", self.__headers, None,lambda x: self.__ReadStreamEventsBackwardCallback(x, onSuccess, onFailed))
     def __ReadStreamEventsBackwardCallback(self, response, onSuccess,onFailed):
         if response.code!=200:
-            onFailed(ErrorAnswer(code.error))
+            onFailed(FailedAnswer(response.code,response.error.message))
             return;
         response = json.loads(response.body);
         events = [];
@@ -77,7 +77,7 @@ class ClientAPI:
                 SendAsync(url, "GET", self.__headers, None,lambda x: self.__EventReadCallback(x, events,eventsCount, onSuccess, onFailed))
                 eventsCount+=1
         except:
-            onFailed(ErrorAnswer("Error during reading events"))
+            onFailed(FailedAnswer(response.code,response.error.message))
             return;
     def __EventReadCallback(self, response, events,eventsCount, onSuccess, onFailed):
         try:
@@ -85,7 +85,7 @@ class ClientAPI:
             if len(events)==eventsCount:
                 onSuccess(EventsAnswer(events))
         except:
-            onFailed(ErrorAnswer("Error"))
+            onFailed(FailedAnswer(response.code,response.error.message))
 
     def ReadStreamEventsForwardAsync(self, streamId, startPosition, count,  onSuccess, onFailed):
         url = self.__baseUrl+"/streams/"+streamId+"/range/"+str(startPosition+count)+"/"+str(count);
@@ -122,7 +122,7 @@ class ClientAPI:
 
     def __ReadAllEventsAsyncCallback(self, response, onSuccess, onFailed):
         if response.code!=200:
-            onFailed(str(response.code))
+            onFailed(FailedAnswer(response.code,response.error.message))
         readLine = response.body;
         if readLine == "":
             onSuccess(AllEventsAnswer("", -1, -1))
@@ -141,14 +141,14 @@ class ClientAPI:
                 SendAsync(url, "GET", self.__headers, None,lambda x: self.__ReadAllEvents(x, events,eventsCount, onSuccess, onFailed, newPreparePosition, newCommitPosition))
                 eventsCount+=1
         except:
-            onFailed(ErrorAnswer("Error during reading events"))
+            onFailed(FailedAnswer(response.code,response.error.message))
             return;
     def __ReadAllEvents(self, response, events,eventsCount, onSuccess, onFailed, newPreparePosition, newCommitPosition):
         if response.code !=200:
-            onFailed(ErrorAnswer("Error"))
+            onFailed(FailedAnswer(response.code,response.error.message))
         try:
             events.append(json.loads(response.body))
             if len(events)==eventsCount:
                 onSuccess(AllEventsAnswer(events, newPreparePosition, newCommitPosition))
         except:
-            onFailed(ErrorAnswer("Error"))
+            onFailed(FailedAnswer(response.code,response.error.message))
