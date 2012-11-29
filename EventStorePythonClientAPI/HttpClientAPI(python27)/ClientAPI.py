@@ -14,6 +14,7 @@ class ClientAPI:
         self.__baseUrl = ipAddress+':'+str(port);
         self.__headers = {"content-type" : "application/json","accept" :  "application/json","extensions" : "json"};
         self.__readBatchSize = 20
+        self.__tornadoHttpSender = TornadoHttpSender();
 
     def CreateStreamAsync(self, streamId, metadata, onSuccess, onFailed):
         Ensure.IsStringNotEmpty(streamId, "streamId")
@@ -25,13 +26,16 @@ class ClientAPI:
             body = ToJson(CreateStreamRequestBody(streamId, metadata))
         except:
             raise;
+
         url = self.__baseUrl+"/streams";
-        SendAsync(url, "POST", self.__headers, body,lambda x: self.__CreateStreamAsyncCallback(x, onSuccess, onFailed));
+        self.__tornadoHttpSender.SendAsync(url, "POST", self.__headers, body,lambda x: self.__CreateStreamAsyncCallback(x, onSuccess, onFailed));
+        tornado.ioloop.IOLoop.instance().start()
     def __CreateStreamAsyncCallback(self, response, onSuccess,onFailed):
         if response.code==201:
             onSuccess(SimplyAnswer(201, response.body));
         else:
             onFailed(FailedAnswer(response.code,response.error.message));
+        tornado.ioloop.IOLoop.instance().stop()
 
     def DeleteStreamAsync(self,streamId , onSuccess, onFailed,expectedVersion=-2):
         Ensure.IsStringNotEmpty(streamId, "streamId")
@@ -44,8 +48,10 @@ class ClientAPI:
             body = ToJson(DeleteStreamRequestBody(expectedVersion));
         except:
             raise;
-        SendAsync(url, "DELETE", self.__headers, body, lambda x: self.__DeleteStreamCallback(x, onSuccess, onFailed));
+        self.__tornadoHttpSender.SendAsync(url, "DELETE", self.__headers, body, lambda x: self.__DeleteStreamCallback(x, onSuccess, onFailed));
+        tornado.ioloop.IOLoop.instance().start()
     def __DeleteStreamCallback(self, response, onSuccess,onFailed):
+        tornado.ioloop.IOLoop.instance().stop()
         if response.code==204:
             onSuccess(SimplyAnswer(response.code, response.body));
         else:
@@ -67,12 +73,14 @@ class ClientAPI:
         except:
             raise;
         url = self.__baseUrl+"/streams/"+streamId
-        SendAsync(url,"POST", self.__headers, body, lambda x: self.__AppendToStreamCallback(x, onSuccess, onFailed))
+        self.__tornadoHttpSender.SendAsync(url,"POST", self.__headers, body, lambda x: self.__AppendToStreamCallback(x, onSuccess, onFailed))
+        tornado.ioloop.IOLoop.instance().start()
     def __AppendToStreamCallback(self, response, onSuccess,onFailed):
         if response.code==201:
             onSuccess(SimplyAnswer(response.code, response.body));
         else:
             onFailed(FailedAnswer(response.code,response.error.message))
+        tornado.ioloop.IOLoop.instance().stop()
 
     def ReadEventAsync(self,streamId , eventNumber,  onSuccess, onFailed, resolve=1):
         Ensure.IsStringNotEmpty(streamId, "streamId")
@@ -82,8 +90,10 @@ class ClientAPI:
         if resolve: resolve = "yes"
         else: resolve="no"
         url = self.__baseUrl+"/streams/"+streamId+"/event/"+str(eventNumber)+"?resolve="+resolve
-        SendAsync(url, "GET", self.__headers, None, lambda x: self.__ReadEventCallback(x, onSuccess, onFailed))
+        self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None, lambda x: self.__ReadEventCallback(x, onSuccess, onFailed))
+        tornado.ioloop.IOLoop.instance().start()
     def __ReadEventCallback(self, response, onSuccess, onFailed):
+        tornado.ioloop.IOLoop.instance().stop()
         if response.code!=200:
             onFailed(FailedAnswer(response.code,response.error.message))
             return;
@@ -111,8 +121,10 @@ class ClientAPI:
         readEventsData.batchCounter = batchCounter;
         readEventsData.events = events;
         self.__StartReadEventsBackwardAsync(readEventsData, onSuccess, onFailed);
+        tornado.ioloop.IOLoop.instance().start()
 
     def __StartReadEventsBackwardAsync(self,readEventsData, onSuccess, onFailed):
+        tornado.ioloop.IOLoop.instance().stop()
         if readEventsData.batchCounter<readEventsData.count:
 
             if readEventsData.batchCounter+self.__readBatchSize>readEventsData.count:
@@ -122,12 +134,15 @@ class ClientAPI:
             url = self.__baseUrl+"/streams/"+readEventsData.streamId+"/range/"+str(readEventsData.startPosition+readEventsData.batchCounter)+"/"+str(readEventsData.eventsCountInCurrentBatch);
 
             readEventsData.batchCounter+=self.__readBatchSize
-            SendAsync(url, "GET", self.__headers, None, lambda x: self.__ReadStreamEventsBackwardCallback(x, readEventsData, onSuccess, onFailed))
+            self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None, lambda x: self.__ReadStreamEventsBackwardCallback(x, readEventsData, onSuccess, onFailed))
+            tornado.ioloop.IOLoop.instance().start()
 
         else:
             onSuccess(EventsAnswer(readEventsData.events))
+            tornado.ioloop.IOLoop.instance().stop()
 
     def __ReadStreamEventsBackwardCallback(self, response, readEventsData, onSuccess, onFailed):
+        tornado.ioloop.IOLoop.instance().stop()
         if response.code!=200:
             onFailed(FailedAnswer(response.code,"Error occur while reading batch: "+response.error.message))
             return
@@ -138,7 +153,8 @@ class ClientAPI:
                     onSuccess(readEventsData.events)
                     return;
                 url = self.__baseUrl+"/streams/"+readEventsData.streamId;
-                SendAsync(url ,"GET", self.__headers, None, lambda x: self.__OnReadEventsFristResponseEntriesEmpty(x,readEventsData,onSuccess,onFailed))
+                self.__tornadoHttpSender.SendAsync(url ,"GET", self.__headers, None, lambda x: self.__OnReadEventsFristResponseEntriesEmpty(x,readEventsData,onSuccess,onFailed))
+                tornado.ioloop.IOLoop.instance().start()
                 return
 
 
@@ -149,7 +165,8 @@ class ClientAPI:
                     try:
                         if ur["type"] == "application/json":
                             url = ur['uri'];
-                            SendAsync(url, "GET", self.__headers, None, lambda x: self.__EventReadCallback(x,readEventsData,batchEvents, onSuccess, onFailed ))
+                            self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None, lambda x: self.__EventReadCallback(x,readEventsData,batchEvents, onSuccess, onFailed ))
+                            tornado.ioloop.IOLoop.instance().start()
                             break;
                     except:
                         continue;
@@ -158,6 +175,7 @@ class ClientAPI:
             return
 
     def __OnReadEventsFristResponseEntriesEmpty(self, response,readEventsData, onSuccess, onFailed):
+        tornado.ioloop.IOLoop.instance().stop()
         if response.code!=200:
             onFailed(FailedAnswer(response.code,"Error occur while reading first page: "+response.error.message))
             return
@@ -171,10 +189,11 @@ class ClientAPI:
             return;
         readEventsData.count =  readEventsData.count + lastEventNumber - readEventsData.startPosition;
         readEventsData.startPosition = lastEventNumber;
-        readEventsData.batchCounter =0
+        readEventsData.batchCounter =0;
         self.__StartReadEventsBackwardAsync(readEventsData, onSuccess, onFailed)
 
     def __EventReadCallback(self, response, readEventsData,batchEvents, onSuccess, onFailed ):
+        tornado.ioloop.IOLoop.instance().stop()
         try:
             batchEvents.append(json.loads(response.body))
             if len(batchEvents)==readEventsData.eventsCountInCurrentBatch:
@@ -205,7 +224,7 @@ class ClientAPI:
 
         hexStartPosition = self.__ConvrtToHex16(preparePosition) + self.__ConvrtToHex16(commitPosition);
         url = self.__baseUrl+"/streams/$all/before/"+hexStartPosition+"/"+str(count);
-        SendAsync(url, "GET", self.__headers, None, lambda response: self.__ReadAllEventsAsyncCallback(response, onSuccess, onFailed))
+        self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None, lambda response: self.__ReadAllEventsAsyncCallback(response, onSuccess, onFailed))
 
     def ReadAllEventsForwardAsync(self,preparePosition, commitPosition, count, onSuccess, onFailed):
         Ensure.IsFunction(onSuccess, "onSuccess")
@@ -216,7 +235,7 @@ class ClientAPI:
 
         hexStartPosition = self.__ConvrtToHex16(preparePosition) + self.__ConvrtToHex16(commitPosition);
         url = self.__baseUrl+"/streams/$all/after/"+hexStartPosition+"/"+str(count);
-        SendAsync(url, "GET", self.__headers, None, lambda response: self.__ReadAllEventsAsyncCallback(response, onSuccess, onFailed))
+        self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None, lambda response: self.__ReadAllEventsAsyncCallback(response, onSuccess, onFailed))
 ##
 ##    def __StartReadAllEventsBackwardAsync():
 
@@ -243,7 +262,7 @@ class ClientAPI:
                     try:
                         if ur["type"] == "application/json":
                             url = ur['uri'];
-                            SendAsync(url, "GET", self.__headers, None,lambda x: self.__ReadAllEvents(x, events,eventsCount, onSuccess, onFailed, newPreparePosition, newCommitPosition))
+                            self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None,lambda x: self.__ReadAllEvents(x, events,eventsCount, onSuccess, onFailed, newPreparePosition, newCommitPosition))
                             break;
                     except:
                         continue;
