@@ -8,11 +8,44 @@ import threading
 
 import uuid
 
+from Event import *
+from ClientJsonSerelizationOption import *
+import sys
+sys.path.append("D:\\apps\\EventStore.PythonClientAPI\\EventStorePythonClientAPI\\HttpClientAPI(python27)\\libs");
+from bodyLibs import *
+from answerLibs import *
+from AsyncRequestSender import *
+import Ensure
+from threading import*
+from ReadEventsData import *
+import time
+
+
 def readEvent_handle(msg):
     print("Read event msg: "+str(msg))
+    #client.Resume()
+
+def p(msg):
+    print(msg)
+
+##__tornadoHttpSender = TornadoHttpSender();
+##
+##print('fuck1')
+##__tornadoHttpSender.SendAsync("http://google.com", "GET", None, None, lambda x: p('fuck callback1'))
+##__tornadoHttpSender.SendAsync("http://google.com", "GET", None, None, lambda x: p('fuck callback2'))
+##__tornadoHttpSender.SendAsync("http://google.com", "GET", None, None, lambda x: p('fuck callback2'))
+##__tornadoHttpSender.SendAsync("http://google.com", "GET", None, None, lambda x: p('fuck callback2'))
+##__tornadoHttpSender.SendAsync("http://google.com", "GET", None, None, lambda x: p('fuck callback2'))
+##__tornadoHttpSender.SendAsync("http://google.com", "GET", None, None, lambda x: p('fuck callback2'))
+##__tornadoHttpSender.SendAsync("http://google.com", "GET", None, None, lambda x: p('fuck callback2'))
+##
+##
+##thread = Thread(target=tornado.ioloop.IOLoop.instance().start).start()
+##print('fuck2')
 
 client = ClientAPI();
-client.CreateStreamAsync("SomeNewStream", " ", readEvent_handle, readEvent_handle)
+client.CreateStream("SomeNewStream","", readEvent_handle, readEvent_handle)
+#client.Wait();
 #client.DeleteStreamAsync("SomeNewStream",deleteSuccess, deleteFaild)
 #client.AppendToStreamAsync("SomeNewStream", Event({1:"a", 2:"b", 3:{31:"aa"}}, "EventMetadata"),readEvent_handle, readEvent_handle)
 #dummy_event = threading.Event()

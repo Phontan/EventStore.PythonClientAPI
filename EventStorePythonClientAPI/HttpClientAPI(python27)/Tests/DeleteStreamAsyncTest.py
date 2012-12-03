@@ -1,20 +1,20 @@
 from libs import *
 
-class DeleteStreamAsyncTest(unittest.TestCase):
+class DeleteStreamTest(unittest.TestCase):
     __client = ClientAPI();
+    __callbackResult = None
 
     def test_delete_stream(self):
-        streamId = "DeleteStreamAsyncTest_test_delete_stream_stream_id"
-        self.__client.CreateStreamAsync(streamId,"",lambda s: self.OnSipmlySuccess(s),lambda f: self.OnSipmlyFailed(f))
-        self.__client.DeleteStreamAsync(streamId, lambda s: self.OnSipmlySuccess(s),lambda f: self.OnSipmlyFailed(f))
+        streamId = "DeleteStreamTest_test_delete_stream_stream_id"
+        success = True
+        self.__client.CreateStream(streamId,"", lambda s: self.__Success(s), lambda s: self.__Failed(s))
+        self.assertTrue(self.__callbackResult)
+        self.__client.DeleteStream(streamId, lambda s: self.__Success(s), lambda s: self.__Failed(s))
+        self.assertTrue(self.__callbackResult)
 
-    def OnSipmlySuccess(self, resp):
-        self.assertEqual(1,1)
-    def OnSipmlyFailed(self, resp):
-        self.assertEqual(1, 2)
+    def __Success(self, response):
+        self.__callbackResult = True;
 
+    def __Failed(self, response):
+        self.__callbackResult = False;
 
-if __name__ == '__main__':
-    os.startfile('D:\\apps\\EventStore\\bin\\eventstore\\debug\\anycpu\\EventStore.SingleNode.exe');
-    time.sleep(3)
-    unittest.main()

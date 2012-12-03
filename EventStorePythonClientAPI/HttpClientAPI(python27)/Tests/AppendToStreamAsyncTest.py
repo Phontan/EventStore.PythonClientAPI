@@ -1,31 +1,37 @@
 from libs import *
 
-class AppendToStreamAsyncTest(unittest.TestCase):
+class AppendToStreamTest(unittest.TestCase):
     __client = ClientAPI();
+    __callbackResult = None
+
 
     def test_appent_events_to_stream(self):
-        streamId = "AppendToStreamAsyncTest_test_appent_events_to_stream_stream_id"
-        self.__client.CreateStreamAsync(streamId,"",lambda s: self.OnSipmlySuccess(s),lambda f: self.OnSipmlyFailed(f))
+        streamId = "AppendToStreamTest_test_appent_events_to_stream_stream_id"
+        self.__client.CreateStream(streamId,"",lambda s: self.__Success(s), lambda s: self.__Failed(s))
+        self.assertTrue(self.__callbackResult)
         writeEventsCount = 1234;
-        self.FillStream(streamId, writeEventsCount)
-
-    def test_appent_one_event_to_stream(self):
-        streamId = "AppendToStreamAsyncTest_test_appent_one_event_to_stream_stream_id"
-        self.__client.CreateStreamAsync(streamId,"",lambda s: self.OnSipmlySuccess(s),lambda f: self.OnSipmlyFailed(f))
-        eventId = streamId+"_data_eventId"
-        self.__client.AppendToStreamAsync(streamId, Event(eventId,""),lambda s: self.OnSipmlySuccess(s),lambda f: self.OnSipmlyFailed(f))
-
-    def OnSipmlySuccess(self, resp):
-        self.assertEqual(1,1)
-    def OnSipmlyFailed(self, resp):
-        self.assertEqual(1,0)
-    def FillStream(self, streamId, writeEventsCount):
         events = []
         for i in range(writeEventsCount):
             eventId = streamId+"_data_"+str(i);
             events.append(Event(eventId,""))
-        self.__client.AppendToStreamAsync(streamId, events,lambda s: self.OnSipmlySuccess(s),lambda f: self.OnSipmlyFailed(f))
+        self.__client.AppendToStream(streamId, events,lambda s: self.__Success(s), lambda s: self.__Failed(s))
+        self.assertTrue(self.__callbackResult)
 
+
+    def test_appent_one_event_to_stream(self):
+        streamId = "AppendToStreamTest_test_appent_one_event_to_stream_stream_id"
+        self.__client.CreateStream(streamId,"",lambda s: self.__Success(s), lambda s: self.__Failed(s))
+        self.assertTrue(self.__callbackResult)
+        eventId = streamId+"_data_eventId"
+        self.__client.AppendToStream(streamId, Event(eventId,""),lambda s: self.__Success(s), lambda s: self.__Failed(s))
+        self.assertTrue(self.__callbackResult)
+
+
+    def __Success(self, response):
+        self.__callbackResult = True;
+
+    def __Failed(self, response):
+        self.__callbackResult = False;
 
 
 if __name__ == '__main__':
