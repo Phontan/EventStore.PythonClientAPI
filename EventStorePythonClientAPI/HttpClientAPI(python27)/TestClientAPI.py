@@ -44,7 +44,7 @@ def p(msg):
 ##print('fuck2')
 
 client = ClientAPI();
-client.CreateStream("SomeNewStream","", readEvent_handle, readEvent_handle)
+client.CreateStream("SomeNewStream","")
 #client.Wait();
 #client.DeleteStreamAsync("SomeNewStream",deleteSuccess, deleteFaild)
 #client.AppendToStreamAsync("SomeNewStream", Event({1:"a", 2:"b", 3:{31:"aa"}}, "EventMetadata"),readEvent_handle, readEvent_handle)
@@ -52,7 +52,7 @@ client.CreateStream("SomeNewStream","", readEvent_handle, readEvent_handle)
 #dummy_event.wait()
 #print("END")
 #client.ReadEventAsync("SomeNewStream", 2,readEvent_handle, readEvent_handle)
-#client.ReadStreamEventsBackwardAsync("SomeNewStream", 60,40,readEvent_handle, readEvent_handle)
+#client.ReadStreamEventsBackward("SomeNewStream", 5,5,readEvent_handle, readEvent_handle)
 #client.ReadAllEventsForwardAsync(0,-0,10,readEvent_handle,readEvent_handle)
 #tornado.ioloop.IOLoop.instance().start()
 #threading.currentThread().join()

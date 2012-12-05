@@ -1,7 +1,7 @@
 def IsString(obj, arg):
     if type(obj)!=str:
         raise TypeError(arg +" should be string")
-def IsStringNotEmpty(obj, arg):
+def IsNotEmptyString(obj, arg):
     IsString(obj, arg)
     if obj == "":
         raise TypeError(arg +" cannot be empty")
