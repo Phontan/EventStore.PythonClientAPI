@@ -5,3 +5,5 @@ class ReadEventsData:
     batchCounter=0;
     events=0;
     eventsCountInCurrentBatch=0;
+    preparePosition = 0;
+    commitPosition = 0;

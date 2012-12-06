@@ -7,12 +7,3 @@ class TornadoHttpSender:
         http_client = tornado.httpclient.AsyncHTTPClient()
         request = tornado.httpclient.HTTPRequest(url, method=method, headers=headers, body=body)
         http_client.fetch(request, call_back)
-
-    def Send(self,url, method, headers, body):
-        http_client = tornado.httpclient.HTTPClient()
-        try:
-            request = tornado.httpclient.HTTPRequest(url, method=method, headers=headers, body=body)
-            return http_client.fetch(request)
-        except tornado.httpclient.HTTPError, e:
-            raise e;
-
