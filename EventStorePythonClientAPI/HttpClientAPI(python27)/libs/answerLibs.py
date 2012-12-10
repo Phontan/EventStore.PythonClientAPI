@@ -1,4 +1,4 @@
-import sys
-sys.path.append("D:\\apps\\EventStore.PythonClientAPI\\EventStorePythonClientAPI\\HttpClientAPI(python27)\\ReturnClasses")
+import sys, os
+sys.path.append(os.path.dirname(__file__)+'//..//ReturnClasses')
 from FailedAnswer import *
 from AllEventsAnswer import *

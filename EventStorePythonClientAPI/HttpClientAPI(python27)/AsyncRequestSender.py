@@ -1,5 +1,5 @@
-import sys
-sys.path.append("D:\\apps\\EventStore.PythonClientAPI\\EventStorePythonClientAPI\\HttpClientAPI(python27)\\libs")
+import sys, os
+sys.path.append(os.path.dirname(__file__)+"\\libs");
 import tornado.httpclient
 
 class TornadoHttpSender:

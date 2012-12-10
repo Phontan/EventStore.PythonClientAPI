@@ -1,7 +1,7 @@
 from Event import *
 from ClientJsonSerelizationOption import *
-import sys
-sys.path.append("D:\\apps\\EventStore.PythonClientAPI\\EventStorePythonClientAPI\\HttpClientAPI(python27)\\libs");
+import sys, os
+sys.path.append(os.path.dirname(__file__)+"\\libs");
 from bodyLibs import *
 from answerLibs import *
 from AsyncRequestSender import *

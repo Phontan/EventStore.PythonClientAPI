@@ -1,5 +1,5 @@
-import sys
-sys.path.append("D:\\apps\\EventStore.PythonClientAPI\\EventStorePythonClientAPI\\HttpClientAPI(python27)\\Body")
+import sys, os
+sys.path.append(os.path.dirname(__file__)+'//..//Body')
 from CreateStreamRequestBody import *
 from AppendToStreamRequestBody import *
 from DeleteStreamRequestBody import *
