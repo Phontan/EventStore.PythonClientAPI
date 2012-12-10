@@ -7,7 +7,7 @@ class DeleteStreamTest(unittest.TestCase):
         streamId = "DeleteStreamTest_test_delete_stream_stream_id"
         try:
             self.__client.CreateStream(streamId,"")
-            self.__client.DeleteStream(streamId)
+            self.__client.DeleteStream(streamId,1)
             self.assertTrue(True)
         except:
             self.assertTrue(False)

@@ -7,7 +7,7 @@ class ReadAllEventsBackwardTest(unittest.TestCase):
         streamId = "ReadAllEventsBackwardTest_test_read_more_than_one_batch_from_last_position_stream_id"
         try:
             self.__client.CreateStream(streamId,"")
-            writeEventsCount = 1234;
+            writeEventsCount = 100
             writeEvents = []
             for i in range(writeEventsCount):
                 eventId = streamId+"_data_"+str(i);

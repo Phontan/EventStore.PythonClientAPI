@@ -11,6 +11,7 @@ from ReadEventsData import *
 from SyncResponse import *
 from collections import deque
 import time
+import httplib
 
 class ClientAPI:
     def __init__(self, ipAddress="http://127.0.0.1", port = 2113):
@@ -84,7 +85,7 @@ class ClientAPI:
         queue = deque();
         onSuccess = lambda x:  queue.append(self.__SyncSuccess(x))
         onFailed = lambda x:  queue.append(self.__SyncFailed(x))
-        self.__StartDeleteStream(streamId , onSuccess, onFailed, expectedVersion=-2);
+        self.__StartDeleteStream(streamId , onSuccess, onFailed, expectedVersion);
         self.Wait()
         result = queue.popleft()
         if result.success:
@@ -93,10 +94,10 @@ class ClientAPI:
             raise result.response
 
     def DeleteStreamAsync(self,streamId , onSuccess, onFailed,expectedVersion=-2):
-        self.__StartDeleteStream(streamId , onSuccess, onFailed, expectedVersion=-2)
+        self.__StartDeleteStream(streamId , onSuccess, onFailed, expectedVersion)
 
 
-    def __StartDeleteStream(self,streamId , onSuccess, onFailed,expectedVersion=-2):
+    def __StartDeleteStream(self,streamId , onSuccess, onFailed,expectedVersion):
         Ensure.IsNotEmptyString(streamId, "streamId")
         Ensure.IsFunction(onSuccess, "onSuccess")
         Ensure.IsFunction(onFailed, "onFailed")
@@ -541,9 +542,9 @@ class ClientAPI:
             if len(batchEvents)==eventsCount:
                 i = eventsCount-1
                 while i>=0:
-                    readEventsData.events.insert(0,batchEvents[i])
+                    readEventsData.events.append(batchEvents[i])
                     i-=1
-                self.__ReadBatchAllEventsBackward(readEventsData, onSuccess, onFailed, eventsCount)
+                self.__ReadBatchAllEventsForward(readEventsData, onSuccess, onFailed, eventsCount)
         except:
             onFailed(FailedAnswer(response.code,"Error occure while reading event: "+response.error.message))
 
