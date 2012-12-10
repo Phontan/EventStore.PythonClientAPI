@@ -81,7 +81,7 @@ class ClientAPI:
 
 
 
-    def DeleteStream(self,streamId,expectedVersion=-2):
+    def DeleteStream(self, streamId, expectedVersion=-2):
         queue = deque();
         onSuccess = lambda x:  queue.append(self.__SyncSuccess(x))
         onFailed = lambda x:  queue.append(self.__SyncFailed(x))
@@ -205,7 +205,7 @@ class ClientAPI:
 
 
 
-################################################ Read Stream Evens Backward ###############
+################################################ Read Stream Events Backward ###############
 
 
 
@@ -225,7 +225,7 @@ class ClientAPI:
             raise result.response
 
 
-    def __StartReadStreamEventsBackward(self, streamId, startPosition, count,  onSuccess, onFailed,):
+    def __StartReadStreamEventsBackward(self, streamId, startPosition, count,  onSuccess, onFailed):
         Ensure.IsNotEmptyString(streamId, "streamId")
         Ensure.IsFunction(onSuccess, "onSuccess")
         Ensure.IsFunction(onFailed, "onFailed")
@@ -246,11 +246,14 @@ class ClientAPI:
             onSuccess(readEventsData.events)
             return
         if readEventsData.batchCounter<readEventsData.count:
-            if readEventsData.batchCounter+self.__readBatchSize>readEventsData.count:
+            if readEventsData.batchCounter + self.__readBatchSize>readEventsData.count:
                 readEventsData.eventsCountInCurrentBatch = readEventsData.count - readEventsData.batchCounter;
             else :
                 readEventsData.eventsCountInCurrentBatch = self.__readBatchSize;
-            url = self.__baseUrl+"/streams/"+readEventsData.streamId+"/range/"+str(readEventsData.startPosition-readEventsData.batchCounter)+"/"+str(readEventsData.eventsCountInCurrentBatch);
+            url = self.__baseUrl + "/streams/{0}/range/{1}/{2}".format( \
+                  readEventsData.streamId, \
+                  str(readEventsData.startPosition-readEventsData.batchCounter), \
+                  str(readEventsData.eventsCountInCurrentBatch));
             readEventsData.batchCounter+=self.__readBatchSize
             self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None, lambda x: self.__ReadStreamEventsBackwardCallback(x, readEventsData, onSuccess, onFailed))
         else:
@@ -514,7 +517,7 @@ class ClientAPI:
                     self.__StartReadAllEventsBackward(0,0,readEventsData.count, onSuccess, onFailed)
                 return;
             eventsCount=len(body['entries'])
-            batchEvents = {}
+            batchEvents = []
             urlNumberDictionary = {}
             eventNumber = 0;
             for uri in body['entries']:
@@ -538,7 +541,7 @@ class ClientAPI:
             onFailed(FailedAnswer(response.code,response.error.message))
             return
         try:
-            batchEvents[urlNumberDictionary[response.request.url]]=json.loads(response.body)
+            batchEvents.insert(urlNumberDictionary[response.request.url],json.loads(response.body))
             if len(batchEvents)==eventsCount:
                 i = eventsCount-1
                 while i>=0:
