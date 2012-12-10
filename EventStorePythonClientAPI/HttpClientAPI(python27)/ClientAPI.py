@@ -233,44 +233,44 @@ class ClientAPI:
         Ensure.IsPositiveNumber(count, "count")
         events = []
         batchCounter=0
-        readEventsData = ReadEventsData;
-        readEventsData.streamId = streamId;
-        readEventsData.startPosition = startPosition;
-        readEventsData.count = count;
-        readEventsData.batchCounter = batchCounter;
-        readEventsData.events = events;
-        self.__ReadBatchEventsBackward(readEventsData, onSuccess, onFailed);
+        params = ReadEventsData;
+        params.streamId = streamId;
+        params.startPosition = startPosition;
+        params.count = count;
+        params.batchCounter = batchCounter;
+        params.events = events;
+        self.__ReadBatchEventsBackward(params, onSuccess, onFailed);
 
-    def __ReadBatchEventsBackward(self,readEventsData, onSuccess, onFailed, eventsCount=None):
+    def __ReadBatchEventsBackward(self,params, onSuccess, onFailed, eventsCount=None):
         if eventsCount!=None and  eventsCount<self.__readBatchSize:
-            onSuccess(readEventsData.events)
+            onSuccess(params.events)
             return
-        if readEventsData.batchCounter<readEventsData.count:
-            if readEventsData.batchCounter + self.__readBatchSize>readEventsData.count:
-                readEventsData.eventsCountInCurrentBatch = readEventsData.count - readEventsData.batchCounter;
+        if params.batchCounter<params.count:
+            if params.batchCounter + self.__readBatchSize>params.count:
+                params.batchLength = params.count - params.batchCounter;
             else :
-                readEventsData.eventsCountInCurrentBatch = self.__readBatchSize;
+                params.batchLength = self.__readBatchSize;
             url = self.__baseUrl + "/streams/{0}/range/{1}/{2}".format( \
-                  readEventsData.streamId, \
-                  str(readEventsData.startPosition-readEventsData.batchCounter), \
-                  str(readEventsData.eventsCountInCurrentBatch));
-            readEventsData.batchCounter+=self.__readBatchSize
-            self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None, lambda x: self.__ReadStreamEventsBackwardCallback(x, readEventsData, onSuccess, onFailed))
+                  params.streamId, \
+                  str(params.startPosition-params.batchCounter), \
+                  str(params.batchLength));
+            params.batchCounter+=self.__readBatchSize
+            self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None, lambda x: self.__ReadStreamEventsBackwardCallback(x, params, onSuccess, onFailed))
         else:
-            onSuccess(readEventsData.events)
+            onSuccess(params.events)
 
-    def __ReadStreamEventsBackwardCallback(self, response, readEventsData, onSuccess, onFailed):
+    def __ReadStreamEventsBackwardCallback(self, response, params, onSuccess, onFailed):
         if response.code!=200:
             onFailed(FailedAnswer(response.code,"Error occur while reading batch: "+response.error.message))
             return
         try:
             response = json.loads(response.body);
             if len(response['entries'])==0:
-                if len(readEventsData.events)!=0:
-                    onSuccess(readEventsData.events)
+                if len(params.events)!=0:
+                    onSuccess(params.events)
                     return;
-                url = self.__baseUrl+"/streams/"+readEventsData.streamId;
-                self.__tornadoHttpSender.SendAsync(url ,"GET", self.__headers, None, lambda x: self.__OnReadEventsFristResponseEntriesEmpty(x,readEventsData,onSuccess,onFailed))
+                url = self.__baseUrl+"/streams/"+params.streamId;
+                self.__tornadoHttpSender.SendAsync(url ,"GET", self.__headers, None, lambda x: self.__OnReadEventsFristResponseEntriesEmpty(x,params,onSuccess,onFailed))
                 return
             batchEvents = []
             for uri in response['entries']:
@@ -279,7 +279,7 @@ class ClientAPI:
                     try:
                         if ur["type"] == "application/json":
                             url = ur['uri'];
-                            self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None, lambda x: self.__EventReadCallback(x,readEventsData,batchEvents, onSuccess, onFailed,len(response['entries'])))
+                            self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None, lambda x: self.__EventReadCallback(x,params,batchEvents, onSuccess, onFailed,len(response['entries'])))
                             break;
                     except:
                         continue;
@@ -287,24 +287,24 @@ class ClientAPI:
             onFailed(FailedAnswer(response.code,"Error occur while process batch: "+response.error.message))
             return
 
-    def __OnReadEventsFristResponseEntriesEmpty(self, response,readEventsData, onSuccess, onFailed):
+    def __OnReadEventsFristResponseEntriesEmpty(self, response,params, onSuccess, onFailed):
         if response.code!=200:
             onFailed(FailedAnswer(response.code,"Error occur while reading first page: "+response.error.message))
             return
         response = json.loads(response.body);
         if len(response['entries'])==0:
-            onSuccess(readEventsData.events)
+            onSuccess(params.events)
             return;
         lastEventNumber = int(response["entries"][0]["id"].split('/')[-1])
-        if readEventsData.startPosition - lastEventNumber > readEventsData.count:
-            onSuccess(readEventsData.events)
+        if params.startPosition - lastEventNumber > params.count:
+            onSuccess(params.events)
             return;
-        readEventsData.count =  readEventsData.count + lastEventNumber - readEventsData.startPosition;
-        readEventsData.startPosition = lastEventNumber;
-        readEventsData.batchCounter =0;
-        self.__ReadBatchEventsBackward(readEventsData, onSuccess, onFailed)
+        params.count =  params.count + lastEventNumber - params.startPosition;
+        params.startPosition = lastEventNumber;
+        params.batchCounter =0;
+        self.__ReadBatchEventsBackward(params, onSuccess, onFailed)
 
-    def __EventReadCallback(self, response, readEventsData,batchEvents, onSuccess, onFailed, eventsCount):
+    def __EventReadCallback(self, response, params,batchEvents, onSuccess, onFailed, eventsCount):
         if response.code !=200:
             onFailed(FailedAnswer(response.code,response.error.message))
         try:
@@ -312,8 +312,8 @@ class ClientAPI:
             if len(batchEvents)==eventsCount:
                 batchEvents = sorted(batchEvents, key=lambda ev: ev['eventNumber'], reverse=True)
                 for i in range(len(batchEvents)):
-                    readEventsData.events.append(batchEvents[i])
-                self.__ReadBatchEventsBackward(readEventsData, onSuccess, onFailed, eventsCount)
+                    params.events.append(batchEvents[i])
+                self.__ReadBatchEventsBackward(params, onSuccess, onFailed, eventsCount)
         except:
             onFailed(FailedAnswer(response.code,"Error occure while reading event: "+response.error.message))
 
@@ -367,31 +367,31 @@ class ClientAPI:
         Ensure.IsPositiveNumber(count, "count")
         events = []
         batchCounter=0
-        readEventsData = ReadEventsData
-        readEventsData.preparePosition = preparePosition
-        readEventsData.commitPosition = commitPosition
-        readEventsData.count = count
-        readEventsData.batchCounter = batchCounter
-        readEventsData.events = events
-        self.__ReadBatchAllEventsBackward(readEventsData, onSuccess, onFailed)
+        params = ReadEventsData
+        params.preparePosition = preparePosition
+        params.commitPosition = commitPosition
+        params.count = count
+        params.batchCounter = batchCounter
+        params.events = events
+        self.__ReadBatchAllEventsBackward(params, onSuccess, onFailed)
 
-    def __ReadBatchAllEventsBackward(self,readEventsData, onSuccess, onFailed, eventsCount=None):
+    def __ReadBatchAllEventsBackward(self,params, onSuccess, onFailed, eventsCount=None):
         if eventsCount!=None and  eventsCount<self.__readBatchSize:
-            onSuccess(AllEventsAnswer(readEventsData.events, readEventsData.preparePosition, readEventsData.commitPosition))
+            onSuccess(AllEventsAnswer(params.events, params.preparePosition, params.commitPosition))
             return
-        if readEventsData.batchCounter<readEventsData.count:
-            hexStartPosition = self.__ConvrtToHex16(readEventsData.preparePosition) + self.__ConvrtToHex16(readEventsData.commitPosition);
-            if readEventsData.batchCounter+self.__readBatchSize>readEventsData.count:
-                readEventsData.eventsCountInCurrentBatch = readEventsData.count - readEventsData.batchCounter;
+        if params.batchCounter<params.count:
+            hexStartPosition = self.__ConvrtToHex16(params.preparePosition) + self.__ConvrtToHex16(params.commitPosition);
+            if params.batchCounter+self.__readBatchSize>params.count:
+                params.batchLength = params.count - params.batchCounter;
             else :
-                readEventsData.eventsCountInCurrentBatch = self.__readBatchSize;
-            url = self.__baseUrl+"/streams/$all/before/"+hexStartPosition+"/"+str(readEventsData.eventsCountInCurrentBatch);
-            readEventsData.batchCounter+=self.__readBatchSize
-            self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None, lambda x: self.__ReadAllEventsBackwardCallback(x, readEventsData, onSuccess, onFailed))
+                params.batchLength = self.__readBatchSize;
+            url = self.__baseUrl+"/streams/$all/before/"+hexStartPosition+"/"+str(params.batchLength);
+            params.batchCounter+=self.__readBatchSize
+            self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None, lambda x: self.__ReadAllEventsBackwardCallback(x, params, onSuccess, onFailed))
         else:
-            onSuccess(AllEventsAnswer(readEventsData.events, readEventsData.preparePosition, readEventsData.commitPosition))
+            onSuccess(AllEventsAnswer(params.events, params.preparePosition, params.commitPosition))
 
-    def __ReadAllEventsBackwardCallback(self, response,readEventsData, onSuccess, onFailed):
+    def __ReadAllEventsBackwardCallback(self, response,params, onSuccess, onFailed):
         if response.code!=200:
             onFailed(FailedAnswer(response.code,"Error occur while reading links: "+response.error.message))
         readLine = response.body;
@@ -399,15 +399,15 @@ class ClientAPI:
             body = json.loads(readLine);
         except:
             raise;
-        readEventsData.preparePosition = self.__GetPreparePosition(body['links'][4]["uri"]);
-        readEventsData.commitPosition = self.__GetCommitPosition(body['links'][4]["uri"])
+        params.preparePosition = self.__GetPreparePosition(body['links'][4]["uri"]);
+        params.commitPosition = self.__GetCommitPosition(body['links'][4]["uri"])
 
         try:
             if body['entries'] == []:
-                if len(readEventsData.events)!=0:
+                if len(params.events)!=0:
                     onSuccess(AllEventsAnswer("", 0,0 ))
                 else:
-                    self.__StartReadAllEventsBackward(-1,-1,readEventsData.count, onSuccess, onFailed)
+                    self.__StartReadAllEventsBackward(-1,-1,params.count, onSuccess, onFailed)
                 return;
             eventsCount=len(body['entries'])
             batchEvents = {}
@@ -421,7 +421,7 @@ class ClientAPI:
                             url = ur['uri'];
                             urlNumberDictionary[url] = eventNumber
                             eventNumber+=1
-                            self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None,lambda x: self.__ReadAllEventsBackward(x, readEventsData, batchEvents, onSuccess, onFailed,eventsCount, urlNumberDictionary))
+                            self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None,lambda x: self.__ReadAllEventsBackward(x, params, batchEvents, onSuccess, onFailed,eventsCount, urlNumberDictionary))
                             break;
                     except:
                         continue;
@@ -429,7 +429,7 @@ class ClientAPI:
             onFailed(FailedAnswer(response.code,response.error.message))
             return;
 
-    def __ReadAllEventsBackward(self, response, readEventsData, batchEvents, onSuccess, onFailed,eventsCount, urlNumberDictionary):
+    def __ReadAllEventsBackward(self, response, params, batchEvents, onSuccess, onFailed,eventsCount, urlNumberDictionary):
         if response.code !=200:
             onFailed(FailedAnswer(response.code,response.error.message))
             return
@@ -438,9 +438,9 @@ class ClientAPI:
             if len(batchEvents)==eventsCount:
                 i = 0
                 while i<eventsCount:
-                    readEventsData.events.append(batchEvents[i])
+                    params.events.append(batchEvents[i])
                     i+=1
-                self.__ReadBatchAllEventsBackward(readEventsData, onSuccess, onFailed, eventsCount)
+                self.__ReadBatchAllEventsBackward(params, onSuccess, onFailed, eventsCount)
         except:
             onFailed(FailedAnswer(response.code,"Error occure while reading event: "+response.error.message))
 
@@ -474,31 +474,31 @@ class ClientAPI:
         Ensure.IsPositiveNumber(count, "count")
         events = []
         batchCounter=0
-        readEventsData = ReadEventsData
-        readEventsData.preparePosition = preparePosition
-        readEventsData.commitPosition = commitPosition
-        readEventsData.count = count
-        readEventsData.batchCounter = batchCounter
-        readEventsData.events = events
-        self.__ReadBatchAllEventsForward(readEventsData, onSuccess, onFailed)
+        params = ReadEventsData
+        params.preparePosition = preparePosition
+        params.commitPosition = commitPosition
+        params.count = count
+        params.batchCounter = batchCounter
+        params.events = events
+        self.__ReadBatchAllEventsForward(params, onSuccess, onFailed)
 
-    def __ReadBatchAllEventsForward(self,readEventsData, onSuccess, onFailed, eventsCount=None):
+    def __ReadBatchAllEventsForward(self,params, onSuccess, onFailed, eventsCount=None):
         if eventsCount!=None and  eventsCount<self.__readBatchSize:
-            onSuccess(AllEventsAnswer(readEventsData.events, readEventsData.preparePosition, readEventsData.commitPosition))
+            onSuccess(AllEventsAnswer(params.events, params.preparePosition, params.commitPosition))
             return
-        if readEventsData.batchCounter<readEventsData.count:
-            hexStartPosition = self.__ConvrtToHex16(readEventsData.preparePosition) + self.__ConvrtToHex16(readEventsData.commitPosition);
-            if readEventsData.batchCounter+self.__readBatchSize>readEventsData.count:
-                readEventsData.eventsCountInCurrentBatch = readEventsData.count - readEventsData.batchCounter;
+        if params.batchCounter<params.count:
+            hexStartPosition = self.__ConvrtToHex16(params.preparePosition) + self.__ConvrtToHex16(params.commitPosition);
+            if params.batchCounter+self.__readBatchSize>params.count:
+                params.batchLength = params.count - params.batchCounter;
             else :
-                readEventsData.eventsCountInCurrentBatch = self.__readBatchSize;
-            url = self.__baseUrl+"/streams/$all/after/"+hexStartPosition+"/"+str(readEventsData.eventsCountInCurrentBatch);
-            readEventsData.batchCounter+=self.__readBatchSize
-            self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None, lambda x: self.__ReadAllEventsForwardCallback(x, readEventsData, onSuccess, onFailed))
+                params.batchLength = self.__readBatchSize;
+            url = self.__baseUrl+"/streams/$all/after/"+hexStartPosition+"/"+str(params.batchLength);
+            params.batchCounter+=self.__readBatchSize
+            self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None, lambda x: self.__ReadAllEventsForwardCallback(x, params, onSuccess, onFailed))
         else:
-            onSuccess(AllEventsAnswer(readEventsData.events, readEventsData.preparePosition, readEventsData.commitPosition))
+            onSuccess(AllEventsAnswer(params.events, params.preparePosition, params.commitPosition))
 
-    def __ReadAllEventsForwardCallback(self, response,readEventsData, onSuccess, onFailed):
+    def __ReadAllEventsForwardCallback(self, response,params, onSuccess, onFailed):
         if response.code!=200:
             onFailed(FailedAnswer(response.code,"Error occur while reading links: "+response.error.message))
         readLine = response.body;
@@ -506,15 +506,15 @@ class ClientAPI:
             body = json.loads(readLine);
         except:
             raise;
-        readEventsData.preparePosition = self.__GetPreparePosition(body['links'][3]["uri"]);
-        readEventsData.commitPosition = self.__GetCommitPosition(body['links'][3]["uri"])
+        params.preparePosition = self.__GetPreparePosition(body['links'][3]["uri"]);
+        params.commitPosition = self.__GetCommitPosition(body['links'][3]["uri"])
 
         try:
             if body['entries'] == []:
-                if len(readEventsData.events)!=0:
+                if len(params.events)!=0:
                     onSuccess(AllEventsAnswer("", -1,-1 ))
                 else:
-                    self.__StartReadAllEventsBackward(0,0,readEventsData.count, onSuccess, onFailed)
+                    self.__StartReadAllEventsBackward(0,0,params.count, onSuccess, onFailed)
                 return;
             eventsCount=len(body['entries'])
             batchEvents = []
@@ -528,7 +528,7 @@ class ClientAPI:
                             url = ur['uri'];
                             urlNumberDictionary[url] = eventNumber
                             eventNumber+=1
-                            self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None,lambda x: self.__ReadAllEventsForward(x, readEventsData, batchEvents, onSuccess, onFailed,eventsCount, urlNumberDictionary))
+                            self.__tornadoHttpSender.SendAsync(url, "GET", self.__headers, None,lambda x: self.__ReadAllEventsForward(x, params, batchEvents, onSuccess, onFailed,eventsCount, urlNumberDictionary))
                             break;
                     except:
                         continue;
@@ -536,7 +536,7 @@ class ClientAPI:
             onFailed(FailedAnswer(response.code,response.error.message))
             return;
 
-    def __ReadAllEventsForward(self, response, readEventsData, batchEvents, onSuccess, onFailed,eventsCount, urlNumberDictionary):
+    def __ReadAllEventsForward(self, response, params, batchEvents, onSuccess, onFailed,eventsCount, urlNumberDictionary):
         if response.code !=200:
             onFailed(FailedAnswer(response.code,response.error.message))
             return
@@ -545,9 +545,9 @@ class ClientAPI:
             if len(batchEvents)==eventsCount:
                 i = eventsCount-1
                 while i>=0:
-                    readEventsData.events.append(batchEvents[i])
+                    params.events.append(batchEvents[i])
                     i-=1
-                self.__ReadBatchAllEventsForward(readEventsData, onSuccess, onFailed, eventsCount)
+                self.__ReadBatchAllEventsForward(params, onSuccess, onFailed, eventsCount)
         except:
             onFailed(FailedAnswer(response.code,"Error occure while reading event: "+response.error.message))
 

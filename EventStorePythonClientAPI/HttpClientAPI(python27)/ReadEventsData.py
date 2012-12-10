@@ -4,6 +4,6 @@ class ReadEventsData:
     count=0;
     batchCounter=0;
     events=0;
-    eventsCountInCurrentBatch=0;
+    batchLength=0;
     preparePosition = 0;
     commitPosition = 0;
