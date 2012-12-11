@@ -41,7 +41,7 @@ class ClientAPI:
 ################################################################################
 
 
-    def CreateStream(self, streamId, metadata):
+    def CreateStream(self, streamId, metadata=""):
         queue = deque();
         onSuccess = lambda x:  queue.append(self.__SyncSuccess(x))
         onFailed = lambda x:  queue.append(self.__SyncFailed(x))
@@ -108,7 +108,7 @@ class ClientAPI:
             body = ToJson(DeleteStreamRequestBody(expectedVersion));
         except:
             raise;
-        self.__tornadoHttpSender.SendAsync(url, "DELETE", self.__headers, body, lambda x: self.__DeleteStreamCallback(x, onSuccess, onFailed));
+        self.__tornadoHttpSender.SendAsync(url, 'DELETE', self.__headers, body, lambda x: self.__DeleteStreamCallback(x, onSuccess, onFailed));
 
     def __DeleteStreamCallback(self, response, onSuccess,onFailed):
         if response.code==204:

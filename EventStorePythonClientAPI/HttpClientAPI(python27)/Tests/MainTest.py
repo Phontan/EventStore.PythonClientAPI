@@ -1,11 +1,12 @@
+from DeleteStreamAsyncTest import *
 from CreateStreamAsyncTest import *
-#from DeleteStreamAsyncTest import *
 from AppendToStreamAsyncTest import *
+from ReadAllEventsBackwardTest import *
+from ReadAllEventsForwardTest import *
+from ReadEventsData import *
 from ReadEventTest import *
 from ReadStreamEventsBackwardTest import *
 from ReadStreamEventsForwardTest import *
-from ReadAllEventsBackwardTest import *
-from ReadAllEventsForwardTest import *
 
 if __name__ == '__main__':
 
