@@ -1,12 +1,13 @@
-from DeleteStreamTest import *
-from CreateStreamTest import *
-from AppendToStreamTest import *
-from ReadAllEventsBackwardTest import *
-from ReadAllEventsForwardTest import *
-from ReadEventsData import *
-from ReadEventTest import *
-from ReadStreamEventsBackwardTest import *
-from ReadStreamEventsForwardTest import *
+##from DeleteStreamTest import *
+##from CreateStreamTest import *
+##from AppendToStreamTest import *
+##from ReadAllEventsBackwardTest import *
+##from ReadAllEventsForwardTest import *
+##from ReadEventsData import *
+##from ReadEventTest import *
+##from ReadStreamEventsBackwardTest import *
+##from ReadStreamEventsForwardTest import *
+from SubscribeAllTest import *
 import subprocess
 
 if __name__ == '__main__':

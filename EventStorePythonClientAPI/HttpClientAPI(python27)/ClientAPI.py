@@ -13,13 +13,21 @@ from SyncResponse import *
 from collections import deque
 import time
 import httplib
+from SubscribeInfo import *
+from SubscribeAllInfo import *
+import thread
+import time
 
-class ClientAPI:
+class ClientAPI():
     def __init__(self, ipAddress="http://127.0.0.1", port = 2113):
         self.__baseUrl = ipAddress+':'+str(port);
         self.__headers = {"content-type" : "application/json","accept" :  "application/json","extensions" : "json"};
         self.__readBatchSize = 20
         self.__tornadoHttpSender = TornadoHttpSender();
+        self.__subscribers  = []
+        self.__subscribersThread = thread.start_new_thread(self.__HandleSubscribers, ())
+        self.__subscribersAllThread = thread.start_new_thread(self.__HandleSubscribersAll, ())
+        self.__shouldSubscribeAll=False
 
 
     def Resume(self):
@@ -575,3 +583,56 @@ class ClientAPI:
         while len(number)!=16:
             number = "0"+number;
         return number;
+
+
+###############################################################################################################
+
+
+    def Subscribe(self, streamId, callback, startFromBegining = False):
+        if startFromBegining:
+            startPosition = 0
+        else:
+            startPosition = -1
+        self.__subscribers.append(SubscribeInfo(streamId,startPosition , callback))
+
+    def __HandleSubscribers(self):
+        while True:
+            if len(self.__subscribers)>0:
+                #self.ReadAllEventsBackwardAsync(-1,-1,100, lambda s: self.__HandleSubscribersSuccess(s,0,None),lambda s: self.__HandleSubscribersSuccess(s,0,None))
+##                for i in range(len(self.__subscribers)):
+##                    self.ReadStreamEventsForwardAsync(self.__subscribers[i].streamId, self.__subscribers[i].lastPosition, 100, lambda s: self.__HandleSubscribersSuccess(s, len(self.__subscribers, self.__subscribers[i].callback)),lambda s: self.__HandleSubscribersFailed(s, len(self.__subscribers, self.__subscribers[i].callback)))
+
+                self.Wait()
+            time.sleep(1)
+
+    def __HandleSubscribersSuccess(self, response, streamsCount, callback):
+        print ''
+
+
+
+####################################################################################################################
+
+
+    def SubscribeAll(self, callback, startFromBegining = False):
+        if startFromBegining:
+            startPosition = 0
+        else:
+            startPosition = -1
+        self.__subscribersAll=SubscribeAllInfo(startPosition, startPosition , callback)
+        self.__shouldSubscribeAll=True
+
+    def __HandleSubscribersAll(self):
+        while True:
+            if self.__shouldSubscribeAll:
+                if self.__subscribersAll.commitPosition ==-1:
+                    answer = self.ReadAllEventsBackward(self.__subscribersAll.commitPosition, self.__subscribersAll.preparePosition, 1)
+                else:
+                    answer =  self.ReadAllEventsForward(self.__subscribersAll.commitPosition, self.__subscribersAll.preparePosition,10000)
+                self.__subscribersAll.commitPosition = int(answer.commitPosition)
+                self.__subscribersAll.preparePosition = int(answer.preparePosition)
+
+                self.__subscribersAll.callback(answer.events)
+            time.sleep(3)
+
+
+###########################################################################################################################
