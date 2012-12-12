@@ -1,7 +1,8 @@
+import sys, os
+sys.path.append(os.path.dirname(__file__)+"\\Implementation\\libs")
+sys.path.append(os.path.dirname(__file__)+"\\Implementation")
 from Event import *
 from ClientJsonSerelizationOption import *
-import sys, os
-sys.path.append(os.path.dirname(__file__)+"\\libs");
 from bodyLibs import *
 from answerLibs import *
 from AsyncRequestSender import *
