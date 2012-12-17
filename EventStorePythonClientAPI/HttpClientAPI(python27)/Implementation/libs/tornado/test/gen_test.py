@@ -32,7 +32,7 @@ class GenTest(AsyncTestCase):
         @gen.engine
         def f():
             (yield gen.Callback("k1"))()
-            res = yield gen.Wait("k1")
+            res = yield gen.wait("k1")
             self.assertTrue(res is None)
             self.stop()
         self.run_gen(f)
@@ -41,7 +41,7 @@ class GenTest(AsyncTestCase):
         @gen.engine
         def f():
             self.io_loop.add_callback((yield gen.Callback("k1")))
-            yield gen.Wait("k1")
+            yield gen.wait("k1")
             self.stop()
         self.run_gen(f)
 
@@ -55,7 +55,7 @@ class GenTest(AsyncTestCase):
         @gen.engine
         def f():
             self.io_loop.add_callback((yield gen.Callback("k1")))
-            yield gen.Wait("k1")
+            yield gen.wait("k1")
             1 / 0
         self.assertRaises(ZeroDivisionError, self.run_gen, f)
 
@@ -90,7 +90,7 @@ class GenTest(AsyncTestCase):
         @gen.engine
         def f():
             (yield gen.Callback("k1"))(42)
-            res = yield gen.Wait("k1")
+            res = yield gen.wait("k1")
             self.assertEqual(42, res)
             self.stop()
         self.run_gen(f)
@@ -107,7 +107,7 @@ class GenTest(AsyncTestCase):
         @gen.engine
         def f():
             yield gen.Callback("k1")
-            yield gen.Wait("k2")
+            yield gen.wait("k2")
             self.stop()
         self.assertRaises(gen.UnknownKeyError, self.run_gen, f)
 
@@ -123,11 +123,11 @@ class GenTest(AsyncTestCase):
         def f():
             for k in range(3):
                 self.io_loop.add_callback((yield gen.Callback(k)))
-            yield gen.Wait(1)
+            yield gen.wait(1)
             self.io_loop.add_callback((yield gen.Callback(3)))
-            yield gen.Wait(0)
-            yield gen.Wait(3)
-            yield gen.Wait(2)
+            yield gen.wait(0)
+            yield gen.wait(3)
+            yield gen.wait(2)
             self.stop()
         self.run_gen(f)
 
@@ -141,7 +141,7 @@ class GenTest(AsyncTestCase):
         @gen.engine
         def f():
             self.io_loop.add_callback((yield gen.Callback(0)))
-            yield gen.Wait(0)
+            yield gen.wait(0)
             self.stop()
         self.run_gen(f)
         self.run_gen(f)
@@ -167,7 +167,7 @@ class GenTest(AsyncTestCase):
         @gen.engine
         def f():
             try:
-                yield gen.Wait("k1")
+                yield gen.wait("k1")
                 raise Exception("did not get expected exception")
             except gen.UnknownKeyError:
                 pass
@@ -178,12 +178,12 @@ class GenTest(AsyncTestCase):
         @gen.engine
         def f():
             try:
-                yield gen.Wait("k1")
+                yield gen.wait("k1")
                 raise Exception("did not get expected exception")
             except gen.UnknownKeyError:
                 pass
             (yield gen.Callback("k2"))("v2")
-            self.assertEqual((yield gen.Wait("k2")), "v2")
+            self.assertEqual((yield gen.wait("k2")), "v2")
             self.stop()
         self.run_gen(f)
 
@@ -203,7 +203,7 @@ class GenTest(AsyncTestCase):
         def f():
             (yield gen.Callback("k1"))("v1")
             (yield gen.Callback("k2"))("v2")
-            results = yield [gen.Wait("k1"), gen.Wait("k2")]
+            results = yield [gen.wait("k1"), gen.wait("k2")]
             self.assertEqual(results, ["v1", "v2"])
             self.stop()
         self.run_gen(f)
@@ -224,18 +224,18 @@ class GenTest(AsyncTestCase):
         @gen.engine
         def f():
             (yield gen.Callback("noargs"))()
-            self.assertEqual((yield gen.Wait("noargs")), None)
+            self.assertEqual((yield gen.wait("noargs")), None)
             (yield gen.Callback("1arg"))(42)
-            self.assertEqual((yield gen.Wait("1arg")), 42)
+            self.assertEqual((yield gen.wait("1arg")), 42)
 
             (yield gen.Callback("kwargs"))(value=42)
-            result = yield gen.Wait("kwargs")
+            result = yield gen.wait("kwargs")
             self.assertTrue(isinstance(result, gen.Arguments))
             self.assertEqual(((), dict(value=42)), result)
             self.assertEqual(dict(value=42), result.kwargs)
 
             (yield gen.Callback("2args"))(42, 43)
-            result = yield gen.Wait("2args")
+            result = yield gen.wait("2args")
             self.assertTrue(isinstance(result, gen.Arguments))
             self.assertEqual(((42, 43), {}), result)
             self.assertEqual((42, 43), result.args)
@@ -276,14 +276,14 @@ class GenSequenceHandler(RequestHandler):
     def get(self):
         self.io_loop = self.request.connection.stream.io_loop
         self.io_loop.add_callback((yield gen.Callback("k1")))
-        yield gen.Wait("k1")
+        yield gen.wait("k1")
         self.write("1")
         self.io_loop.add_callback((yield gen.Callback("k2")))
-        yield gen.Wait("k2")
+        yield gen.wait("k2")
         self.write("2")
         # reuse an old key
         self.io_loop.add_callback((yield gen.Callback("k1")))
-        yield gen.Wait("k1")
+        yield gen.wait("k1")
         self.finish("3")
 
 

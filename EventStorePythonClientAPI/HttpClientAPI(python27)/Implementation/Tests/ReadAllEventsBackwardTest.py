@@ -1,22 +1,22 @@
 from libs import *
 
 class ReadAllEventsBackwardTest(unittest.TestCase):
-    __client = ClientAPI();
+    client = ClientAPI();
 
     def test_read_more_than_one_batch_from_last_position(self):
-        streamId = "ReadAllEventsBackwardTest_test_read_more_than_one_batch_from_last_position_stream_id"
+        stream_id = "ReadAllEventsBackwardTest_test_read_more_than_one_batch_from_last_position_stream_id"
         try:
-            self.__client.CreateStream(streamId,"")
-            writeEventsCount = 100
-            writeEvents = []
-            for i in range(writeEventsCount):
-                eventId = streamId+"_data_"+str(i);
-                writeEvents.append(Event(eventId,""))
-            self.__client.AppendToStream(streamId, writeEvents)
-            readEventsCount = 30;
-            readEvents = self.__client.ReadAllEventsBackward(-1,-1,readEventsCount)
-            for i in range(readEventsCount):
-                self.assertEqual(writeEvents[writeEventsCount-i-1].data, readEvents.events[i]['data'])
+            self.client.create_stream(stream_id,"")
+            write_events_count = 100
+            write_events = []
+            for i in range(write_events_count):
+                event_id = stream_id+"_data_"+str(i);
+                write_events.append(Event(event_id,""))
+            self.client.append_to_stream(stream_id, write_events)
+            read_events_count = 30;
+            read_events = self.client.read_all_events_backward(-1,-1,read_events_count)
+            for i in range(read_events_count):
+                self.assertEqual(write_events[write_events_count-i-1].data, read_events.events[i]['data'])
             self.assertTrue(True)
         except:
             self.assertTrue(False)

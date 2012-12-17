@@ -1,84 +1,84 @@
 from libs import *
 
 class ReadStreamEventsForwardTest(unittest.TestCase):
-    __client = ClientAPI();
+    client = ClientAPI();
 
     def test_read_more_than_one_batch_from_start(self):
-        streamId = "ReadStreamEventsForwardTest_test_read_more_than_one_batch_from_start_stream_id"
+        stream_id = "ReadStreamEventsForwardTest_test_read_more_than_one_batch_from_start_stream_id"
         try:
-            self.__client.CreateStream(streamId,"")
-            writeEventsCount = 1234;
-            writeEvents = []
-            for i in range(writeEventsCount):
-                eventId = streamId+"_data_"+str(i);
-                writeEvents.append(Event(eventId,""))
-            self.__client.AppendToStream(streamId, writeEvents)
-            readEventsCount = 30
-            startPosition = 0
-            readEvents = self.__client.ReadStreamEventsForward(streamId, startPosition, readEventsCount)
-            for i in range(readEventsCount-1):
-                self.assertEqual(writeEvents[i].data, readEvents[i+1]['data'])
+            self.client.create_stream(stream_id,"")
+            write_events_count = 1234;
+            write_events = []
+            for i in range(write_events_count):
+                event_id = stream_id+"_data_"+str(i);
+                write_events.append(Event(event_id,""))
+            self.client.append_to_stream(stream_id, write_events)
+            read_events_count = 30
+            start_position = 0
+            read_events = self.client.read_stream_events_forward(stream_id, start_position, read_events_count)
+            for i in range(read_events_count-1):
+                self.assertEqual(write_events[i].data, read_events[i+1]['data'])
             self.assertTrue(True)
         except:
             self.assertTrue(False)
 
 
     def test_read_less_than_one_batch_from_start(self):
-        streamId = "ReadStreamEventsForwardTest_test_read_less_than_one_batch_from_start_stream_id"
+        stream_id = "ReadStreamEventsForwardTest_test_read_less_than_one_batch_from_start_stream_id"
         try:
-            self.__client.CreateStream(streamId,"")
-            writeEventsCount = 1234;
-            writeEvents = []
-            for i in range(writeEventsCount):
-                eventId = streamId+"_data_"+str(i);
-                writeEvents.append(Event(eventId,""))
-            self.__client.AppendToStream(streamId, writeEvents)
-            readEventsCount = 5
-            startPosition = 0
-            readEvents = self.__client.ReadStreamEventsForward(streamId, startPosition, readEventsCount)
-            for i in range(readEventsCount-1):
-                self.assertEqual(writeEvents[i].data, readEvents[i+1]['data'])
+            self.client.create_stream(stream_id,"")
+            write_events_count = 1234;
+            write_events = []
+            for i in range(write_events_count):
+                event_id = stream_id+"_data_"+str(i);
+                write_events.append(Event(event_id,""))
+            self.client.append_to_stream(stream_id, write_events)
+            read_events_count = 5
+            start_position = 0
+            read_events = self.client.read_stream_events_forward(stream_id, start_position, read_events_count)
+            for i in range(read_events_count-1):
+                self.assertEqual(write_events[i].data, read_events[i+1]['data'])
             self.assertTrue(True)
         except:
             self.assertTrue(False)
 
 
     def test_read_events_from_random_position(self):
-        streamId = "ReadStreamEventsForwardTest_test_read_events_from_random_position_position_stream_id"
+        stream_id = "ReadStreamEventsForwardTest_test_read_events_from_random_position_position_stream_id"
         try:
-            self.__client.CreateStream(streamId,"")
-            writeEventsCount = 1234;
-            writeEvents = []
-            for i in range(writeEventsCount):
-                eventId = streamId+"_data_"+str(i);
-                writeEvents.append(Event(eventId,""))
-            self.__client.AppendToStream(streamId, writeEvents)
-            readEventsCount = 46;
+            self.client.create_stream(stream_id,"")
+            write_events_count = 1234;
+            write_events = []
+            for i in range(write_events_count):
+                event_id = stream_id+"_data_"+str(i);
+                write_events.append(Event(event_id,""))
+            self.client.append_to_stream(stream_id, write_events)
+            read_events_count = 46;
             offset = 123
-            startPosition = writeEventsCount - offset
-            readEvents = self.__client.ReadStreamEventsForward(streamId,startPosition, readEventsCount)
-            for i in range(readEventsCount):
-                self.assertEqual(writeEvents[startPosition+i-1].data, readEvents[i]['data'])
+            start_position = write_events_count - offset
+            read_events = self.client.read_stream_events_forward(stream_id,start_position, read_events_count)
+            for i in range(read_events_count):
+                self.assertEqual(write_events[start_position+i-1].data, read_events[i]['data'])
             self.assertTrue(True)
         except:
             self.assertTrue(False)
 
 
     def test_read_more_than_one_batch_from_end(self):
-        streamId = "ReadStreamEventsForwardTest_test_read_more_than_one_batch_from_end_stream_id"
+        stream_id = "ReadStreamEventsForwardTest_test_read_more_than_one_batch_from_end_stream_id"
         try:
-            self.__client.CreateStream(streamId,"")
-            writeEventsCount = 1234;
-            writeEvents = []
-            for i in range(writeEventsCount):
-                eventId = streamId+"_data_"+str(i);
-                writeEvents.append(Event(eventId,""))
-            self.__client.AppendToStream(streamId, writeEvents)
-            readEventsCount = 100
-            startPosition = 1200
-            readEvents = self.__client.ReadStreamEventsForward(streamId, startPosition, readEventsCount)
-            for i in range(len(readEvents)):
-                self.assertEqual(writeEvents[startPosition + i -1].data, readEvents[i]['data'])
+            self.client.create_stream(stream_id,"")
+            write_events_count = 1234;
+            write_events = []
+            for i in range(write_events_count):
+                event_id = stream_id+"_data_"+str(i);
+                write_events.append(Event(event_id,""))
+            self.client.append_to_stream(stream_id, write_events)
+            read_events_count = 100
+            start_position = 1200
+            read_events = self.client.read_stream_events_forward(stream_id, start_position, read_events_count)
+            for i in range(len(read_events)):
+                self.assertEqual(write_events[start_position + i -1].data, read_events[i]['data'])
             self.assertTrue(True)
         except:
             self.assertTrue(False)

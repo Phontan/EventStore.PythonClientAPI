@@ -4,9 +4,9 @@ class CreateStreamTest(unittest.TestCase):
     __client = ClientAPI();
 
     def test_create_stream(self):
-        streamId = "CreateStreamTest_test_create_stream_stream_id"
+        stream_id = "CreateStreamTest_test_create_stream_stream_id"
         try:
-            self.__client.CreateStream(streamId,"")
+            self.__client.create_stream(stream_id,"")
             self.assertTrue(True)
         except:
             self.assertTrue(False)

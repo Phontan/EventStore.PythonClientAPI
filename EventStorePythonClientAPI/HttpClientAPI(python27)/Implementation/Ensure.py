@@ -1,22 +1,26 @@
-def IsString(obj, arg):
+def is_string(obj, arg):
     if type(obj)!=str:
         raise TypeError(arg +" should be string")
-def IsNotEmptyString(obj, arg):
-    IsString(obj, arg)
+def is_not_empty_string(obj, arg):
+    is_string(obj, arg)
     if obj == "":
         raise TypeError(arg +" cannot be empty")
-def IsFunction(obj, arg):
+def is_function(obj, arg):
     if not hasattr(obj, '__call__'):
         raise TypeError(arg +" should be function")
-def IsNumber(obj, arg):
+def is_number(obj, arg):
     if type(obj)!= int:
         raise TypeError(arg +" should be integer")
-def IsPositiveNumber(obj, arg):
-    IsNumber(obj, arg)
+def is_positive_number(obj, arg):
+    is_number(obj, arg)
     if obj<1:
         raise TypeError(arg +" cannot be negative or null")
-def IsNotNegativeNumber(obj, arg):
-    IsNumber(obj, arg)
+def is_not_negative_number(obj, arg):
+    is_number(obj, arg)
     if obj<0:
         raise TypeError(arg +" cannot be negative")
+def is_possible_event_position(obj, arg):
+    is_number(obj, arg)
+    if obj<-1:
+        raise TypeError(arg +" cannot be less than -1")
 

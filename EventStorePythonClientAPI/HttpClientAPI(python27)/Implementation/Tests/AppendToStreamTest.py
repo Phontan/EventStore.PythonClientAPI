@@ -1,30 +1,30 @@
 from libs import *
 
 class AppendToStreamTest(unittest.TestCase):
-    __client = ClientAPI();
+    client = ClientAPI();
 
 
     def test_appent_events_to_stream(self):
-        streamId = "AppendToStreamTest_test_appent_events_to_stream_stream_id"
+        stream_id = "AppendToStreamTest_test_appent_events_to_stream_stream_id"
         try:
-            self.__client.CreateStream(streamId,"")
-            writeEventsCount = 1234;
+            self.client.create_stream(stream_id,"")
+            write_events_count = 1234;
             events = []
-            for i in range(writeEventsCount):
-                eventId = streamId+"_data_"+str(i);
-                events.append(Event(eventId,""))
-            self.__client.AppendToStream(streamId, events)
+            for i in range(write_events_count):
+                event_id = stream_id+"_data_"+str(i);
+                events.append(Event(event_id,""))
+            self.client.append_to_stream(stream_id, events)
             self.assertTrue(True)
         except:
             self.assertTrue(False)
 
 
     def test_appent_one_event_to_stream(self):
-        streamId = "AppendToStreamTest_test_appent_one_event_to_stream_stream_id"
+        stream_id = "AppendToStreamTest_test_appent_one_event_to_stream_stream_id"
         try:
-            self.__client.CreateStream(streamId,"")
-            eventId = streamId+"_data_eventId"
-            self.__client.AppendToStream(streamId, Event(eventId,""))
+            self.client.create_stream(stream_id,"")
+            event_id = stream_id+"_data_event_id"
+            self.client.append_to_stream(stream_id, Event(event_id,""))
             self.assertTrue(True)
         except:
             self.assertTrue(False)

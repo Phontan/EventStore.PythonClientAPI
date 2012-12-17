@@ -1,141 +1,141 @@
 from libs import *
 
 class ReadStreamEventsBackwardTest(unittest.TestCase):
-    __client = ClientAPI();
+    client = ClientAPI();
 
     def test_read_more_than_one_batch_from_last_position(self):
-        streamId = "ReadStreamEventsBackwardTest_test_read_more_than_one_batch_from_last_position_stream_id"
+        stream_id = "ReadStreamEventsBackwardTest_test_read_more_than_one_batch_from_last_position_stream_id"
         try:
-            self.__client.CreateStream(streamId,"")
-            writeEventsCount = 1234;
-            writeEvents = []
-            for i in range(writeEventsCount):
-                eventId = streamId+"_data_"+str(i);
-                writeEvents.append(Event(eventId,""))
-            self.__client.AppendToStream(streamId, writeEvents)
-            readEventsCount = 30;
-            readEvents = self.__client.ReadStreamEventsBackward(streamId,writeEventsCount, readEventsCount)
-            for i in range(readEventsCount):
-                self.assertEqual(writeEvents[writeEventsCount-i-1].data, readEvents[i]['data'])
+            self.client.create_stream(stream_id,"")
+            write_events_count = 1234;
+            write_events = []
+            for i in range(write_events_count):
+                event_id = stream_id+"_data_"+str(i);
+                write_events.append(Event(event_id,""))
+            self.client.append_to_stream(stream_id, write_events)
+            read_events_count = 30;
+            read_events = self.client.read_stream_events_backward(stream_id,write_events_count, read_events_count)
+            for i in range(read_events_count):
+                self.assertEqual(write_events[write_events_count-i-1].data, read_events[i]['data'])
             self.assertTrue(True)
         except:
             self.assertTrue(False)
 
 
     def test_read_less_than_one_batch_from_last_position(self):
-        streamId = "ReadStreamEventsBackwardTest_test_read_less_than_one_batch_from_last_position_stream_id"
+        stream_id = "ReadStreamEventsBackwardTest_test_read_less_than_one_batch_from_last_position_stream_id"
         try:
-            self.__client.CreateStream(streamId,"")
-            writeEventsCount = 1234;
-            writeEvents = []
-            for i in range(writeEventsCount):
-                eventId = streamId+"_data_"+str(i);
-                writeEvents.append(Event(eventId,""))
-            self.__client.AppendToStream(streamId, writeEvents)
-            readEventsCount = 5;
-            readEvents = self.__client.ReadStreamEventsBackward(streamId,writeEventsCount, readEventsCount)
-            for i in range(readEventsCount):
-                self.assertEqual(writeEvents[writeEventsCount-i-1].data, readEvents[i]['data'])
+            self.client.create_stream(stream_id,"")
+            write_events_count = 1234;
+            write_events = []
+            for i in range(write_events_count):
+                event_id = stream_id+"_data_"+str(i);
+                write_events.append(Event(event_id,""))
+            self.client.append_to_stream(stream_id, write_events)
+            read_events_count = 5;
+            read_events = self.client.read_stream_events_backward(stream_id,write_events_count, read_events_count)
+            for i in range(read_events_count):
+                self.assertEqual(write_events[write_events_count-i-1].data, read_events[i]['data'])
             self.assertTrue(True)
         except:
             self.assertTrue(False)
 
 
     def test_read_less_than_one_batch_from_random_position(self):
-        streamId = "ReadStreamEventsBackwardTest_test_read_less_than_one_batch_from_random_position_stream_id"
+        stream_id = "ReadStreamEventsBackwardTest_test_read_less_than_one_batch_from_random_position_stream_id"
         try:
-            self.__client.CreateStream(streamId,"")
-            writeEventsCount = 1234;
-            writeEvents = []
-            for i in range(writeEventsCount):
-                eventId = streamId+"_data_"+str(i);
-                writeEvents.append(Event(eventId,""))
-            self.__client.AppendToStream(streamId, writeEvents)
-            readEventsCount = 5;
+            self.client.create_stream(stream_id,"")
+            write_events_count = 1234;
+            write_events = []
+            for i in range(write_events_count):
+                event_id = stream_id+"_data_"+str(i);
+                write_events.append(Event(event_id,""))
+            self.client.append_to_stream(stream_id, write_events)
+            read_events_count = 5;
             offset = 123
-            startPosition = writeEventsCount - offset
-            readEvents = self.__client.ReadStreamEventsBackward(streamId,startPosition, readEventsCount)
-            for i in range(readEventsCount):
-                self.assertEqual(writeEvents[startPosition-i-1].data, readEvents[i]['data'])
+            start_position = write_events_count - offset
+            read_events = self.client.read_stream_events_backward(stream_id,start_position, read_events_count)
+            for i in range(read_events_count):
+                self.assertEqual(write_events[start_position-i-1].data, read_events[i]['data'])
             self.assertTrue(True)
         except:
             self.assertTrue(False)
 
 
     def test_read_more_than_one_batch_from_random_position(self):
-        streamId = "ReadStreamEventsBackwardTest_test_read_more_than_one_batch_from_random_position_stream_id"
+        stream_id = "ReadStreamEventsBackwardTest_test_read_more_than_one_batch_from_random_position_stream_id"
         try:
-            self.__client.CreateStream(streamId,"")
-            writeEventsCount = 1234;
-            writeEvents = []
-            for i in range(writeEventsCount):
-                eventId = streamId+"_data_"+str(i);
-                writeEvents.append(Event(eventId,""))
-            self.__client.AppendToStream(streamId, writeEvents)
-            readEventsCount = 50;
+            self.client.create_stream(stream_id,"")
+            write_events_count = 1234;
+            write_events = []
+            for i in range(write_events_count):
+                event_id = stream_id+"_data_"+str(i);
+                write_events.append(Event(event_id,""))
+            self.client.append_to_stream(stream_id, write_events)
+            read_events_count = 50;
             offset = 123
-            startPosition = writeEventsCount - offset
-            readEvents = self.__client.ReadStreamEventsBackward(streamId,startPosition, readEventsCount)
-            for i in range(readEventsCount):
-                self.assertEqual(writeEvents[startPosition-i-1].data, readEvents[i]['data'])
+            start_position = write_events_count - offset
+            read_events = self.client.read_stream_events_backward(stream_id,start_position, read_events_count)
+            for i in range(read_events_count):
+                self.assertEqual(write_events[start_position-i-1].data, read_events[i]['data'])
             self.assertTrue(True)
         except:
             self.assertTrue(False)
 
 
     def test_read_couple_events_from_not_exist_position(self):
-        streamId = "ReadStreamEventsBackwardTest_test_read_couple_events_from_not_exist_position_stream_id"
+        stream_id = "ReadStreamEventsBackwardTest_test_read_couple_events_from_not_exist_position_stream_id"
         try:
-            self.__client.CreateStream(streamId,"")
-            writeEventsCount = 1234;
-            writeEvents = []
-            for i in range(writeEventsCount):
-                eventId = streamId+"_data_"+str(i);
-                writeEvents.append(Event(eventId,""))
-            self.__client.AppendToStream(streamId, writeEvents)
-            readEventsCount = 50;
+            self.client.create_stream(stream_id,"")
+            write_events_count = 1234;
+            write_events = []
+            for i in range(write_events_count):
+                event_id = stream_id+"_data_"+str(i);
+                write_events.append(Event(event_id,""))
+            self.client.append_to_stream(stream_id, write_events)
+            read_events_count = 50;
             offset = -123
-            startPosition = writeEventsCount - offset
-            readEvents = self.__client.ReadStreamEventsBackward(streamId,startPosition, readEventsCount)
-            self.assertEqual(readEvents, [])
+            start_position = write_events_count - offset
+            read_events = self.client.read_stream_events_backward(stream_id,start_position, read_events_count)
+            self.assertEqual(read_events, [])
         except:
             self.assertTrue(False)
 
 
     def test_read_many_events_from_not_exist_position(self):
-        streamId = "ReadStreamEventsBackwardTest_test_read_many_events_from_not_exist_position_stream_id"
+        stream_id = "ReadStreamEventsBackwardTest_test_read_many_events_from_not_exist_position_stream_id"
         try:
-            self.__client.CreateStream(streamId,"")
-            writeEventsCount = 1234;
-            writeEvents = []
-            for i in range(writeEventsCount):
-                eventId = streamId+"_data_"+str(i);
-                writeEvents.append(Event(eventId,""))
-            self.__client.AppendToStream(streamId, writeEvents)
-            readEventsCount = 100
+            self.client.create_stream(stream_id,"")
+            write_events_count = 1234;
+            write_events = []
+            for i in range(write_events_count):
+                event_id = stream_id+"_data_"+str(i);
+                write_events.append(Event(event_id,""))
+            self.client.append_to_stream(stream_id, write_events)
+            read_events_count = 100
             offset = -50
-            startPosition = writeEventsCount - offset
-            readEvents = self.__client.ReadStreamEventsBackward(streamId,startPosition, readEventsCount)
-            for i in range(readEventsCount+offset):
-                self.assertEqual(writeEvents[writeEventsCount-i-1].data, readEvents[i]['data'])
+            start_position = write_events_count - offset
+            read_events = self.client.read_stream_events_backward(stream_id,start_position, read_events_count)
+            for i in range(read_events_count+offset):
+                self.assertEqual(write_events[write_events_count-i-1].data, read_events[i]['data'])
         except:
             self.assertTrue(False)
 
 
     def test_read_many_events_from_start(self):
-        streamId = "ReadStreamEventsBackwardTest_test_read_many_events_from_start_stream_id"
+        stream_id = "ReadStreamEventsBackwardTest_test_read_many_events_from_start_stream_id"
         try:
-            self.__client.CreateStream(streamId,"")
-            writeEventsCount = 1234;
-            writeEvents = []
-            for i in range(writeEventsCount):
-                eventId = streamId+"_data_"+str(i);
-                writeEvents.append(Event(eventId,""))
-            self.__client.AppendToStream(streamId, writeEvents)
-            readEventsCount = 100
-            startPosition = 10
-            readEvents = self.__client.ReadStreamEventsBackward(streamId,startPosition, readEventsCount)
-            for i in range(startPosition-1):
-                self.assertEqual(readEvents[startPosition-i-1]['data'], writeEvents[i].data)
+            self.client.create_stream(stream_id,"")
+            write_events_count = 1234;
+            write_events = []
+            for i in range(write_events_count):
+                event_id = stream_id+"_data_"+str(i);
+                write_events.append(Event(event_id,""))
+            self.client.append_to_stream(stream_id, write_events)
+            read_events_count = 100
+            start_position = 10
+            read_events = self.client.read_stream_events_backward(stream_id,start_position, read_events_count)
+            for i in range(start_position-1):
+                self.assertEqual(read_events[start_position-i-1]['data'], write_events[i].data)
         except:
             self.assertTrue(False)

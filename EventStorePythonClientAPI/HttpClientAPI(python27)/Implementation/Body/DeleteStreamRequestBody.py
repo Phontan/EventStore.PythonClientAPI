@@ -1,3 +1,3 @@
 class DeleteStreamRequestBody:
-    def __init__(self, expectedVersion):
-        self.expectedVersion = expectedVersion
+    def __init__(self, expected_version):
+        self.expected_version = expected_version

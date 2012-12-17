@@ -5,10 +5,10 @@ class DeleteStreamTest(unittest.TestCase):
     __client = ClientAPI();
 
     def test_delete_stream(self):
-        streamId = "DeleteStreamTest_test_delete_stream_stream_id"
+        stream_id = "DeleteStreamTest_test_delete_stream_stream_id"
         try:
-            self.__client.CreateStream(streamId)
-            self.__client.DeleteStream(streamId)
+            self.__client.create_stream(stream_id)
+            self.__client.delete_stream(stream_id)
             self.assertTrue(True)
         except:
             self.assertTrue(False)

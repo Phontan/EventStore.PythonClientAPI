@@ -1,9 +1,9 @@
 class ReadEventsData:
-    streamId =0;
-    startPosition=0;
+    stream_id =0;
+    start_position=0;
     count=0;
-    batchCounter=0;
+    batch_counter=0;
     events=0;
-    batchLength=0;
-    preparePosition = 0;
-    commitPosition = 0;
+    batch_length=0;
+    prepare_position = 0;
+    commit_position = 0;

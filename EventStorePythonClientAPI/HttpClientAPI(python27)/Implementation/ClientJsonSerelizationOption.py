@@ -5,5 +5,5 @@ def convert_to_builtin_type(obj):
      d.update(obj.__dict__)
      return d
 
-def ToJson(obj):
+def to_json(obj):
     return json.dumps(obj, default=convert_to_builtin_type)
