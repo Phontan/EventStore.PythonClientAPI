@@ -1,18 +1,21 @@
-import sys, os
-sys.path.append(os.path.dirname(__file__)+"\\Implementation\\libs")
-sys.path.append(os.path.dirname(__file__)+"\\Implementation")
-from ClientJsonSerelizationOption import *
-from bodyLibs import *
-from answerLibs import *
-from AsyncRequestSender import *
-import Ensure
-from ReadEventsData import *
-from SyncResponse import *
 from collections import deque
-import time
-from SubscribeInfo import *
-from SubscribeAllInfo import *
 import thread
+import time
+import sys
+from Implementation import Ensure, ReadEventsData
+from Implementation.AsyncRequestSender import TornadoHttpSender
+from Implementation.SubscribeAllInfo import SubscribeAllInfo
+from Implementation.SubscribeInfo import SubscribeInfo
+from Implementation.SyncResponse import SyncResponse
+from Implementation.ClientJsonSerelizationOption import *
+from Implementation.libs import tornado
+from Implementation.Body.CreateStreamRequestBody import CreateStreamRequestBody
+from Implementation.Body.DeleteStreamRequestBody import DeleteStreamRequestBody
+from Implementation.Body.AppendToStreamRequestBody import AppendToStreamRequestBody
+from Implementation.ReturnClasses.FailedAnswer import FailedAnswer
+from Implementation.ReturnClasses.AllEventsAnswer import AllEventsAnswer
+from Implementation.libs.tornado import httpclient
+
 
 class ClientAPI():
   def __init__(self, ip_address="http://127.0.0.1", port = 2113):
@@ -69,8 +72,8 @@ class ClientAPI():
     Ensure.is_function(on_failed, "on_failed")
     body = to_json(CreateStreamRequestBody(stream_id, metadata))
     url = "{0}/streams".format(self.base_url)
-    self.TornadoHttpSender.send_async(url, "POST", self.headers, body,lambda x: \
-    self.create_stream_callbabk(x, on_success, on_failed))
+    self.TornadoHttpSender.send_async(url, "POST", self.headers, body,\
+        lambda x: self.create_stream_callbabk(x, on_success, on_failed))
 
   def create_stream_callbabk(self, response, on_success,on_failed):
     if response.code==201:
@@ -108,8 +111,8 @@ class ClientAPI():
 
     url = "{0}/streams/{1}".format(self.base_url, stream_id)
     body = to_json(DeleteStreamRequestBody(expected_version))
-    self.TornadoHttpSender.send_async(url, "DELETE", self.headers, body, lambda x:\
-    self.delete_stream_callback(x, on_success, on_failed))
+    self.TornadoHttpSender.send_async(url, "DELETE", self.headers, body, \
+        lambda x: self.delete_stream_callback(x, on_success, on_failed))
 
   def delete_stream_callback(self, response, on_success, on_failed):
     if response.code==204:
@@ -148,8 +151,8 @@ class ClientAPI():
       events = [events]
     body = to_json(AppendToStreamRequestBody(expected_version, events))
     url = "{0}/streams/{1}".format(self.base_url,stream_id)
-    self.TornadoHttpSender.send_async(url,"POST", self.headers, body, lambda x:\
-    self.append_to_stream_callback(x, on_success, on_failed))
+    self.TornadoHttpSender.send_async(url,"POST", self.headers, body, \
+        lambda x: self.append_to_stream_callback(x, on_success, on_failed))
 
 
   def append_to_stream_callback(self, response, on_success,on_failed):
@@ -186,8 +189,8 @@ class ClientAPI():
     Ensure.is_not_negative_number(event_number, "event_number")
     resolve = "yes" if resolve else "no"
     url = "{0}/streams/{1}/event/{2}?resolve={3}".format(self.base_url, stream_id, str(event_number), resolve)
-    self.TornadoHttpSender.send_async(url, "GET", self.headers, None, lambda x:\
-    self.read_event_callback(x, on_success, on_failed))
+    self.TornadoHttpSender.send_async(url, "GET", self.headers, None, \
+        lambda x: self.read_event_callback(x, on_success, on_failed))
 
   def read_event_callback(self, response, on_success, on_failed):
     if response.code!=200:
@@ -235,7 +238,7 @@ class ClientAPI():
     params.events = events
     self.read_batch_events_backward(params, on_success, on_failed)
 
-  def read_batch_events_backward(self,params, on_success, on_failed, events_count=None):
+  def read_batch_events_backward(self, params, on_success, on_failed, events_count=None):
     if events_count is not None and events_count < self.read_batch_size:
       on_success(params.events)
       return
@@ -249,14 +252,14 @@ class ClientAPI():
           str(params.start_position-params.batch_counter),
           str(params.batch_langth))
       params.batch_counter+=self.read_batch_size
-      self.TornadoHttpSender.send_async(url, "GET", self.headers, None, lambda x:\
-      self.read_stream_events_backward_async_callback(x, params, on_success, on_failed))
+      self.TornadoHttpSender.send_async(url, "GET", self.headers, None, \
+          lambda x: self.read_stream_events_backward_async_callback(x, params, on_success, on_failed))
     else:
       on_success(params.events)
 
   def read_stream_events_backward_async_callback(self, response, params, on_success, on_failed):
     if response.code!=200:
-      on_failed(FailedAnswer(response.code,"Error occur while reading batch: "+response.error.message))
+      on_failed(FailedAnswer(response.code, "Error occur while reading batch: " + response.error.message))
       return
     try:
       response = json.loads(response.body)
@@ -264,8 +267,9 @@ class ClientAPI():
         if len(params.events)!=0:
           on_success(params.events)
           return
-        url = "{0}/streams/{1}".format(self.base_url,params.stream_id)
-        self.TornadoHttpSender.send_async(url, "GET", self.headers, None, lambda x: self.on_read_events_first_response_entries_empty(x, params, on_success, on_failed))
+        url = "{0}/streams/{1}".format(self.base_url, params.stream_id)
+        self.TornadoHttpSender.send_async(url, "GET", self.headers, None, \
+            lambda x: self.on_read_events_first_response_entries_empty(x, params, on_success, on_failed))
         return
       batch_events = []
       for uri in response["entries"]:
@@ -274,17 +278,18 @@ class ClientAPI():
           try:
             if ur["type"] == "application/json":
               url = ur["uri"]
-              self.TornadoHttpSender.send_async(url, "GET", self.headers, None, lambda x: self.event_read_callback(x,params,batch_events, on_success, on_failed,len(response["entries"])))
+              self.TornadoHttpSender.send_async(url, "GET", self.headers, None, \
+                  lambda x: self.event_read_callback(x, params,batch_events, on_success, on_failed,len(response["entries"])))
               break
           except:
             continue
     except httpclient.HTTPError, e:
-      on_failed(FailedAnswer(response.code,"Error occur while process batch: "+response.error.message))
+      on_failed(FailedAnswer(response.code, "Error occur while process batch: " + response.error.message))
       return
 
-  def on_read_events_first_response_entries_empty(self, response,params, on_success, on_failed):
+  def on_read_events_first_response_entries_empty(self, response, params, on_success, on_failed):
     if response.code!=200:
-      on_failed(FailedAnswer(response.code,"Error occur while reading first page: "+response.error.message))
+      on_failed(FailedAnswer(response.code, "Error occur while reading first page: " + response.error.message))
       return
     response = json.loads(response.body)
     if len(response["entries"])==0:
@@ -310,7 +315,7 @@ class ClientAPI():
         params.events+=batch_events
         self.read_batch_events_backward(params, on_success, on_failed, events_count)
     except:
-      on_failed(FailedAnswer(response.code,"Error occure while reading event: "+response.error.message))
+      on_failed(FailedAnswer(response.code, "Error occure while reading event: " + response.error.message))
       return
 
 
@@ -336,7 +341,7 @@ class ClientAPI():
 
 
 
-############################################# READ ALL EVENTS BACKWARD #####################################################################
+############################################# READ ALL EVENTS BACKWARD #################################################
 
 
   def read_all_events_backward(self, prepare_position, commit_position, count):
@@ -372,7 +377,7 @@ class ClientAPI():
     params.events = events
     self.read_batch_all_events_backward(params, on_success, on_failed)
 
-  def read_batch_all_events_backward(self,params, on_success, on_failed, events_count=None):
+  def read_batch_all_events_backward(self, params, on_success, on_failed, events_count=None):
     if events_count is not None and events_count < self.read_batch_size:
       on_success(AllEventsAnswer(params.events, params.prepare_position, params.commit_position))
       return
@@ -384,7 +389,8 @@ class ClientAPI():
         params.batch_langth = self.read_batch_size
       url = "{0}/streams/$all/before/{1}/{2}".format(self.base_url, hexStartPosition, str(params.batch_langth))
       params.batch_counter+=self.read_batch_size
-      self.TornadoHttpSender.send_async(url, "GET", self.headers, None, lambda x: self.read_all_events_backward_page_callback(x, params, on_success, on_failed))
+      self.TornadoHttpSender.send_async(url, "GET", self.headers, None, \
+          lambda x: self.read_all_events_backward_page_callback(x, params, on_success, on_failed))
     else:
       on_success(AllEventsAnswer(params.events, params.prepare_position, params.commit_position))
 
@@ -401,7 +407,7 @@ class ClientAPI():
         if len(params.events)!=0:
           on_success(AllEventsAnswer("", 0,0 ))
         else:
-          self.start_read_all_events_backward(-1,-1,params.count, on_success, on_failed)
+          self.start_read_all_events_backward(-1,-1, params.count, on_success, on_failed)
         return
       events_count=len(body["entries"])
       batch_events = {}
@@ -415,7 +421,8 @@ class ClientAPI():
               url = ur["uri"]
               url_number_dictionary[url] = event_number
               event_number+=1
-              self.TornadoHttpSender.send_async(url, "GET", self.headers, None,lambda x: self.read_all_events_backward_callback(x, params, batch_events, on_success, on_failed,events_count, url_number_dictionary))
+              self.TornadoHttpSender.send_async(url, "GET", self.headers, None, \
+                  lambda x: self.read_all_events_backward_callback(x, params, batch_events, on_success, on_failed,events_count, url_number_dictionary))
               break
           except:
             continue
@@ -440,7 +447,7 @@ class ClientAPI():
 
 
 
-############################################# READ ALL EVENTS FORWARD #####################################################################
+############################################# READ ALL EVENTS FORWARD ##################################################
 
 
   def read_all_events_forward(self, prepare_position, commit_position, count):
@@ -488,7 +495,8 @@ class ClientAPI():
         params.batch_langth = self.read_batch_size
       url = "{0}/streams/$all/after/{1}/{2}".format(self.base_url, hexStartPosition, str(params.batch_langth))
       params.batch_counter+=self.read_batch_size
-      self.TornadoHttpSender.send_async(url, "GET", self.headers, None, lambda x: self.read_all_events_forward_page_callback(x, params, on_success, on_failed))
+      self.TornadoHttpSender.send_async(url, "GET", self.headers, None, lambda x: \
+      self.read_all_events_forward_page_callback(x, params, on_success, on_failed))
     else:
       on_success(AllEventsAnswer(params.events, params.prepare_position, params.commit_position))
 
@@ -515,7 +523,8 @@ class ClientAPI():
               url = ur["uri"]
               url_number_dictionary[url] = event_number
               event_number+=1
-              self.TornadoHttpSender.send_async(url, "GET", self.headers, None,lambda x: self.read_all_events_forward_callback(x, params, batch_events, on_success, on_failed,events_count, url_number_dictionary))
+              self.TornadoHttpSender.send_async(url, "GET", self.headers, None,\
+                  lambda x: self.read_all_events_forward_callback(x, params, batch_events, on_success, on_failed,events_count, url_number_dictionary))
               break
           except:
             continue
@@ -576,11 +585,13 @@ class ClientAPI():
       if len(self.subscribers)>0:
         processed_streams=0
         for i in range(len(self.subscribers)):
-          self.read_stream_events_forward_async(self.subscribers[i].stream_id, self.subscribers[i].last_position, 100, lambda s: self.handle_subscribers_success(s, len(self.subscribers),processed_streams, i),lambda s: self.handle_subscribers_success(s, len(self.subscribers),processed_streams, i))
+          self.read_stream_events_forward_async(self.subscribers[i].stream_id, self.subscribers[i].last_position, 100,\
+              lambda s: self.handle_subscribers_success(s, len(self.subscribers), processed_streams, i),\
+              lambda s: self.handle_subscribers_success(s, len(self.subscribers), processed_streams, i))
         self.wait()
       time.sleep(1)
 
-  def handle_subscribers_success(self, response, stream_count,processed_streams, subscriber_index):
+  def handle_subscribers_success(self, response, stream_count, processed_streams, subscriber_index):
     self.subscribers[subscriber_index].last_position += len(response)
     processed_streams+=1
 
@@ -628,7 +639,7 @@ class ClientAPI():
     self.should_subscribe_all = False
 
 
-###########################################################################################################################
+#######################################################################################################################
 
 
   def get_stream_event_position(self,stream_id):
@@ -636,7 +647,7 @@ class ClientAPI():
     return events[0]["eventNumber"]
 
 
-##############################################################################################################################
+#######################################################################################################################
 
 
   class Projections:
@@ -659,7 +670,8 @@ class ClientAPI():
       Ensure.is_function(on_failed, "on_failed")
 
       url = "{0}/projection/{1}/command/enable".format(ClientAPI.base_url, name)
-      ClientAPI.__tornadoHttpSender.send_async(url, "POST", ClientAPI.headers, None, lambda s: self.on_enable(s, on_success, on_failed))
+      ClientAPI.__tornadoHttpSender.send_async(url, "POST", ClientAPI.headers, None, \
+          lambda s: self.on_enable(s, on_success, on_failed))
 
     def on_enable(self, response, on_success, on_failed):
       if response.status == "Ok":
@@ -670,7 +682,7 @@ class ClientAPI():
 
 
 
-###################################################################################################################################################
+#######################################################################################################################
 
     def disable(self, name):
       queue = deque()
@@ -690,7 +702,8 @@ class ClientAPI():
       Ensure.is_function(on_failed, "on_failed")
 
       url = "{0}/projection/{1}/command/disable".format(ClientAPI.base_url, name)
-      ClientAPI.__tornadoHttpSender.send_async(url, "POST", ClientAPI.headers, None, lambda s: self.on_disable(s, on_success, on_failed))
+      ClientAPI.__tornadoHttpSender.send_async(url, "POST", ClientAPI.headers, None, \
+          lambda s: self.on_disable(s, on_success, on_failed))
 
     def on_disable(self, response, on_success, on_failed):
       if response.status == "Ok":
@@ -699,7 +712,7 @@ class ClientAPI():
       on_failed(response)
 
 
-###################################################################################################################################################
+#######################################################################################################################
 
     def create_one_time(self,query):
       queue = deque()
@@ -719,7 +732,8 @@ class ClientAPI():
       Ensure.is_function(on_failed, "on_failed")
 
       url = "{0}/projections/onetime?type=JS".format(ClientAPI.base_url)
-      ClientAPI.__tornadoHttpSender.send_async(url, "POST", ClientAPI.headers, query, lambda s: self.on_create_one_time(s, on_success, on_failed))
+      ClientAPI.__tornadoHttpSender.send_async(url, "POST", ClientAPI.headers, query, \
+          lambda s: self.on_create_one_time(s, on_success, on_failed))
 
     def on_create_one_time(self, response, on_success, on_failed):
       if response.status == "Created":
@@ -728,7 +742,7 @@ class ClientAPI():
       on_failed(response)
 
 
-###################################################################################################################################################
+#######################################################################################################################
 
     def create_continuous(self, name, query):
       queue = deque()
@@ -749,7 +763,8 @@ class ClientAPI():
       Ensure.is_function(on_failed, "on_failed")
 
       url = "{0}/projections/continuous?name={1}&type=JS".format(ClientAPI.base_url, name)
-      ClientAPI.__tornadoHttpSender.send_async(url, "POST", ClientAPI.headers, query, lambda s: self.on_create_one_time(s, on_success, on_failed))
+      ClientAPI.__tornadoHttpSender.send_async(url, "POST", ClientAPI.headers, query, \
+          lambda s: self.on_create_one_time(s, on_success, on_failed))
 
     def on_create_continuous(self, response, on_success, on_failed):
       if response.status == "Created":
@@ -758,7 +773,7 @@ class ClientAPI():
       on_failed(response)
 
 
-###################################################################################################################################################
+#######################################################################################################################
 
     def update_query(self, name, query):
       queue = deque()
@@ -778,7 +793,8 @@ class ClientAPI():
       Ensure.is_function(on_failed, "on_failed")
 
       url = "{0}/projection/{1}/query?type=JS".format(ClientAPI.base_url, name)
-      ClientAPI.__tornadoHttpSender.send_async(url, "POST", ClientAPI.headers, query, lambda s: self.on_update_query(s, on_success, on_failed))
+      ClientAPI.__tornadoHttpSender.send_async(url, "POST", ClientAPI.headers, query, \
+          lambda s: self.on_update_query(s, on_success, on_failed))
 
     def on_update_query(self, response, on_success, on_failed):
       if response.status == "Ok":
@@ -787,7 +803,7 @@ class ClientAPI():
       on_failed(response)
 
 
-###################################################################################################################################################
+#######################################################################################################################
 
 
     def delete(self, name):
@@ -808,7 +824,8 @@ class ClientAPI():
       Ensure.is_function(on_failed, "on_failed")
 
       url = "{0}/projection/{1}".format(ClientAPI.base_url, name)
-      ClientAPI.__tornadoHttpSender.send_async(url, "DELETE", ClientAPI.headers, None, lambda s: self.on_delete(s, on_success, on_failed))
+      ClientAPI.__tornadoHttpSender.send_async(url, "DELETE", ClientAPI.headers, None, \
+          lambda s: self.on_delete(s, on_success, on_failed))
 
     def on_delete(self, response, on_success, on_failed):
       if response.status == "Ok":
@@ -817,7 +834,7 @@ class ClientAPI():
       on_failed(response)
 
 
-###################################################################################################################################################
+#######################################################################################################################
 
     def list_all(self):
       queue = deque()
@@ -836,7 +853,8 @@ class ClientAPI():
       Ensure.is_function(on_failed, "on_failed")
 
       url = "{0}/projections/any".format(ClientAPI.base_url)
-      ClientAPI.__tornadoHttpSender.send_async(url, "GET", ClientAPI.headers, None, lambda s: self.on_list_all(s, on_success, on_failed))
+      ClientAPI.__tornadoHttpSender.send_async(url, "GET", ClientAPI.headers, None, \
+          lambda s: self.on_list_all(s, on_success, on_failed))
 
     def on_list_all(self, response, on_success, on_failed):
       if response.status == "Ok":
@@ -845,7 +863,7 @@ class ClientAPI():
       on_failed(response)
 
 
-###################################################################################################################################################
+######################################################################################################################
 
     def list_one_time(self):
       queue = deque()
@@ -864,7 +882,8 @@ class ClientAPI():
       Ensure.is_function(on_failed, "on_failed")
 
       url = "{0}/projections/onetime".format(ClientAPI.base_url)
-      ClientAPI.__tornadoHttpSender.send_async(url, "GET", ClientAPI.headers, None, lambda s: self.on_list_one_time(s, on_success, on_failed))
+      ClientAPI.__tornadoHttpSender.send_async(url, "GET", ClientAPI.headers, None, \
+          lambda s: self.on_list_one_time(s, on_success, on_failed))
 
     def on_list_one_time(self, response, on_success, on_failed):
       if response.status == "Ok":
@@ -873,7 +892,7 @@ class ClientAPI():
       on_failed(response)
 
 
-###################################################################################################################################################
+######################################################################################################################
 
     def list_continuous(self):
       queue = deque()
@@ -892,7 +911,8 @@ class ClientAPI():
       Ensure.is_function(on_failed, "on_failed")
 
       url = "{0}/projections/continuous".format(ClientAPI.base_url)
-      ClientAPI.__tornadoHttpSender.send_async(url, "GET", ClientAPI.headers, None, lambda s: self.on_list_continuous(s, on_success, on_failed))
+      ClientAPI.__tornadoHttpSender.send_async(url, "GET", ClientAPI.headers, None, \
+          lambda s: self.on_list_continuous(s, on_success, on_failed))
 
     def on_list_continuous(self, response, on_success, on_failed):
       if response.status == "Ok":
@@ -901,4 +921,4 @@ class ClientAPI():
       on_failed(response)
 
 
-###################################################################################################################################################
+########################################################################################################################
