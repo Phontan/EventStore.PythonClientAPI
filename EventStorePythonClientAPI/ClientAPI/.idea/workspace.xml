@@ -25,42 +25,13 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ClientAPI.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ClientAPI.py">
+      <file leaf-file-name="libs.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../Tests/libs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="109" column="58" selection-start="4097" selection-end="4097" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="libs.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tests/libs.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="25" selection-start="83" selection-end="83" vertical-scroll-proportion="0.0">
+            <state line="3" column="0" selection-start="38" selection-end="38" vertical-scroll-proportion="0.058553386">
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainTest.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Tests/MainTest.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="0" selection-start="606" selection-end="606" vertical-scroll-proportion="0.31228474">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CreateStreamTest.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tests/CreateStreamTest.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="0" selection-start="91" selection-end="91" vertical-scroll-proportion="0.0">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -83,10 +54,13 @@
         <option value="$PROJECT_DIR$/Implementation/__init__.py" />
         <option value="$PROJECT_DIR$/Implementation/Tests/libs.py" />
         <option value="$PROJECT_DIR$/Implementation/Tests/__init__.py" />
-        <option value="$PROJECT_DIR$/__init__.py" />
         <option value="$PROJECT_DIR$/Implementation/Tests/MainTest.py" />
-        <option value="$PROJECT_DIR$/Tests/libs.py" />
         <option value="$PROJECT_DIR$/ClientAPI.py" />
+        <option value="$PROJECT_DIR$/MainTest.py" />
+        <option value="$PROJECT_DIR$/Tests/libs.py" />
+        <option value="$PROJECT_DIR$/__init__.py" />
+        <option value="$PROJECT_DIR$/Tests/__init__.py" />
+        <option value="$PROJECT_DIR$/../Tests/libs.py" />
       </list>
     </option>
   </component>
@@ -126,7 +100,16 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Tests/CreateStreamTest.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Tests/libs.py" />
+    <property name="restartRequiresConfirmation" value="false" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <PyConsoleSettings />
+    </option>
+    <option name="myDjangoConsoleState">
+      <PyConsoleSettings />
+    </option>
   </component>
   <component name="RunManager" selected="Python.MainTest">
     <configuration default="false" name="ClientAPI" type="PythonConfigurationType" factoryName="Python" temporary="true">
@@ -153,13 +136,17 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Implementation/Tests" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Tests" />
       <option name="IS_MODULE_SDK" value="true" />
       <module name="HttpClientAPI(python27)" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Implementation/Tests/MainTest.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Tests/MainTest.py" />
       <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonCover" />
       <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonCover" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -202,9 +189,10 @@
       <item index="1" class="java.lang.String" itemvalue="Python.MainTest" />
     </list>
     <recent_temporary>
-      <list size="2">
+      <list size="3">
         <item index="0" class="java.lang.String" itemvalue="Python.MainTest" />
-        <item index="1" class="java.lang.String" itemvalue="Python.ClientAPI" />
+        <item index="1" class="java.lang.String" itemvalue="Python.MainTest" />
+        <item index="2" class="java.lang.String" itemvalue="Python.ClientAPI" />
       </list>
     </recent_temporary>
   </component>
@@ -246,10 +234,10 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928678" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24962063" sideWeight="0.6712329" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39955357" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.328125" sideWeight="0.49839914" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924107" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924107" sideWeight="0.49839914" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924107" sideWeight="0.49786553" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -311,75 +299,83 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="4" />
+      <option name="time" value="13" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/ClientAPI.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ClientAPI.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="16" column="50" selection-start="882" selection-end="882" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ClientAPI.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="224" column="46" selection-start="8212" selection-end="8212" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ClientAPI.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="60" column="51" selection-start="1885" selection-end="1885" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tests/libs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="25" selection-start="83" selection-end="83" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tests/CreateStreamTest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="0" selection-start="91" selection-end="91" vertical-scroll-proportion="0.0">
           <folding />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/subprocess.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="627" column="0" selection-start="20104" selection-end="20104" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/ntpath.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="197" column="0" selection-start="6362" selection-end="6362" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/getopt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="91" column="0" selection-start="3422" selection-end="3422" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/unittest/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="154" column="0" selection-start="5470" selection-end="5470" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/unittest/loader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="61" column="0" selection-start="2123" selection-end="2123" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ClientAPI.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="109" column="58" selection-start="4097" selection-end="4097" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
+        <state line="109" column="58" selection-start="4097" selection-end="4097" vertical-scroll-proportion="0.019517796">
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Tests/MainTest.py">
+    <entry file="file://$PROJECT_DIR$/../Tests/libs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="0" selection-start="606" selection-end="606" vertical-scroll-proportion="0.31228474">
-          <folding />
+        <state line="3" column="0" selection-start="38" selection-end="38" vertical-scroll-proportion="0.058553386">
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
