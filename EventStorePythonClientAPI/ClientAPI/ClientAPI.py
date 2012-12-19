@@ -3,12 +3,12 @@ import thread
 import time
 import sys
 from Implementation import Ensure, ReadEventsData
+from Implementation.Projections import *
 from Implementation.AsyncRequestSender import TornadoHttpSender
 from Implementation.SubscribeAllInfo import SubscribeAllInfo
 from Implementation.SubscribeInfo import SubscribeInfo
 from Implementation.SyncResponse import SyncResponse
 from Implementation.ClientJsonSerelizationOption import *
-from tornado.ioloop import *
 from Implementation.Body.CreateStreamRequestBody import CreateStreamRequestBody
 from Implementation.Body.DeleteStreamRequestBody import DeleteStreamRequestBody
 from Implementation.Body.AppendToStreamRequestBody import AppendToStreamRequestBody
@@ -26,6 +26,7 @@ class ClientAPI():
     self.subscribers_thread = thread.start_new_thread(self.handle_subscribers, ())
     self.subscribers_all_thread = thread.start_new_thread(self.handle_subscribers_all, ())
     self.should_subscribe_all=False
+    self.Projections = Projections(ip_address, port)
 
 
   def resume(self):

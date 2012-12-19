@@ -1,11 +1,14 @@
-from ClientAPI import *
-
+from collections import deque
+import json
+from tornado.ioloop import IOLoop
+import Ensure
+from SyncResponse import *
+from AsyncRequestSender import TornadoHttpSender
 
 class Projections:
     def __init__(self, ip_address="http://127.0.0.1", port = 2113):
         self.base_url = ip_address+":"+str(port)
         self.headers = {"content-type" : "application/json", "accept" : "application/json", "extensions" : "json"}
-        self.read_batch_size = 20
         self.tornado_http_sender = TornadoHttpSender()
 
 
