@@ -20,21 +20,85 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainTest.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/MainTest.py">
+      <file leaf-file-name="Projections.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../ClientAPI/Projections.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="12" selection-start="618" selection-end="618" vertical-scroll-proportion="0.0">
+            <state line="112" column="0" selection-start="4053" selection-end="4053" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="e#398#422#0" expanded="false" />
+                <element signature="e#451#476#0" expanded="false" />
+                <element signature="e#524#609#0" expanded="false" />
+                <element signature="e#655#741#0" expanded="false" />
+                <element signature="e#902#1271#0" expanded="false" />
+                <element signature="e#1343#1707#0" expanded="false" />
+                <element signature="e#1775#1882#0" expanded="false" />
+                <element signature="e#2044#2414#0" expanded="false" />
+                <element signature="e#2488#2854#0" expanded="false" />
+                <element signature="e#2923#3156#0" expanded="false" />
+                <element signature="e#3317#3685#0" expanded="false" />
+                <element signature="e#3757#4052#0" expanded="false" />
+                <element signature="e#4125#4252#0" expanded="false" />
+                <element signature="e#4408#4772#0" expanded="false" />
+                <element signature="e#4840#5135#0" expanded="false" />
+                <element signature="e#5204#5331#0" expanded="false" />
+                <element signature="e#5491#5860#0" expanded="false" />
+                <element signature="e#5933#6237#0" expanded="false" />
+                <element signature="e#6643#7047#0" expanded="false" />
+                <element signature="e#7155#7563#0" expanded="false" />
+                <element signature="e#7638#7758#0" expanded="false" />
+                <element signature="e#7920#8292#0" expanded="false" />
+                <element signature="e#8368#8677#0" expanded="false" />
+                <element signature="e#9079#9486#0" expanded="false" />
+                <element signature="e#9597#10010#0" expanded="false" />
+                <element signature="e#10087#10199#0" expanded="false" />
+                <element signature="e#10386#10766#0" expanded="false" />
+                <element signature="e#10850#11236#0" expanded="false" />
+                <element signature="e#11307#11426#0" expanded="false" />
+                <element signature="e#11624#12015#0" expanded="false" />
+                <element signature="e#12109#12574#0" expanded="false" />
+                <element signature="e#12645#12752#0" expanded="false" />
+                <element signature="e#12917#13290#0" expanded="false" />
+                <element signature="e#13367#13709#0" expanded="false" />
+                <element signature="e#13781#13888#0" expanded="false" />
+                <element signature="e#14190#14601#0" expanded="false" />
+                <element signature="e#14717#15185#0" expanded="false" />
+                <element signature="e#15253#15365#0" expanded="false" />
+                <element signature="e#15534#15911#0" expanded="false" />
+                <element signature="e#15992#16349#0" expanded="false" />
+                <element signature="e#16425#16532#0" expanded="false" />
+                <element signature="e#16713#17096#0" expanded="false" />
+                <element signature="e#17183#17575#0" expanded="false" />
+                <element signature="e#17646#17753#0" expanded="false" />
+                <element signature="e#17894#18455#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="chat.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../chat.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="5" column="0" selection-start="117" selection-end="117" vertical-scroll-proportion="0.14731368">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="libs.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/libs.py">
+      <file leaf-file-name="setup.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../ClientAPI/setup.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="4" column="19" selection-start="81" selection-end="81" vertical-scroll-proportion="0.078071184">
+            <state line="2" column="0" selection-start="30" selection-end="30" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ClientAPI.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../ClientAPI/ClientAPI.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="48" column="0" selection-start="844" selection-end="1802" vertical-scroll-proportion="0.0">
               <folding>
-                <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#0#29#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -50,7 +114,21 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
+        <option value="$PROJECT_DIR$/../ClientAPI/setup.py" />
+        <option value="$PROJECT_DIR$/../ClientAPI/Implementation/AsyncRequestSender.py" />
+        <option value="$PROJECT_DIR$/../ClientAPI/Event.py" />
+        <option value="$PROJECT_DIR$/../ClientAPI/Implementation/ClientJsonSerelizationOption.py" />
+        <option value="$PROJECT_DIR$/../ClientAPI/Implementation/ReadEventsData.py" />
+        <option value="$PROJECT_DIR$/../ClientAPI/Implementation/Body/CreateStreamRequestBody.py" />
+        <option value="$PROJECT_DIR$/../ClientAPI/Implementation/Body/DeleteStreamRequestBody.py" />
+        <option value="$PROJECT_DIR$/../ClientAPI/Implementation/ReturnClasses/AllEventsAnswer.py" />
+        <option value="$PROJECT_DIR$/../ClientAPI/Implementation/libs/bodyLibs.py" />
+        <option value="$PROJECT_DIR$/../ClientAPI/Implementation/libs/answerLibs.py" />
         <option value="$PROJECT_DIR$/libs.py" />
+        <option value="$PROJECT_DIR$/MainTest.py" />
+        <option value="$PROJECT_DIR$/../ClientAPI/ClientAPI.py" />
+        <option value="$PROJECT_DIR$/../ClientAPI/Projections.py" />
+        <option value="$PROJECT_DIR$/../chat.py" />
       </list>
     </option>
   </component>
@@ -100,41 +178,172 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs.py" />
+    <property name="options.lastSelected" value="preferences.externalResources" />
+    <property name="recentsLimit" value="5" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../chat.py" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
-  <component name="RunManager">
-    <list size="0" />
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <PyConsoleSettings />
+    </option>
+    <option name="myDjangoConsoleState">
+      <PyConsoleSettings />
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.libs">
+    <configuration default="false" name="AsyncRequestSender" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../ClientAPI/Implementation" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <module name="Tests" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../ClientAPI/Implementation/AsyncRequestSender.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="libs" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <module name="Tests" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/libs.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <module name="Tests" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <module name="" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <method />
+    </configuration>
+    <list size="2">
+      <item index="0" class="java.lang.String" itemvalue="Python.AsyncRequestSender" />
+      <item index="1" class="java.lang.String" itemvalue="Python.libs" />
+    </list>
+    <recent_temporary>
+      <list size="2">
+        <item index="0" class="java.lang.String" itemvalue="Python.libs" />
+        <item index="1" class="java.lang.String" itemvalue="Python.AsyncRequestSender" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="DETECT_NESTED_COPIES" value="true" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <option name="IGNORE_EXTERNALS" value="false" />
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
+      <changelist id="de8c939d-0bfc-47a2-80fc-d14b4182a138" name="Default" comment="" />
       <created>1355827604335</created>
       <updated>1355827604335</updated>
     </task>
     <servers />
   </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="1" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924107" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2497332" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2497332" sideWeight="0.6707589" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39955357" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.328125" sideWeight="0.99866664" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -188,23 +397,169 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="1" />
+      <option name="time" value="14" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/ReadEventsData.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="19" selection-start="143" selection-end="143" vertical-scroll-proportion="0.13662457">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/SubscribeAllInfo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/SubscribeInfo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/Body/AppendToStreamRequestBody.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/Body/CreateStreamRequestBody.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="44" selection-start="75" selection-end="75" vertical-scroll-proportion="0.019517796">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/Body/DeleteStreamRequestBody.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/ReturnClasses/AllEventsAnswer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="46" selection-start="214" selection-end="214" vertical-scroll-proportion="0.078071184">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/ReturnClasses/FailedAnswer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/MainTest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="12" selection-start="618" selection-end="618" vertical-scroll-proportion="0.0">
+        <state line="1" column="11" selection-start="42" selection-end="42" vertical-scroll-proportion="0.029462738">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/libs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="19" selection-start="81" selection-end="81" vertical-scroll-proportion="0.078071184">
+        <state line="4" column="9" selection-start="103" selection-end="103" vertical-scroll-proportion="0.11785095">
           <folding>
-            <element signature="e#0#15#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CreateStreamTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="21" selection-start="84" selection-end="84" vertical-scroll-proportion="0.08838821">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/ClientAPI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="0" selection-start="844" selection-end="1802" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/SyncResponse.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="8" selection-start="28" selection-end="28" vertical-scroll-proportion="0.029462738">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="0" selection-start="30" selection-end="30" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/Projections.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="112" column="0" selection-start="4053" selection-end="4053" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#398#422#0" expanded="false" />
+            <element signature="e#451#476#0" expanded="false" />
+            <element signature="e#524#609#0" expanded="false" />
+            <element signature="e#655#741#0" expanded="false" />
+            <element signature="e#902#1271#0" expanded="false" />
+            <element signature="e#1343#1707#0" expanded="false" />
+            <element signature="e#1775#1882#0" expanded="false" />
+            <element signature="e#2044#2414#0" expanded="false" />
+            <element signature="e#2488#2854#0" expanded="false" />
+            <element signature="e#2923#3156#0" expanded="false" />
+            <element signature="e#3317#3685#0" expanded="false" />
+            <element signature="e#3757#4052#0" expanded="false" />
+            <element signature="e#4125#4252#0" expanded="false" />
+            <element signature="e#4408#4772#0" expanded="false" />
+            <element signature="e#4840#5135#0" expanded="false" />
+            <element signature="e#5204#5331#0" expanded="false" />
+            <element signature="e#5491#5860#0" expanded="false" />
+            <element signature="e#5933#6237#0" expanded="false" />
+            <element signature="e#6643#7047#0" expanded="false" />
+            <element signature="e#7155#7563#0" expanded="false" />
+            <element signature="e#7638#7758#0" expanded="false" />
+            <element signature="e#7920#8292#0" expanded="false" />
+            <element signature="e#8368#8677#0" expanded="false" />
+            <element signature="e#9079#9486#0" expanded="false" />
+            <element signature="e#9597#10010#0" expanded="false" />
+            <element signature="e#10087#10199#0" expanded="false" />
+            <element signature="e#10386#10766#0" expanded="false" />
+            <element signature="e#10850#11236#0" expanded="false" />
+            <element signature="e#11307#11426#0" expanded="false" />
+            <element signature="e#11624#12015#0" expanded="false" />
+            <element signature="e#12109#12574#0" expanded="false" />
+            <element signature="e#12645#12752#0" expanded="false" />
+            <element signature="e#12917#13290#0" expanded="false" />
+            <element signature="e#13367#13709#0" expanded="false" />
+            <element signature="e#13781#13888#0" expanded="false" />
+            <element signature="e#14190#14601#0" expanded="false" />
+            <element signature="e#14717#15185#0" expanded="false" />
+            <element signature="e#15253#15365#0" expanded="false" />
+            <element signature="e#15534#15911#0" expanded="false" />
+            <element signature="e#15992#16349#0" expanded="false" />
+            <element signature="e#16425#16532#0" expanded="false" />
+            <element signature="e#16713#17096#0" expanded="false" />
+            <element signature="e#17183#17575#0" expanded="false" />
+            <element signature="e#17646#17753#0" expanded="false" />
+            <element signature="e#17894#18455#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../chat.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="0" selection-start="117" selection-end="117" vertical-scroll-proportion="0.14731368">
+          <folding />
         </state>
       </provider>
     </entry>

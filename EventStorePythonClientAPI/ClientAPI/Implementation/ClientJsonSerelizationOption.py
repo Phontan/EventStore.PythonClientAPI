@@ -1,4 +1,4 @@
-import json;
+import json
 
 def convert_to_builtin_type(obj):
      d ={}

@@ -8,21 +8,20 @@ from Implementation.SubscribeAllInfo import SubscribeAllInfo
 from Implementation.SubscribeInfo import SubscribeInfo
 from Implementation.SyncResponse import SyncResponse
 from Implementation.ClientJsonSerelizationOption import *
-from Implementation.libs import tornado
+from tornado.ioloop import *
 from Implementation.Body.CreateStreamRequestBody import CreateStreamRequestBody
 from Implementation.Body.DeleteStreamRequestBody import DeleteStreamRequestBody
 from Implementation.Body.AppendToStreamRequestBody import AppendToStreamRequestBody
 from Implementation.ReturnClasses.FailedAnswer import FailedAnswer
 from Implementation.ReturnClasses.AllEventsAnswer import AllEventsAnswer
-from Implementation.libs.tornado import httpclient
 
 
 class ClientAPI():
   def __init__(self, ip_address="http://127.0.0.1", port = 2113):
     self.base_url = ip_address+":"+str(port)
-    self.headers = {"content-type" : "application/json","accept" : "application/json", "extensions" : "json"}
+    self.headers = {"content-type" : "application/json", "accept" : "application/json", "extensions" : "json"}
     self.read_batch_size = 20
-    self.TornadoHttpSender = TornadoHttpSender()
+    self.tornado_http_sender = TornadoHttpSender()
     self.subscribers = []
     self.subscribers_thread = thread.start_new_thread(self.handle_subscribers, ())
     self.subscribers_all_thread = thread.start_new_thread(self.handle_subscribers_all, ())
@@ -30,10 +29,10 @@ class ClientAPI():
 
 
   def resume(self):
-    tornado.ioloop.IOLoop.instance().stop()
+    IOLoop.instance().stop()
 
   def wait(self):
-    tornado.ioloop.IOLoop.instance().start()
+    IOLoop.instance().start()
 
 
   def sync_success(self, response):
@@ -72,14 +71,13 @@ class ClientAPI():
     Ensure.is_function(on_failed, "on_failed")
     body = to_json(CreateStreamRequestBody(stream_id, metadata))
     url = "{0}/streams".format(self.base_url)
-    self.TornadoHttpSender.send_async(url, "POST", self.headers, body,\
-        lambda x: self.create_stream_callbabk(x, on_success, on_failed))
+    self.tornado_http_sender.send_async(url, "POST", self.headers, body, lambda x: self.create_stream_callback(x, on_success, on_failed))
 
-  def create_stream_callbabk(self, response, on_success,on_failed):
+  def create_stream_callback(self, response, on_success, on_failed):
     if response.code==201:
       on_success(response)
     else:
-      on_failed(FailedAnswer(response.code,response.error.message))
+      on_failed(FailedAnswer(response.code, response.error.message))
 
 
 
@@ -111,7 +109,7 @@ class ClientAPI():
 
     url = "{0}/streams/{1}".format(self.base_url, stream_id)
     body = to_json(DeleteStreamRequestBody(expected_version))
-    self.TornadoHttpSender.send_async(url, "DELETE", self.headers, body, \
+    self.tornado_http_sender.send_async(url, "DELETE", self.headers, body,
         lambda x: self.delete_stream_callback(x, on_success, on_failed))
 
   def delete_stream_callback(self, response, on_success, on_failed):
@@ -147,11 +145,11 @@ class ClientAPI():
     Ensure.is_function(on_failed, "on_failed")
     Ensure.is_number(expected_version, "expected_version")
 
-    if(type(events) is not list):
+    if type(events) is not list:
       events = [events]
     body = to_json(AppendToStreamRequestBody(expected_version, events))
     url = "{0}/streams/{1}".format(self.base_url,stream_id)
-    self.TornadoHttpSender.send_async(url,"POST", self.headers, body, \
+    self.tornado_http_sender.send_async(url,"POST", self.headers, body,
         lambda x: self.append_to_stream_callback(x, on_success, on_failed))
 
 
@@ -189,7 +187,7 @@ class ClientAPI():
     Ensure.is_not_negative_number(event_number, "event_number")
     resolve = "yes" if resolve else "no"
     url = "{0}/streams/{1}/event/{2}?resolve={3}".format(self.base_url, stream_id, str(event_number), resolve)
-    self.TornadoHttpSender.send_async(url, "GET", self.headers, None, \
+    self.tornado_http_sender.send_async(url, "GET", self.headers, None,
         lambda x: self.read_event_callback(x, on_success, on_failed))
 
   def read_event_callback(self, response, on_success, on_failed):
@@ -252,7 +250,7 @@ class ClientAPI():
           str(params.start_position-params.batch_counter),
           str(params.batch_langth))
       params.batch_counter+=self.read_batch_size
-      self.TornadoHttpSender.send_async(url, "GET", self.headers, None, \
+      self.tornado_http_sender.send_async(url, "GET", self.headers, None,
           lambda x: self.read_stream_events_backward_async_callback(x, params, on_success, on_failed))
     else:
       on_success(params.events)
@@ -268,7 +266,7 @@ class ClientAPI():
           on_success(params.events)
           return
         url = "{0}/streams/{1}".format(self.base_url, params.stream_id)
-        self.TornadoHttpSender.send_async(url, "GET", self.headers, None, \
+        self.tornado_http_sender.send_async(url, "GET", self.headers, None,
             lambda x: self.on_read_events_first_response_entries_empty(x, params, on_success, on_failed))
         return
       batch_events = []
@@ -278,12 +276,12 @@ class ClientAPI():
           try:
             if ur["type"] == "application/json":
               url = ur["uri"]
-              self.TornadoHttpSender.send_async(url, "GET", self.headers, None, \
+              self.tornado_http_sender.send_async(url, "GET", self.headers, None,
                   lambda x: self.event_read_callback(x, params,batch_events, on_success, on_failed,len(response["entries"])))
               break
           except:
             continue
-    except httpclient.HTTPError, e:
+    except:
       on_failed(FailedAnswer(response.code, "Error occur while process batch: " + response.error.message))
       return
 
@@ -319,8 +317,7 @@ class ClientAPI():
       return
 
 
-
-##########################################
+########################################################################################################################
 
 
 
@@ -389,7 +386,7 @@ class ClientAPI():
         params.batch_langth = self.read_batch_size
       url = "{0}/streams/$all/before/{1}/{2}".format(self.base_url, hexStartPosition, str(params.batch_langth))
       params.batch_counter+=self.read_batch_size
-      self.TornadoHttpSender.send_async(url, "GET", self.headers, None, \
+      self.tornado_http_sender.send_async(url, "GET", self.headers, None,
           lambda x: self.read_all_events_backward_page_callback(x, params, on_success, on_failed))
     else:
       on_success(AllEventsAnswer(params.events, params.prepare_position, params.commit_position))
@@ -421,7 +418,7 @@ class ClientAPI():
               url = ur["uri"]
               url_number_dictionary[url] = event_number
               event_number+=1
-              self.TornadoHttpSender.send_async(url, "GET", self.headers, None, \
+              self.tornado_http_sender.send_async(url, "GET", self.headers, None,
                   lambda x: self.read_all_events_backward_callback(x, params, batch_events, on_success, on_failed,events_count, url_number_dictionary))
               break
           except:
@@ -495,7 +492,7 @@ class ClientAPI():
         params.batch_langth = self.read_batch_size
       url = "{0}/streams/$all/after/{1}/{2}".format(self.base_url, hexStartPosition, str(params.batch_langth))
       params.batch_counter+=self.read_batch_size
-      self.TornadoHttpSender.send_async(url, "GET", self.headers, None, lambda x: \
+      self.tornado_http_sender.send_async(url, "GET", self.headers, None, lambda x: \
       self.read_all_events_forward_page_callback(x, params, on_success, on_failed))
     else:
       on_success(AllEventsAnswer(params.events, params.prepare_position, params.commit_position))
@@ -523,7 +520,7 @@ class ClientAPI():
               url = ur["uri"]
               url_number_dictionary[url] = event_number
               event_number+=1
-              self.TornadoHttpSender.send_async(url, "GET", self.headers, None,\
+              self.tornado_http_sender.send_async(url, "GET", self.headers, None,
                   lambda x: self.read_all_events_forward_callback(x, params, batch_events, on_success, on_failed,events_count, url_number_dictionary))
               break
           except:
@@ -585,8 +582,8 @@ class ClientAPI():
       if len(self.subscribers)>0:
         processed_streams=0
         for i in range(len(self.subscribers)):
-          self.read_stream_events_forward_async(self.subscribers[i].stream_id, self.subscribers[i].last_position, 100,\
-              lambda s: self.handle_subscribers_success(s, len(self.subscribers), processed_streams, i),\
+          self.read_stream_events_forward_async(self.subscribers[i].stream_id, self.subscribers[i].last_position, 100,
+              lambda s: self.handle_subscribers_success(s, len(self.subscribers), processed_streams, i),
               lambda s: self.handle_subscribers_success(s, len(self.subscribers), processed_streams, i))
         self.wait()
       time.sleep(1)
@@ -595,15 +592,16 @@ class ClientAPI():
     self.subscribers[subscriber_index].last_position += len(response)
     processed_streams+=1
 
-    for i in range(len(response)):
-      self.subscribers[subscriber_index].callback(response[i])
+    for i in response:
+      self.subscribers[subscriber_index].callback(i)
 
     if processed_streams==stream_count:
       self.resume()
 
   def unsubscribe(self, stream_id):
-    for i in range(len(self.subscribers)):
-      self.subscribers.remove(self.subscribers[i])
+    for i in self.subscribers:
+        if i.stream_id == stream_id:
+            self.subscribers.remove(i)
 
 
 
@@ -624,8 +622,8 @@ class ClientAPI():
         else:
           try:
             answer = self.read_all_events_forward(self.__subscribersAll.prepare_position,self.__subscribersAll.commit_position, sys.maxint-1)
-            for i in range(len(answer.events)):
-              self.__subscribersAll.callback(answer.events[i])
+            for i in answer.events:
+              self.__subscribersAll.callback(i)
           except:
             time.sleep(0.1)
 
@@ -649,276 +647,3 @@ class ClientAPI():
 
 #######################################################################################################################
 
-
-  class Projections:
-
-    def enable(self, name):
-      queue = deque()
-      on_success = lambda x: queue.append(ClientAPI.__SyncSuccess(x))
-      on_failed = lambda x: queue.append(ClientAPI.__SyncFailed(x))
-      self.start_enable_async(name, on_success, on_failed)
-      ClientAPI.wait()
-      result = queue.popleft()
-      if result.success:
-        return result.response
-      else:
-        raise result.response
-
-    def start_enable_async(self,name, on_success, on_failed):
-      Ensure.is_not_empty_string(name, "name")
-      Ensure.is_function(on_success, "on_success")
-      Ensure.is_function(on_failed, "on_failed")
-
-      url = "{0}/projection/{1}/command/enable".format(ClientAPI.base_url, name)
-      ClientAPI.__tornadoHttpSender.send_async(url, "POST", ClientAPI.headers, None, \
-          lambda s: self.on_enable(s, on_success, on_failed))
-
-    def on_enable(self, response, on_success, on_failed):
-      if response.status == "Ok":
-        on_success(response)
-        return
-      on_failed(response)
-
-
-
-
-#######################################################################################################################
-
-    def disable(self, name):
-      queue = deque()
-      on_success = lambda x: queue.append(ClientAPI.__SyncSuccess(x))
-      on_failed = lambda x: queue.append(ClientAPI.__SyncFailed(x))
-      self.start_disable_async(name, on_success, on_failed)
-      ClientAPI.wait()
-      result = queue.popleft()
-      if result.success:
-        return result.response
-      else:
-        raise result.response
-
-    def start_disable_async(self, name, on_success, on_failed):
-      Ensure.is_not_empty_string(name, "name")
-      Ensure.is_function(on_success, "on_success")
-      Ensure.is_function(on_failed, "on_failed")
-
-      url = "{0}/projection/{1}/command/disable".format(ClientAPI.base_url, name)
-      ClientAPI.__tornadoHttpSender.send_async(url, "POST", ClientAPI.headers, None, \
-          lambda s: self.on_disable(s, on_success, on_failed))
-
-    def on_disable(self, response, on_success, on_failed):
-      if response.status == "Ok":
-        on_success(response)
-        return
-      on_failed(response)
-
-
-#######################################################################################################################
-
-    def create_one_time(self,query):
-      queue = deque()
-      on_success = lambda x: queue.append(ClientAPI.__SyncSuccess(x))
-      on_failed = lambda x: queue.append(ClientAPI.__SyncFailed(x))
-      self.start_create_one_time_async(query, on_success, on_failed)
-      ClientAPI.wait()
-      result = queue.popleft()
-      if result.success:
-        return result.response
-      else:
-        raise result.response
-
-    def start_create_one_time_async(self, query, on_success, on_failed):
-      Ensure.is_not_empty_string(query, "query")
-      Ensure.is_function(on_success, "on_success")
-      Ensure.is_function(on_failed, "on_failed")
-
-      url = "{0}/projections/onetime?type=JS".format(ClientAPI.base_url)
-      ClientAPI.__tornadoHttpSender.send_async(url, "POST", ClientAPI.headers, query, \
-          lambda s: self.on_create_one_time(s, on_success, on_failed))
-
-    def on_create_one_time(self, response, on_success, on_failed):
-      if response.status == "Created":
-        on_success(response)
-        return
-      on_failed(response)
-
-
-#######################################################################################################################
-
-    def create_continuous(self, name, query):
-      queue = deque()
-      on_success = lambda x: queue.append(ClientAPI.__SyncSuccess(x))
-      on_failed = lambda x: queue.append(ClientAPI.__SyncFailed(x))
-      self.start_create_continuous_async(name, query, on_success, on_failed)
-      ClientAPI.wait()
-      result = queue.popleft()
-      if result.success:
-        return result.response
-      else:
-        raise result.response
-
-    def start_create_continuous_async(self,name, query, on_success, on_failed):
-      Ensure.is_not_empty_string(name, "name")
-      Ensure.is_not_empty_string(query, "query")
-      Ensure.is_function(on_success, "on_success")
-      Ensure.is_function(on_failed, "on_failed")
-
-      url = "{0}/projections/continuous?name={1}&type=JS".format(ClientAPI.base_url, name)
-      ClientAPI.__tornadoHttpSender.send_async(url, "POST", ClientAPI.headers, query, \
-          lambda s: self.on_create_one_time(s, on_success, on_failed))
-
-    def on_create_continuous(self, response, on_success, on_failed):
-      if response.status == "Created":
-        on_success(response)
-        return
-      on_failed(response)
-
-
-#######################################################################################################################
-
-    def update_query(self, name, query):
-      queue = deque()
-      on_success = lambda x: queue.append(ClientAPI.__SyncSuccess(x))
-      on_failed = lambda x: queue.append(ClientAPI.__SyncFailed(x))
-      self.start_update_query_async(name, query, on_success, on_failed)
-      ClientAPI.wait()
-      result = queue.popleft()
-      if result.success:
-        return result.response
-      else:
-        raise result.response
-    def start_update_query_async(self,name, query, on_success, on_failed):
-      Ensure.is_not_empty_string(name, "name")
-      Ensure.is_not_empty_string(query, "query")
-      Ensure.is_function(on_success, "on_success")
-      Ensure.is_function(on_failed, "on_failed")
-
-      url = "{0}/projection/{1}/query?type=JS".format(ClientAPI.base_url, name)
-      ClientAPI.__tornadoHttpSender.send_async(url, "POST", ClientAPI.headers, query, \
-          lambda s: self.on_update_query(s, on_success, on_failed))
-
-    def on_update_query(self, response, on_success, on_failed):
-      if response.status == "Ok":
-        on_success(response)
-        return
-      on_failed(response)
-
-
-#######################################################################################################################
-
-
-    def delete(self, name):
-      queue = deque()
-      on_success = lambda x: queue.append(ClientAPI.__SyncSuccess(x))
-      on_failed = lambda x: queue.append(ClientAPI.__SyncFailed(x))
-      self.start_delete_async(name, on_success, on_failed)
-      ClientAPI.wait()
-      result = queue.popleft()
-      if result.success:
-        return result.response
-      else:
-        raise result.response
-
-    def start_delete_async(self, name, on_success, on_failed):
-      Ensure.is_not_empty_string(name, "name")
-      Ensure.is_function(on_success, "on_success")
-      Ensure.is_function(on_failed, "on_failed")
-
-      url = "{0}/projection/{1}".format(ClientAPI.base_url, name)
-      ClientAPI.__tornadoHttpSender.send_async(url, "DELETE", ClientAPI.headers, None, \
-          lambda s: self.on_delete(s, on_success, on_failed))
-
-    def on_delete(self, response, on_success, on_failed):
-      if response.status == "Ok":
-        on_success(response)
-        return
-      on_failed(response)
-
-
-#######################################################################################################################
-
-    def list_all(self):
-      queue = deque()
-      on_success = lambda x: queue.append(ClientAPI.__SyncSuccess(x))
-      on_failed = lambda x: queue.append(ClientAPI.__SyncFailed(x))
-      self.start_list_contionuous_async(on_success, on_failed)
-      ClientAPI.wait()
-      result = queue.popleft()
-      if result.success:
-        return result.response
-      else:
-        raise result.response
-
-    def start_list_all_async(self, on_success, on_failed):
-      Ensure.is_function(on_success, "on_success")
-      Ensure.is_function(on_failed, "on_failed")
-
-      url = "{0}/projections/any".format(ClientAPI.base_url)
-      ClientAPI.__tornadoHttpSender.send_async(url, "GET", ClientAPI.headers, None, \
-          lambda s: self.on_list_all(s, on_success, on_failed))
-
-    def on_list_all(self, response, on_success, on_failed):
-      if response.status == "Ok":
-        on_success(response.message)
-        return
-      on_failed(response)
-
-
-######################################################################################################################
-
-    def list_one_time(self):
-      queue = deque()
-      on_success = lambda x: queue.append(ClientAPI.__SyncSuccess(x))
-      on_failed = lambda x: queue.append(ClientAPI.__SyncFailed(x))
-      self.start_list_one_time_async(on_success, on_failed)
-      ClientAPI.wait()
-      result = queue.popleft()
-      if result.success:
-        return result.response
-      else:
-        raise result.response
-
-    def start_list_one_time_async(self, on_success, on_failed):
-      Ensure.is_function(on_success, "on_success")
-      Ensure.is_function(on_failed, "on_failed")
-
-      url = "{0}/projections/onetime".format(ClientAPI.base_url)
-      ClientAPI.__tornadoHttpSender.send_async(url, "GET", ClientAPI.headers, None, \
-          lambda s: self.on_list_one_time(s, on_success, on_failed))
-
-    def on_list_one_time(self, response, on_success, on_failed):
-      if response.status == "Ok":
-        on_success(response.message)
-        return
-      on_failed(response)
-
-
-######################################################################################################################
-
-    def list_continuous(self):
-      queue = deque()
-      on_success = lambda x: queue.append(ClientAPI.__SyncSuccess(x))
-      on_failed = lambda x: queue.append(ClientAPI.__SyncFailed(x))
-      self.start_list_contionuous_async(on_success, on_failed)
-      ClientAPI.wait()
-      result = queue.popleft()
-      if result.success:
-        return result.response
-      else:
-        raise result.response
-
-    def start_list_contionuous_async(self, on_success, on_failed):
-      Ensure.is_function(on_success, "on_success")
-      Ensure.is_function(on_failed, "on_failed")
-
-      url = "{0}/projections/continuous".format(ClientAPI.base_url)
-      ClientAPI.__tornadoHttpSender.send_async(url, "GET", ClientAPI.headers, None, \
-          lambda s: self.on_list_continuous(s, on_success, on_failed))
-
-    def on_list_continuous(self, response, on_success, on_failed):
-      if response.status == "Ok":
-        on_success(response)
-        return
-      on_failed(response)
-
-
-########################################################################################################################
