@@ -2,6 +2,7 @@ from collections import deque
 import thread
 import time
 import sys
+from urllib import quote
 from Implementation import Ensure, ReadEventsData
 from Implementation.Projections import *
 from Implementation.AsyncRequestSender import TornadoHttpSender
@@ -26,12 +27,11 @@ class ClientAPI():
     self.subscribers_thread = thread.start_new_thread(self.handle_subscribers, ())
     self.subscribers_all_thread = thread.start_new_thread(self.handle_subscribers_all, ())
     self.should_subscribe_all=False
-    self.Projections = Projections(ip_address, port)
+    self.projections = Projections(ip_address, port)
 
 
   def resume(self):
     IOLoop.instance().stop()
-
   def wait(self):
     IOLoop.instance().start()
 
@@ -46,7 +46,7 @@ class ClientAPI():
     return response
 
 
-################################################################################
+########################################################################################################################
 
 
   def create_stream(self, stream_id, metadata=""):
@@ -61,9 +61,10 @@ class ClientAPI():
     else:
       raise result.response
 
-  def create_stream_async(self, stream_id, metadata, on_success, on_failed):
-    self.start_create_stream(stream_id, metadata, on_success, on_failed)
-
+  def create_stream_async(self, stream_id, metadata, on_success = None, on_failed = None):
+      if on_success is None: on_success = lambda x: self.do_nothing(x)
+      if on_failed is None: on_failed = lambda x: self.do_nothing(x)
+      self.start_create_stream(stream_id, metadata, on_success, on_failed)
 
   def start_create_stream(self, stream_id, metadata, on_success, on_failed):
     Ensure.is_not_empty_string(stream_id, "stream_id")
@@ -82,10 +83,6 @@ class ClientAPI():
 
 
 
-#################################################################
-
-
-
   def delete_stream(self, stream_id, expected_version=-2):
     queue = deque()
     on_success = lambda x: queue.append(self.sync_success(x))
@@ -98,9 +95,10 @@ class ClientAPI():
     else:
       raise result.response
 
-  def delete_stream_async(self, stream_id, on_success, on_failed, expected_version=-2):
-    self.start_delete_stream(stream_id, on_success, on_failed, expected_version)
-
+  def delete_stream_async(self, stream_id, on_success = None, on_failed = None, expected_version=-2):
+      if on_success is None: on_success = lambda x: self.do_nothing(x)
+      if on_failed is None: on_failed = lambda x: self.do_nothing(x)
+      self.start_delete_stream(stream_id, on_success, on_failed, expected_version)
 
   def start_delete_stream(self,stream_id, on_success, on_failed, expected_version):
     Ensure.is_not_empty_string(stream_id, "stream_id")
@@ -108,6 +106,7 @@ class ClientAPI():
     Ensure.is_function(on_failed, "on_failed")
     Ensure.is_number(expected_version, "expected_version")
 
+    stream_id = quote(stream_id)
     url = "{0}/streams/{1}".format(self.base_url, stream_id)
     body = to_json(DeleteStreamRequestBody(expected_version))
     self.tornado_http_sender.send_async(url, "DELETE", self.headers, body,
@@ -118,9 +117,6 @@ class ClientAPI():
       on_success(response)
     else:
       on_failed(FailedAnswer(response.code,response.error.message))
-
-
-#######################################################
 
 
 
@@ -136,9 +132,10 @@ class ClientAPI():
     else:
       raise result.response
 
-  def append_to_stream_async(self,stream_id, events, on_success, on_failed, expected_version=-2):
-    self.start_append_to_stream_async(stream_id, events, on_success, on_failed, expected_version)
-
+  def append_to_stream_async(self,stream_id, events, on_success = None, on_failed = None, expected_version=-2):
+      if on_success is None: on_success = lambda x: self.do_nothing(x)
+      if on_failed is None: on_failed = lambda x: self.do_nothing(x)
+      self.start_append_to_stream_async(stream_id, events, on_success, on_failed, expected_version)
 
   def start_append_to_stream_async(self,stream_id, events, on_success, on_failed, expected_version):
     Ensure.is_not_empty_string(stream_id, "stream_id")
@@ -146,6 +143,7 @@ class ClientAPI():
     Ensure.is_function(on_failed, "on_failed")
     Ensure.is_number(expected_version, "expected_version")
 
+    stream_id = quote(stream_id)
     if type(events) is not list:
       events = [events]
     body = to_json(AppendToStreamRequestBody(expected_version, events))
@@ -153,16 +151,12 @@ class ClientAPI():
     self.tornado_http_sender.send_async(url,"POST", self.headers, body,
         lambda x: self.append_to_stream_callback(x, on_success, on_failed))
 
-
   def append_to_stream_callback(self, response, on_success,on_failed):
     if response.code==201:
       on_success(response)
     else:
       on_failed(FailedAnswer(response.code,response.error.message))
 
-
-
-###########################################################
 
 
   def read_event(self,stream_id, event_number, resolve=-2):
@@ -177,15 +171,18 @@ class ClientAPI():
     else:
       raise result.response
 
-  def read_event_async(self,stream_id, event_number, on_success, on_failed, resolve=-2):
-    self.start_read_event(stream_id, event_number, on_success, on_failed, resolve)
-
+  def read_event_async(self,stream_id, event_number, on_success = None, on_failed = None, resolve=-2):
+      if on_success is None: on_success = lambda x: self.do_nothing(x)
+      if on_failed is None: on_failed = lambda x: self.do_nothing(x)
+      self.start_read_event(stream_id, event_number, on_success, on_failed, resolve)
 
   def start_read_event(self,stream_id, event_number, on_success, on_failed, resolve):
     Ensure.is_not_empty_string(stream_id, "stream_id")
     Ensure.is_function(on_success, "on_success")
     Ensure.is_function(on_failed, "on_failed")
     Ensure.is_not_negative_number(event_number, "event_number")
+
+    stream_id = quote(stream_id)
     resolve = "yes" if resolve else "no"
     url = "{0}/streams/{1}/event/{2}?resolve={3}".format(self.base_url, stream_id, str(event_number), resolve)
     self.tornado_http_sender.send_async(url, "GET", self.headers, None,
@@ -201,12 +198,10 @@ class ClientAPI():
 
 
 
-################################################ Read Stream Events Backward ###############
-
-
-
-  def read_stream_events_backward_async(self, stream_id, start_position, count, on_success, on_failed):
-    self.start_read_stream_events_backward_async(stream_id, start_position, count, on_success, on_failed)
+  def read_stream_events_backward_async(self, stream_id, start_position, count, on_success = None, on_failed = None):
+      if on_success is None: on_success = lambda x: self.do_nothing(x)
+      if on_failed is None: on_failed = lambda x: self.do_nothing(x)
+      self.start_read_stream_events_backward_async(stream_id, start_position, count, on_success, on_failed)
 
   def read_stream_events_backward(self, stream_id, start_position, count):
     queue = deque()
@@ -220,13 +215,14 @@ class ClientAPI():
     else:
       raise result.response
 
-
   def start_read_stream_events_backward_async(self, stream_id, start_position, count, on_success, on_failed):
     Ensure.is_not_empty_string(stream_id, "stream_id")
     Ensure.is_function(on_success, "on_success")
     Ensure.is_function(on_failed, "on_failed")
     Ensure.is_positive_number(count, "count")
     Ensure.is_possible_event_position(start_position, "start_position")
+
+    stream_id = quote(stream_id)
     events = []
     batch_counter=0
     params = ReadEventsData
@@ -310,20 +306,22 @@ class ClientAPI():
     try:
       batch_events.append(json.loads(response.body))
       if len(batch_events)==events_count:
-        batch_events = sorted(batch_events, key=lambda ev: ev["eventNumber"], reverse=True)
-        params.events+=batch_events
-        self.read_batch_events_backward(params, on_success, on_failed, events_count)
+          batch_events = sorted(batch_events, key=lambda ev: ev["eventNumber"], reverse=True)
+          params.events+=batch_events
+          self.read_batch_events_backward(params, on_success, on_failed, events_count)
     except:
-      on_failed(FailedAnswer(response.code, "Error occure while reading event: " + response.error.message))
-      return
-
-
-########################################################################################################################
+        on_failed(FailedAnswer(response.code, "Error occure while reading event: " + response.body))
+        return
 
 
 
-  def read_stream_events_forward_async(self, stream_id, start_position, count, on_success, on_failed):
-    self.start_read_stream_events_backward_async(stream_id, start_position+count-1, count, on_success, on_failed)
+  def read_stream_events_forward_async(self, stream_id, start_position, count, on_success = None, on_failed = None):
+      new_start_position = start_position+count-1
+      if new_start_position > sys.maxint:
+          count -= (new_start_position-sys.maxint)
+          new_start_position = sys.maxint
+
+      self.start_read_stream_events_backward_async(stream_id, int(new_start_position), int(count), on_success, on_failed)
 
   def read_stream_events_forward(self, stream_id, start_position, count):
     queue = deque()
@@ -339,9 +337,6 @@ class ClientAPI():
 
 
 
-############################################# READ ALL EVENTS BACKWARD #################################################
-
-
   def read_all_events_backward(self, prepare_position, commit_position, count):
     queue = deque()
     on_success = lambda x: queue.append(self.sync_success(x))
@@ -354,10 +349,10 @@ class ClientAPI():
     else:
       raise result.response
 
-
-  def read_all_events_backward_async(self, prepare_position, commit_position, count, on_success, on_failed):
-    self.start_read_all_events_backward(prepare_position, commit_position, count, on_success, on_failed)
-
+  def read_all_events_backward_async(self, prepare_position, commit_position, count, on_success = None, on_failed = None):
+      if on_success is None: on_success = lambda x: self.do_nothing(x)
+      if on_failed is None: on_failed = lambda x: self.do_nothing(x)
+      self.start_read_all_events_backward(prepare_position, commit_position, count, on_success, on_failed)
 
   def start_read_all_events_backward(self, prepare_position, commit_position, count, on_success, on_failed):
     Ensure.is_function(on_success, "on_success")
@@ -365,6 +360,7 @@ class ClientAPI():
     Ensure.is_number(prepare_position, "prepare_position")
     Ensure.is_number(commit_position, "commit_position")
     Ensure.is_positive_number(count, "count")
+
     events = []
     batch_counter = 0
     params = ReadEventsData
@@ -445,9 +441,6 @@ class ClientAPI():
 
 
 
-############################################# READ ALL EVENTS FORWARD ##################################################
-
-
   def read_all_events_forward(self, prepare_position, commit_position, count):
     queue = deque()
     on_success = lambda x: queue.append(self.sync_success(x))
@@ -460,10 +453,10 @@ class ClientAPI():
     else:
       raise result.response
 
-
-  def read_all_events_forward_async(self, prepare_position, commit_position, count, on_success, on_failed):
-    self.start_read_all_events_forward(prepare_position, commit_position, count, on_success, on_failed)
-
+  def read_all_events_forward_async(self, prepare_position, commit_position, count, on_success = None, on_failed = None):
+      if on_success is None: on_success = lambda x: self.do_nothing(x)
+      if on_failed is None: on_failed = lambda x: self.do_nothing(x)
+      self.start_read_all_events_forward(prepare_position, commit_position, count, on_success, on_failed)
 
   def start_read_all_events_forward(self, prepare_position, commit_position, count, on_success, on_failed):
     Ensure.is_function(on_success, "on_success")
@@ -548,9 +541,6 @@ class ClientAPI():
 
 
 
-
-#################################################################################################################
-
   def get_prepare_position(self, link):
     position = link.split("/")[6]
     result =int(position[0:16], 16)
@@ -571,8 +561,6 @@ class ClientAPI():
     return number
 
 
-###############################################################################################################
-
 
   def subscribe(self, stream_id, callback, start_from_begining = False):
     start_position = 0 if start_from_begining else self.get_stream_event_position(stream_id) + 1
@@ -583,30 +571,32 @@ class ClientAPI():
       if len(self.subscribers)>0:
         processed_streams=0
         for i in range(len(self.subscribers)):
-          self.read_stream_events_forward_async(self.subscribers[i].stream_id, self.subscribers[i].last_position, 100,
-              lambda s: self.handle_subscribers_success(s, len(self.subscribers), processed_streams, i),
-              lambda s: self.handle_subscribers_success(s, len(self.subscribers), processed_streams, i))
+            #print "in handle subscribes. streamId is {0}, start position is {1}, events count is ".format(self.subscribers[i].stream_id, self.subscribers[i].last_position, sys.maxint)
+            self.read_stream_events_forward_async(self.subscribers[i].stream_id, self.subscribers[i].last_position, sys.maxint,
+                lambda s: self.handle_subscribers_success(s, len(self.subscribers), processed_streams, i),
+                lambda s: self.handle_subscribers_failed(len(self.subscribers), processed_streams))
         self.wait()
       time.sleep(1)
 
   def handle_subscribers_success(self, response, stream_count, processed_streams, subscriber_index):
-    self.subscribers[subscriber_index].last_position += len(response)
-    processed_streams+=1
+      processed_streams+=1
+      self.subscribers[subscriber_index].last_position += len(response)
+      for i in response:
+          self.subscribers[subscriber_index].callback(i)
 
-    for i in response:
-      self.subscribers[subscriber_index].callback(i)
+      if processed_streams==stream_count:
+          self.resume()
 
-    if processed_streams==stream_count:
-      self.resume()
+  def handle_subscribers_failed(self, stream_count, processed_streams):
+      processed_streams+=1
+      if processed_streams==stream_count:
+          self.resume()
 
   def unsubscribe(self, stream_id):
     for i in self.subscribers:
         if i.stream_id == stream_id:
             self.subscribers.remove(i)
 
-
-
-####################################################################################################################
 
 
   def subscribe_all(self, callback, start_from_begining = False):
@@ -638,13 +628,13 @@ class ClientAPI():
     self.should_subscribe_all = False
 
 
-#######################################################################################################################
-
 
   def get_stream_event_position(self,stream_id):
-    events = self.read_stream_events_backward(stream_id, -1, 1)
-    return events[0]["eventNumber"]
+    try:
+        events = self.read_stream_events_backward(stream_id, -1, 1)
+        return int(events[0]["eventNumber"])
+    except:
+        return 0
 
-
-#######################################################################################################################
-
+  def do_nothing(self, x):
+      a=0

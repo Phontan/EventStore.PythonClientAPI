@@ -10,7 +10,7 @@ def is_function(obj, arg):
         raise TypeError(arg +" should be function")
 def is_number(obj, arg):
     if type(obj)!= int:
-        raise TypeError(arg +" should be integer")
+        raise TypeError(arg +" should be integer(not {0}".format(obj))
 def is_positive_number(obj, arg):
     is_number(obj, arg)
     if obj<1:

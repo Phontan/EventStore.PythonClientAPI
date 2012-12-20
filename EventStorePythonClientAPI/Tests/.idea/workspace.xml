@@ -19,7 +19,81 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="chat.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../chat.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="14" selection-start="14" selection-end="14" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ClientAPI.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../ClientAPI/ClientAPI.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="356" column="108" selection-start="15219" selection-end="15219" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="e#0#29#0" expanded="true" />
+                <element signature="e#1497#1521#0" expanded="false" />
+                <element signature="e#1544#1569#0" expanded="false" />
+                <element signature="e#1612#1689#0" expanded="false" />
+                <element signature="e#1729#1807#0" expanded="false" />
+                <element signature="e#1988#2317#0" expanded="false" />
+                <element signature="e#2416#2624#0" expanded="false" />
+                <element signature="e#2707#3145#0" expanded="false" />
+                <element signature="e#3220#3348#0" expanded="false" />
+                <element signature="e#3415#3752#0" expanded="false" />
+                <element signature="e#3862#4078#0" expanded="false" />
+                <element signature="e#4168#4678#0" expanded="false" />
+                <element signature="e#4753#4880#0" expanded="false" />
+                <element signature="e#4956#5304#0" expanded="false" />
+                <element signature="e#5424#5657#0" expanded="false" />
+                <element signature="e#5764#6340#0" expanded="false" />
+                <element signature="e#6417#6544#0" expanded="false" />
+                <element signature="e#6612#6967#0" expanded="false" />
+                <element signature="e#7078#7296#0" expanded="false" />
+                <element signature="e#7388#7926#0" expanded="false" />
+                <element signature="e#7998#8199#0" expanded="false" />
+                <element signature="e#8327#8568#0" expanded="false" />
+                <element signature="e#8649#9021#0" expanded="false" />
+                <element signature="e#9137#9735#0" expanded="false" />
+                <element signature="e#9831#10643#0" expanded="false" />
+                <element signature="e#10746#11939#0" expanded="false" />
+                <element signature="e#12043#12714#0" expanded="false" />
+                <element signature="e#12822#13378#0" expanded="false" />
+                <element signature="e#13505#13806#0" expanded="false" />
+                <element signature="e#13886#14273#0" expanded="false" />
+                <element signature="e#14361#14738#0" expanded="false" />
+                <element signature="e#14869#15109#0" expanded="false" />
+                <element signature="e#15224#15800#0" expanded="false" />
+                <element signature="e#15900#16880#0" expanded="false" />
+                <element signature="e#16979#18343#0" expanded="false" />
+                <element signature="e#18488#19046#0" expanded="false" />
+                <element signature="e#19133#19509#0" expanded="false" />
+                <element signature="e#19639#19878#0" expanded="false" />
+                <element signature="e#19992#20600#0" expanded="false" />
+                <element signature="e#20699#21661#0" expanded="false" />
+                <element signature="e#21759#23036#0" expanded="false" />
+                <element signature="e#23179#23743#0" expanded="false" />
+                <element signature="e#23791#23874#0" expanded="false" />
+                <element signature="e#23919#24003#0" expanded="false" />
+                <element signature="e#24045#24223#0" expanded="false" />
+                <element signature="e#24304#24475#0" expanded="false" />
+                <element signature="e#24513#25193#0" expanded="false" />
+                <element signature="e#25302#25543#0" expanded="false" />
+                <element signature="e#25623#25709#0" expanded="false" />
+                <element signature="e#25751#25853#0" expanded="false" />
+                <element signature="e#25927#26097#0" expanded="false" />
+                <element signature="e#26139#26849#0" expanded="false" />
+                <element signature="e#26884#26917#0" expanded="false" />
+                <element signature="e#26974#27120#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -29,9 +103,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/../ClientAPI/setup.py" />
-        <option value="$PROJECT_DIR$/../ClientAPI/Event.py" />
-        <option value="$PROJECT_DIR$/../ClientAPI/Implementation/ClientJsonSerelizationOption.py" />
         <option value="$PROJECT_DIR$/../ClientAPI/Implementation/ReadEventsData.py" />
         <option value="$PROJECT_DIR$/../ClientAPI/Implementation/Body/CreateStreamRequestBody.py" />
         <option value="$PROJECT_DIR$/../ClientAPI/Implementation/Body/DeleteStreamRequestBody.py" />
@@ -40,11 +111,14 @@
         <option value="$PROJECT_DIR$/../ClientAPI/Implementation/libs/answerLibs.py" />
         <option value="$PROJECT_DIR$/libs.py" />
         <option value="$PROJECT_DIR$/MainTest.py" />
-        <option value="$PROJECT_DIR$/../chat.py" />
         <option value="$PROJECT_DIR$/../ClientAPI/Projections.py" />
-        <option value="$PROJECT_DIR$/../ClientAPI/ClientAPI.py" />
         <option value="$PROJECT_DIR$/../ClientAPI/Implementation/Projections.py" />
         <option value="$PROJECT_DIR$/../ClientAPI/Implementation/AsyncRequestSender.py" />
+        <option value="$PROJECT_DIR$/../ClientAPI/Implementation/Ensure.py" />
+        <option value="$PROJECT_DIR$/../ClientAPI/Implementation/Body/AppendToStreamRequestBody.py" />
+        <option value="$PROJECT_DIR$/../ClientAPI/Event.py" />
+        <option value="$PROJECT_DIR$/../chat.py" />
+        <option value="$PROJECT_DIR$/../ClientAPI/ClientAPI.py" />
       </list>
     </option>
   </component>
@@ -68,7 +142,7 @@
     <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+    <navigator proportions="" version="1" splitterProportion="0.5">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -79,26 +153,15 @@
       <autoscrollFromSource />
       <sortByType />
     </navigator>
-    <panes>
-      <pane id="Scope" />
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Tests" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="options.lastSelected" value="preferences.externalResources" />
     <property name="recentsLimit" value="5" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ClientAPI/Implementation/AsyncRequestSender.py" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ClientAPI/Event.py" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
   </component>
@@ -110,7 +173,7 @@
       <PyConsoleSettings />
     </option>
   </component>
-  <component name="RunManager" selected="Python.libs">
+  <component name="RunManager" selected="Python.chat">
     <configuration default="false" name="AsyncRequestSender" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -143,7 +206,11 @@
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/libs.py" />
       <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonCover" />
       <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonCover" />
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
@@ -181,9 +248,31 @@
       <option name="PUREUNITTEST" value="true" />
       <method />
     </configuration>
-    <list size="2">
+    <configuration default="false" name="chat" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:/Python27/python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/.." />
+      <option name="IS_MODULE_SDK" value="false" />
+      <module name="Tests" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../chat.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonCover" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonCover" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <list size="3">
       <item index="0" class="java.lang.String" itemvalue="Python.AsyncRequestSender" />
       <item index="1" class="java.lang.String" itemvalue="Python.libs" />
+      <item index="2" class="java.lang.String" itemvalue="Python.chat" />
     </list>
     <recent_temporary>
       <list size="2">
@@ -240,19 +329,19 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
-    <editor active="false" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32924107" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.328125" sideWeight="0.49786553" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2497332" sideWeight="0.6707589" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39955357" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3984375" sideWeight="0.99808246" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.328125" sideWeight="0.99866664" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.328125" sideWeight="0.05709712" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.328125" sideWeight="0.93916756" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -313,127 +402,178 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="14" />
+      <option name="time" value="69" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/SubscribeAllInfo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/SubscribeInfo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/Body/AppendToStreamRequestBody.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/Body/CreateStreamRequestBody.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="44" selection-start="75" selection-end="75" vertical-scroll-proportion="0.019517796">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/Body/DeleteStreamRequestBody.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/ReturnClasses/AllEventsAnswer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="46" selection-start="214" selection-end="214" vertical-scroll-proportion="0.078071184">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/ReturnClasses/FailedAnswer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MainTest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="11" selection-start="42" selection-end="42" vertical-scroll-proportion="0.029462738">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/libs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="9" selection-start="103" selection-end="103" vertical-scroll-proportion="0.11785095">
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CreateStreamTest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="21" selection-start="84" selection-end="84" vertical-scroll-proportion="0.08838821">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/SyncResponse.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="8" selection-start="28" selection-end="28" vertical-scroll-proportion="0.029462738">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../chat.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="0" selection-start="117" selection-end="117" vertical-scroll-proportion="0.14731368">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ClientAPI/setup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="0" selection-start="30" selection-end="30" vertical-scroll-proportion="0.058925476">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ClientAPI/ClientAPI.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="284" column="4" selection-start="11125" selection-end="11125" vertical-scroll-proportion="0.33275563">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/AsyncRequestSender.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="19" selection-start="254" selection-end="254" vertical-scroll-proportion="0.17677642">
-          <folding>
-            <element signature="e#0#24#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/Projections.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="2" column="0" selection-start="42" selection-end="42" vertical-scroll-proportion="0.058925476">
           <folding>
             <element signature="e#1009#1378#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/SubscribeInfo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="26" selection-start="129" selection-end="142" vertical-scroll-proportion="0.09922179">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/Ensure.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="0" selection-start="157" selection-end="157" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/site-packages/tornado-2.4.1-py2.7.egg/tornado/httpclient.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="146" column="0" selection-start="5294" selection-end="5294" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/Body/AppendToStreamRequestBody.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="28" selection-start="158" selection-end="158" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm20/system/python_stubs/-762174762/__builtin__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="931" column="8" selection-start="29620" selection-end="29620" vertical-scroll-proportion="0.33295062">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm20/system/python_stubs/-762174762/sys.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="108" column="0" selection-start="4690" selection-end="4690" vertical-scroll-proportion="0.33333334">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/Implementation/AsyncRequestSender.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="0" selection-start="581" selection-end="581" vertical-scroll-proportion="0.32409012">
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/contextlib.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="0" selection-start="635" selection-end="635" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/site-packages/tornado-2.4.1-py2.7.egg/tornado/ioloop.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="273" column="33" selection-start="9787" selection-end="9787" vertical-scroll-proportion="0.174269">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/site-packages/tornado-2.4.1-py2.7.egg/tornado/iostream.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="322" column="0" selection-start="13016" selection-end="13016" vertical-scroll-proportion="0.19415204">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/site-packages/tornado-2.4.1-py2.7.egg/tornado/stack_context.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="231" column="0" selection-start="9013" selection-end="9013" vertical-scroll-proportion="0.19415204">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python27/Lib/site-packages/tornado-2.4.1-py2.7.egg/tornado/simple_httpclient.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="312" column="0" selection-start="14160" selection-end="14160" vertical-scroll-proportion="0.33333334">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/Event.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="34" selection-start="285" selection-end="285" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ClientAPI/ClientAPI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="356" column="108" selection-start="15219" selection-end="15219" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#1497#1521#0" expanded="false" />
+            <element signature="e#1544#1569#0" expanded="false" />
+            <element signature="e#1612#1689#0" expanded="false" />
+            <element signature="e#1729#1807#0" expanded="false" />
+            <element signature="e#1988#2317#0" expanded="false" />
+            <element signature="e#2416#2624#0" expanded="false" />
+            <element signature="e#2707#3145#0" expanded="false" />
+            <element signature="e#3220#3348#0" expanded="false" />
+            <element signature="e#3415#3752#0" expanded="false" />
+            <element signature="e#3862#4078#0" expanded="false" />
+            <element signature="e#4168#4678#0" expanded="false" />
+            <element signature="e#4753#4880#0" expanded="false" />
+            <element signature="e#4956#5304#0" expanded="false" />
+            <element signature="e#5424#5657#0" expanded="false" />
+            <element signature="e#5764#6340#0" expanded="false" />
+            <element signature="e#6417#6544#0" expanded="false" />
+            <element signature="e#6612#6967#0" expanded="false" />
+            <element signature="e#7078#7296#0" expanded="false" />
+            <element signature="e#7388#7926#0" expanded="false" />
+            <element signature="e#7998#8199#0" expanded="false" />
+            <element signature="e#8327#8568#0" expanded="false" />
+            <element signature="e#8649#9021#0" expanded="false" />
+            <element signature="e#9137#9735#0" expanded="false" />
+            <element signature="e#9831#10643#0" expanded="false" />
+            <element signature="e#10746#11939#0" expanded="false" />
+            <element signature="e#12043#12714#0" expanded="false" />
+            <element signature="e#12822#13378#0" expanded="false" />
+            <element signature="e#13505#13806#0" expanded="false" />
+            <element signature="e#13886#14273#0" expanded="false" />
+            <element signature="e#14361#14738#0" expanded="false" />
+            <element signature="e#14869#15109#0" expanded="false" />
+            <element signature="e#15224#15800#0" expanded="false" />
+            <element signature="e#15900#16880#0" expanded="false" />
+            <element signature="e#16979#18343#0" expanded="false" />
+            <element signature="e#18488#19046#0" expanded="false" />
+            <element signature="e#19133#19509#0" expanded="false" />
+            <element signature="e#19639#19878#0" expanded="false" />
+            <element signature="e#19992#20600#0" expanded="false" />
+            <element signature="e#20699#21661#0" expanded="false" />
+            <element signature="e#21759#23036#0" expanded="false" />
+            <element signature="e#23179#23743#0" expanded="false" />
+            <element signature="e#23791#23874#0" expanded="false" />
+            <element signature="e#23919#24003#0" expanded="false" />
+            <element signature="e#24045#24223#0" expanded="false" />
+            <element signature="e#24304#24475#0" expanded="false" />
+            <element signature="e#24513#25193#0" expanded="false" />
+            <element signature="e#25302#25543#0" expanded="false" />
+            <element signature="e#25623#25709#0" expanded="false" />
+            <element signature="e#25751#25853#0" expanded="false" />
+            <element signature="e#25927#26097#0" expanded="false" />
+            <element signature="e#26139#26849#0" expanded="false" />
+            <element signature="e#26884#26917#0" expanded="false" />
+            <element signature="e#26974#27120#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../chat.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="14" selection-start="14" selection-end="14" vertical-scroll-proportion="0.0">
+          <folding />
         </state>
       </provider>
     </entry>
