@@ -9,7 +9,7 @@ def call_back(response):
     print ''
     print response["data"]
 
-es_client = ClientAPI()
+es_client = ClientAPI(ip_address = "http://172.25.21.88")
 projections = es_client.projections
 stream_id = "chat-1"
 print "Enter your name:"

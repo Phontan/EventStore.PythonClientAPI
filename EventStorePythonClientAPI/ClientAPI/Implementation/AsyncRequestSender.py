@@ -2,7 +2,7 @@ from urllib import quote_plus
 from  tornado.httpclient import *
 
 class TornadoHttpSender:
-    def send_async(self, url, method, headers, body, call_back,connect_timeout=20000, request_timeout=2000):
+    def send_async(self, url, method, headers, body, call_back,connect_timeout=200000, request_timeout=20000):
         http_client =  AsyncHTTPClient()
         #url = quote_plus(url)
         if method == 'DELETE':
