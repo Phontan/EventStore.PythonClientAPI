@@ -51,7 +51,7 @@ class Projections:
             lambda s: self.on_enable(s, on_success, on_failed))
 
     def on_enable(self, response, on_success, on_failed):
-        if response.status == "OK":
+        if response.code == 201:
             on_success(response)
             return
         on_failed(response)
@@ -82,13 +82,11 @@ class Projections:
             lambda s: self.on_disable(s, on_success, on_failed))
 
     def on_disable(self, response, on_success, on_failed):
-        if response.status == "OK":
+        if response.code == 201:
             on_success(response)
             return
         on_failed(response)
 
-
-    #######################################################################################################################
 
 ########################################################################################################################
 
@@ -115,7 +113,7 @@ class Projections:
             lambda s: self.on_projections(s, on_success, on_failed))
 
     def on_projections(self, response, on_success, on_failed):
-        if response.status == "OK":
+        if response.code == 200:
             on_success(json.loads(response.message))
             return
         on_failed(response)
@@ -145,7 +143,7 @@ class Projections:
             lambda s: self.on_get_any(s, on_success, on_failed))
 
     def on_get_any(self, response, on_success, on_failed):
-        if response.status == "OK":
+        if response.code == 200:
             on_success(json.loads(response.message))
             return
         on_failed(response)
@@ -174,7 +172,7 @@ class Projections:
             lambda s: self.on_get_one_time(s, on_success, on_failed))
 
     def on_get_one_time(self, response, on_success, on_failed):
-        if response.status == "OK":
+        if response.code == 200:
             on_success(response.message)
             return
         on_failed(response)
@@ -204,7 +202,7 @@ class Projections:
             lambda s: self.on_post_one_time(s, on_success, on_failed))
 
     def on_post_one_time(self, response, on_success, on_failed):
-        if response.status == "Created":
+        if response.code == 201:
             on_success(response.message)
             return
         on_failed(response)
@@ -234,7 +232,7 @@ class Projections:
             lambda s: self.on_get_continuous(s, on_success, on_failed))
 
     def on_get_continuous(self, response, on_success, on_failed):
-        if response.status == "OK":
+        if response.code == 200:
             on_success(response)
             return
         on_failed(response)
@@ -260,11 +258,11 @@ class Projections:
         Ensure.is_function(on_failed, "on_failed")
 
         url = Url("{0}/projections/continuous".format(self.base_url)).param("name", name).param("type", type).param("enabled", enabled).param("emit", emit).get_url()
-        self.tornado_http_sender.send_async(url, "POST", self.headers, query,
+        self.tornado_http_sender.send_async(url, "POST", None, query,
             lambda s: self.on_post_continuous(s, on_success, on_failed))
 
     def on_post_continuous(self, response, on_success, on_failed):
-        if response.status == "Created":
+        if response.code == 201:
             on_success(response)
             return
         on_failed(response)
@@ -295,7 +293,7 @@ class Projections:
             lambda s: self.on_query_get(s, on_success, on_failed))
 
     def on_query_get(self, response, on_success, on_failed):
-        if response.status == "OK":
+        if response.code == 200:
             on_success(json.loads(response))
             return
         on_failed(response)
@@ -327,7 +325,7 @@ class Projections:
             lambda s: self.on_query_put(s, on_success, on_failed))
 
     def on_query_put(self, response, on_success, on_failed):
-        if response.status == "OK":
+        if response.code == 201:
             on_success(response)
             return
         on_failed(response)
@@ -357,7 +355,7 @@ class Projections:
             lambda s: self.on_status_get(s, on_success, on_failed))
 
     def on_status_get(self, response, on_success, on_failed):
-        if response.status == "OK":
+        if response.code == 200:
             on_success(response)
             return
         on_failed(response)
@@ -388,7 +386,7 @@ class Projections:
             lambda s: self.on_delete(s, on_success, on_failed))
 
     def on_delete(self, response, on_success, on_failed):
-        if response.status == "DELETED":
+        if response.code == 204:
             on_success(response)
             return
         on_failed(response)
@@ -418,7 +416,7 @@ class Projections:
             lambda s: self.on_statistics_get(s, on_success, on_failed))
 
     def on_statistics_get(self, response, on_success, on_failed):
-        if response.status == "OK":
+        if response.code == 200:
             on_success(response)
             return
         on_failed(response)
@@ -449,7 +447,7 @@ class Projections:
             lambda s: self.on_state_get(s, on_success, on_failed))
 
     def on_state_get(self, response, on_success, on_failed):
-        if response.status == "OK":
+        if response.code == 200:
             on_success(response)
             return
         on_failed(response)

@@ -120,7 +120,7 @@ class ClientAPI():
 
 
 
-  def append_to_stream(self,stream_id, events,expected_version=-2):
+  def append_to_stream(self,stream_id, events, expected_version=-2):
     queue = deque()
     on_success = lambda x: queue.append(self.sync_success(x))
     on_failed = lambda x: queue.append(self.sync_failed(x))
@@ -581,7 +581,7 @@ class ClientAPI():
   def handle_subscribers_success(self, response, stream_count, processed_streams, subscriber_index):
       processed_streams+=1
       self.subscribers[subscriber_index].last_position += len(response)
-      for i in response:
+      for i in reversed(response):
           self.subscribers[subscriber_index].callback(i)
 
       if processed_streams==stream_count:

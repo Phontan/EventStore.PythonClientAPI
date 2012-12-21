@@ -1,14 +1,15 @@
 import uuid
 
 class Event:
-    def __init__(self, data, metadata='', eventId = None, eventType=None):
-        self.data = str(data)
+    def __init__(self, data, metadata='', event_id = None, event_type=None, is_json = False):
+        self.is_json = is_json
+        self.data = data
         self.metadata = metadata
-        if eventId is None:
+        if event_id is None:
             self.eventId = str(uuid.uuid4())
         else:
-            self.eventId = eventId
-        if eventType is None:
-            self.eventType =str(type(data))
+            self.eventId = event_id
+        if event_type is None:
+            self.eventType = str(type(data))
         else:
-            self.eventType = eventType
+            self.eventType = event_type
