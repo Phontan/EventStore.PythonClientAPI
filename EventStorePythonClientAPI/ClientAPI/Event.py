@@ -2,7 +2,8 @@ import uuid
 
 class Event:
     def __init__(self, data, metadata='', event_id = None, event_type=None, is_json = False):
-        self.is_json = is_json
+        #Ensure.is_bool(is_json)
+        self.isJson = is_json
         self.data = data
         self.metadata = metadata
         if event_id is None:

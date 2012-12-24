@@ -15,20 +15,10 @@ def is_number(obj, arg):
     if type(obj)!= int:
         raise TypeError(arg +" should be integer(not {0}".format(obj))
 
-def is_positive_number(obj, arg):
+def is_greater_number_then(number, obj, arg):
     is_number(obj, arg)
-    if obj<1:
-        raise TypeError(arg +" cannot be negative or null")
-
-def is_not_negative_number(obj, arg):
-    is_number(obj, arg)
-    if obj<0:
-        raise TypeError(arg +" cannot be negative")
-
-def is_possible_event_position(obj, arg):
-    is_number(obj, arg)
-    if obj<-1:
-        raise TypeError(arg +" cannot be less than -1")
+    if obj<number:
+        raise TypeError("{0} cannot be less than {1}".format(arg, number))
 
 def is_bool(obj, arg):
     if type(obj) is not bool:

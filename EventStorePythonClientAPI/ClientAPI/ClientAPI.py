@@ -61,7 +61,7 @@ class ClientAPI():
     else:
       raise result.response
 
-  def create_stream_async(self, stream_id, metadata, on_success = None, on_failed = None):
+  def create_stream_async(self, stream_id, metadata="", on_success = None, on_failed = None):
       if on_success is None: on_success = lambda x: self._do_nothing(x)
       if on_failed is None: on_failed = lambda x: self._do_nothing(x)
       self._start_create_stream(stream_id, metadata, on_success, on_failed)
@@ -87,7 +87,7 @@ class ClientAPI():
     queue = deque()
     on_success = lambda x: queue.append(self._sync_success(x))
     on_failed = lambda x: queue.append(self._sync_failed(x))
-    self.delete_stream_async(stream_id, on_success, on_failed, expected_version)
+    self.delete_stream_async(stream_id,expected_version, on_success, on_failed)
     self.wait()
     result = queue.popleft()
     if result.success:
@@ -95,16 +95,16 @@ class ClientAPI():
     else:
       raise result.response
 
-  def delete_stream_async(self, stream_id, on_success = None, on_failed = None, expected_version=-2):
+  def delete_stream_async(self, stream_id, expected_version=-2, on_success = None, on_failed = None):
       if on_success is None: on_success = lambda x: self._do_nothing(x)
       if on_failed is None: on_failed = lambda x: self._do_nothing(x)
-      self._start_delete_stream(stream_id, on_success, on_failed, expected_version)
+      self._start_delete_stream(stream_id,expected_version, on_success, on_failed)
 
-  def _start_delete_stream(self,stream_id, on_success, on_failed, expected_version):
+  def _start_delete_stream(self,stream_id, expected_version, on_success, on_failed, ):
     Ensure.is_not_empty_string(stream_id, "stream_id")
+    Ensure.is_number(expected_version, "expected_version")
     Ensure.is_function(on_success, "on_success")
     Ensure.is_function(on_failed, "on_failed")
-    Ensure.is_number(expected_version, "expected_version")
 
     stream_id = quote(stream_id)
     url = "{0}/streams/{1}".format(self._base_url, stream_id)
@@ -124,7 +124,7 @@ class ClientAPI():
     queue = deque()
     on_success = lambda x: queue.append(self._sync_success(x))
     on_failed = lambda x: queue.append(self._sync_failed(x))
-    self.append_to_stream_async(stream_id, events, on_success, on_failed, expected_version)
+    self.append_to_stream_async(stream_id, events,expected_version, on_success, on_failed)
     self.wait()
     result = queue.popleft()
     if result.success:
@@ -132,16 +132,16 @@ class ClientAPI():
     else:
       raise result.response
 
-  def append_to_stream_async(self,stream_id, events, on_success = None, on_failed = None, expected_version=-2):
+  def append_to_stream_async(self,stream_id, events, expected_version=-2, on_success = None, on_failed = None):
       if on_success is None: on_success = lambda x: self._do_nothing(x)
       if on_failed is None: on_failed = lambda x: self._do_nothing(x)
-      self._start_append_to_stream_async(stream_id, events, on_success, on_failed, expected_version)
+      self._start_append_to_stream(stream_id, events, expected_version, on_success, on_failed)
 
-  def _start_append_to_stream_async(self,stream_id, events, on_success, on_failed, expected_version):
+  def _start_append_to_stream(self,stream_id, events, expected_version, on_success, on_failed):
     Ensure.is_not_empty_string(stream_id, "stream_id")
+    Ensure.is_number(expected_version, "expected_version")
     Ensure.is_function(on_success, "on_success")
     Ensure.is_function(on_failed, "on_failed")
-    Ensure.is_number(expected_version, "expected_version")
 
     stream_id = quote(stream_id)
     if type(events) is not list:
@@ -178,7 +178,7 @@ class ClientAPI():
 
   def _start_read_event(self,stream_id, event_number, on_success, on_failed):
     Ensure.is_not_empty_string(stream_id, "stream_id")
-    Ensure.is_not_negative_number(event_number, "event_number")
+    Ensure.is_greater_number_then(0,event_number, "event_number")
     Ensure.is_function(on_success, "on_success")
     Ensure.is_function(on_failed, "on_failed")
 
@@ -212,14 +212,14 @@ class ClientAPI():
   def read_stream_events_backward_async(self, stream_id, start_position, count, on_success = None, on_failed = None):
       if on_success is None: on_success = lambda x: self._do_nothing(x)
       if on_failed is None: on_failed = lambda x: self._do_nothing(x)
-      self._start_read_stream_events_backward_async(stream_id, start_position, count, on_success, on_failed)
+      self._start_read_stream_events_backward(stream_id, start_position, count, on_success, on_failed)
 
-  def _start_read_stream_events_backward_async(self, stream_id, start_position, count, on_success, on_failed):
+  def _start_read_stream_events_backward(self, stream_id, start_position, count, on_success, on_failed):
     Ensure.is_not_empty_string(stream_id, "stream_id")
+    Ensure.is_greater_number_then(-1,start_position, "start_position")
+    Ensure.is_greater_number_then(1, count, "count")
     Ensure.is_function(on_success, "on_success")
     Ensure.is_function(on_failed, "on_failed")
-    Ensure.is_positive_number(count, "count")
-    Ensure.is_possible_event_position(start_position, "start_position")
 
     stream_id = quote(stream_id)
     events = []
@@ -332,7 +332,7 @@ class ClientAPI():
           count -= (new_start_position-sys.maxint)
           new_start_position = sys.maxint
 
-      self._start_read_stream_events_backward_async(stream_id, int(new_start_position), int(count), on_success, on_failed)
+      self._start_read_stream_events_backward(stream_id, int(new_start_position), int(count), on_success, on_failed)
 
 
 
@@ -354,11 +354,11 @@ class ClientAPI():
       self._start_read_all_events_backward(prepare_position, commit_position, count, on_success, on_failed)
 
   def _start_read_all_events_backward(self, prepare_position, commit_position, count, on_success, on_failed):
-    Ensure.is_function(on_success, "on_success")
-    Ensure.is_function(on_failed, "on_failed")
     Ensure.is_number(prepare_position, "prepare_position")
     Ensure.is_number(commit_position, "commit_position")
-    Ensure.is_positive_number(count, "count")
+    Ensure.is_greater_number_then(1, count, "count")
+    Ensure.is_function(on_success, "on_success")
+    Ensure.is_function(on_failed, "on_failed")
 
     events = []
     batch_counter = 0
@@ -458,11 +458,12 @@ class ClientAPI():
       self._start_read_all_events_forward(prepare_position, commit_position, count, on_success, on_failed)
 
   def _start_read_all_events_forward(self, prepare_position, commit_position, count, on_success, on_failed):
+    Ensure.is_greater_number_then(-1, prepare_position, "prepare_position")
+    Ensure.is_greater_number_then(-1, commit_position, "commit_position")
+    Ensure.is_greater_number_then(1, count, "count")
     Ensure.is_function(on_success, "on_success")
     Ensure.is_function(on_failed, "on_failed")
-    Ensure.is_possible_event_position(prepare_position, "prepare_position")
-    Ensure.is_possible_event_position(commit_position, "commit_position")
-    Ensure.is_positive_number(count, "count")
+
     events = []
     batch_counter = 0
     params = ReadEventsData
