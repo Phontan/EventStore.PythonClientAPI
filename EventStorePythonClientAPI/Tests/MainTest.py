@@ -5,7 +5,7 @@ from ReadEventTest import *
 from ReadStreamEventsBackwardTest import *
 from ReadStreamEventsForwardTest import *
 from ReadAllEventsBackwardTest import *
-from ReadAllEventsForwardTest import *
+#from ReadAllEventsForwardTest import *
 from SubscribeAllTest import *
 from SubscribeTest import *
 import subprocess
@@ -16,4 +16,4 @@ if __name__ == '__main__':
     time.sleep(3)
     unittest.main()
     p.kill()
-    #sys.path.remove(os.path.dirname(__file__)+"\\..\\ClientAPI")
+    sys.path.remove(os.path.dirname(__file__)+"\\..\\ClientAPI")

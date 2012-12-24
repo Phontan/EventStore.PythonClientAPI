@@ -7,12 +7,12 @@ class ReadAllEventsForwardTest(unittest.TestCase):
         streamId = "ReadAllEventsForwardTest_test_read_more_than_one_batch_from_last_position_stream_id"
         try:
             self.__client.create_stream(streamId,"")
-            sysEvents = self.__client.read_all_events_forward(0,0,1000)
+            sysEvents = self.__client.read_all_events_forward(0,0,10000)
             sysEventsCount = len(sysEvents.events)
             writeEventsCount = 1234
             writeEvents = []
             for i in range(writeEventsCount):
-                eventId = streamId+"_data_"+str(i);
+                eventId = streamId+"_data_"+str(i)
                 writeEvents.append(Event(eventId,""))
             self.__client.append_to_stream(streamId, writeEvents)
             readEventsCount = 30

@@ -5,7 +5,7 @@ class AppendToStreamTest(unittest.TestCase):
 
 
     def test_appent_events_to_stream(self):
-        stream_id = "AppendToStreamTest_test_appent_events_to_stream_stream_id"
+        stream_id = "AppendToStreamTest_test_appent_events_to_stream stream_id"
         try:
             self.client.create_stream(stream_id,"")
             write_events_count = 1234;
