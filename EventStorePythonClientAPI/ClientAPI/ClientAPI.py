@@ -197,11 +197,6 @@ class ClientAPI():
 
 
 
-  def read_stream_events_backward_async(self, stream_id, start_position, count, on_success = None, on_failed = None):
-      if on_success is None: on_success = lambda x: self._do_nothing(x)
-      if on_failed is None: on_failed = lambda x: self._do_nothing(x)
-      self._start_read_stream_events_backward_async(stream_id, start_position, count, on_success, on_failed)
-
   def read_stream_events_backward(self, stream_id, start_position, count):
     queue = deque()
     on_success = lambda x: queue.append(self._sync_success(x))
@@ -213,6 +208,11 @@ class ClientAPI():
       return result.response
     else:
       raise result.response
+
+  def read_stream_events_backward_async(self, stream_id, start_position, count, on_success = None, on_failed = None):
+      if on_success is None: on_success = lambda x: self._do_nothing(x)
+      if on_failed is None: on_failed = lambda x: self._do_nothing(x)
+      self._start_read_stream_events_backward_async(stream_id, start_position, count, on_success, on_failed)
 
   def _start_read_stream_events_backward_async(self, stream_id, start_position, count, on_success, on_failed):
     Ensure.is_not_empty_string(stream_id, "stream_id")
@@ -314,14 +314,6 @@ class ClientAPI():
 
 
 
-  def read_stream_events_forward_async(self, stream_id, start_position, count, on_success = None, on_failed = None):
-      new_start_position = start_position+count-1
-      if new_start_position > sys.maxint:
-          count -= (new_start_position-sys.maxint)
-          new_start_position = sys.maxint
-
-      self._start_read_stream_events_backward_async(stream_id, int(new_start_position), int(count), on_success, on_failed)
-
   def read_stream_events_forward(self, stream_id, start_position, count):
     queue = deque()
     on_success = lambda x: queue.append(self._sync_success(list(reversed(x))))
@@ -333,6 +325,14 @@ class ClientAPI():
       return result.response
     else:
       raise result.response
+
+  def read_stream_events_forward_async(self, stream_id, start_position, count, on_success = None, on_failed = None):
+      new_start_position = start_position+count-1
+      if new_start_position > sys.maxint:
+          count -= (new_start_position-sys.maxint)
+          new_start_position = sys.maxint
+
+      self._start_read_stream_events_backward_async(stream_id, int(new_start_position), int(count), on_success, on_failed)
 
 
 
