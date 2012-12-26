@@ -1,9 +1,8 @@
 import sys, os
-sys.path.append(os.path.dirname(__file__)+"\\ClientAPI")
 from ClientAPI import *
 from Event import *
 
-es_client = ClientAPI(ip_address = "http://172.25.21.88")
+es_client = ClientAPI(ip_address = "127.0.0.2")
 projections = es_client.projections
 stream_id = "chat-1"
 es_client.create_stream(stream_id)

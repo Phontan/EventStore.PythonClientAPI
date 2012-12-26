@@ -30,10 +30,12 @@ class ClientAPI():
     self.projections = Projections(ip_address, port)
 
 
+
   def resume(self):
     IOLoop.instance().stop()
   def wait(self):
     IOLoop.instance().start()
+
 
 
   def _sync_success(self, response):
@@ -45,8 +47,6 @@ class ClientAPI():
     response = SyncResponse(False, response)
     return response
 
-
-########################################################################################################################
 
 
   def create_stream(self, stream_id, metadata=""):
@@ -124,7 +124,7 @@ class ClientAPI():
     queue = deque()
     on_success = lambda x: queue.append(self._sync_success(x))
     on_failed = lambda x: queue.append(self._sync_failed(x))
-    self.append_to_stream_async(stream_id, events,expected_version, on_success, on_failed)
+    self.append_to_stream_async(stream_id, events, expected_version, on_success, on_failed)
     self.wait()
     result = queue.popleft()
     if result.success:
@@ -178,7 +178,7 @@ class ClientAPI():
 
   def _start_read_event(self,stream_id, event_number, on_success, on_failed):
     Ensure.is_not_empty_string(stream_id, "stream_id")
-    Ensure.is_greater_number_then(0,event_number, "event_number")
+    Ensure.is_greater_equal_number_then(0,event_number, "event_number")
     Ensure.is_function(on_success, "on_success")
     Ensure.is_function(on_failed, "on_failed")
 
@@ -216,8 +216,8 @@ class ClientAPI():
 
   def _start_read_stream_events_backward(self, stream_id, start_position, count, on_success, on_failed):
     Ensure.is_not_empty_string(stream_id, "stream_id")
-    Ensure.is_greater_number_then(-1,start_position, "start_position")
-    Ensure.is_greater_number_then(1, count, "count")
+    Ensure.is_greater_equal_number_then(-1,start_position, "start_position")
+    Ensure.is_greater_equal_number_then(1, count, "count")
     Ensure.is_function(on_success, "on_success")
     Ensure.is_function(on_failed, "on_failed")
 
@@ -238,13 +238,13 @@ class ClientAPI():
       return
     if params.batch_counter < params.count:
       if params.count < params.batch_counter + self._read_batch_size:
-        params.batch_langth = params.count - params.batch_counter
+        params.batch_length = params.count - params.batch_counter
       else :
-        params.batch_langth = self._read_batch_size
+        params.batch_length = self._read_batch_size
       url = self._base_url + "/streams/{0}/range/{1}/{2}".format(
           params.stream_id,
           str(params.start_position-params.batch_counter),
-          str(params.batch_langth))
+          str(params.batch_length))
       params.batch_counter+=self._read_batch_size
       self._tornado_http_sender.send_async(url, "GET", self._headers, None,
           lambda x: self.read_stream_events_backward_async_callback(x, params, on_success, on_failed))
@@ -269,14 +269,11 @@ class ClientAPI():
       for uri in response["entries"]:
         url = uri["links"]
         for ur in url:
-          try:
             if ur["type"] == "application/json":
               url = ur["uri"]
               self._tornado_http_sender.send_async(url, "GET", self._headers, None,
                   lambda x: self._event_read_callback(x, params,batch_events, on_success, on_failed,len(response["entries"])))
               break
-          except:
-            continue
     except:
       on_failed(FailedAnswer(response.code, "Error occur while process batch: " + response.error.message))
       return
@@ -356,7 +353,7 @@ class ClientAPI():
   def _start_read_all_events_backward(self, prepare_position, commit_position, count, on_success, on_failed):
     Ensure.is_number(prepare_position, "prepare_position")
     Ensure.is_number(commit_position, "commit_position")
-    Ensure.is_greater_number_then(1, count, "count")
+    Ensure.is_greater_equal_number_then(1, count, "count")
     Ensure.is_function(on_success, "on_success")
     Ensure.is_function(on_failed, "on_failed")
 
@@ -377,10 +374,10 @@ class ClientAPI():
     if params.batch_counter < params.count:
       hexStartPosition = self._convert_to_hex(params.prepare_position) + self._convert_to_hex(params.commit_position)
       if params.count < params.batch_counter + self._read_batch_size:
-        params.batch_langth = params.count - params.batch_counter
+        params.batch_length = params.count - params.batch_counter
       else :
-        params.batch_langth = self._read_batch_size
-      url = "{0}/streams/$all/before/{1}/{2}".format(self._base_url, hexStartPosition, str(params.batch_langth))
+        params.batch_length = self._read_batch_size
+      url = "{0}/streams/$all/before/{1}/{2}".format(self._base_url, hexStartPosition, str(params.batch_length))
       params.batch_counter+=self._read_batch_size
       self._tornado_http_sender.send_async(url, "GET", self._headers, None,
           lambda x: self._read_all_events_backward_page_callback(x, params, on_success, on_failed))
@@ -458,9 +455,9 @@ class ClientAPI():
       self._start_read_all_events_forward(prepare_position, commit_position, count, on_success, on_failed)
 
   def _start_read_all_events_forward(self, prepare_position, commit_position, count, on_success, on_failed):
-    Ensure.is_greater_number_then(-1, prepare_position, "prepare_position")
-    Ensure.is_greater_number_then(-1, commit_position, "commit_position")
-    Ensure.is_greater_number_then(1, count, "count")
+    Ensure.is_greater_equal_number_then(-1, prepare_position, "prepare_position")
+    Ensure.is_greater_equal_number_then(-1, commit_position, "commit_position")
+    Ensure.is_greater_equal_number_then(1, count, "count")
     Ensure.is_function(on_success, "on_success")
     Ensure.is_function(on_failed, "on_failed")
 
@@ -475,16 +472,16 @@ class ClientAPI():
     self._read_batch_all_events_forward(params, on_success, on_failed)
 
   def _read_batch_all_events_forward(self, params, on_success, on_failed, events_count=None):
-    if events_count!=None and events_count<self._read_batch_size:
+    if events_count is not None and events_count<self._read_batch_size:
       on_success(AllEventsAnswer(params.events, params.prepare_position, params.commit_position))
       return
     if params.batch_counter<params.count:
       hexStartPosition = self._convert_to_hex(params.prepare_position) + self._convert_to_hex(params.commit_position)
       if params.batch_counter+self._read_batch_size>params.count:
-        params.batch_langth = params.count - params.batch_counter
+        params.batch_length = params.count - params.batch_counter
       else :
-        params.batch_langth = self._read_batch_size
-      url = "{0}/streams/$all/after/{1}/{2}".format(self._base_url, hexStartPosition, str(params.batch_langth))
+        params.batch_length = self._read_batch_size
+      url = "{0}/streams/$all/after/{1}/{2}".format(self._base_url, hexStartPosition, str(params.batch_length))
       params.batch_counter+=self._read_batch_size
       self._tornado_http_sender.send_async(url, "GET", self._headers, None, lambda x: \
       self._read_all_events_forward_page_callback(x, params, on_success, on_failed))

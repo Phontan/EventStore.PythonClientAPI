@@ -15,10 +15,10 @@ def is_number(obj, arg):
     if type(obj)!= int:
         raise TypeError(arg +" should be integer(not {0}".format(obj))
 
-def is_greater_number_then(number, obj, arg):
+def is_greater_equal_number_then(constrain, obj, arg):
     is_number(obj, arg)
-    if obj<number:
-        raise TypeError("{0} cannot be less than {1}".format(arg, number))
+    if obj<constrain:
+        raise TypeError("{0} cannot be less than {1}".format(arg, constrain))
 
 def is_bool(obj, arg):
     if type(obj) is not bool:

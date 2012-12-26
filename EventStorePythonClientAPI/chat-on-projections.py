@@ -1,6 +1,4 @@
 import sys, os
-
-sys.path.append(os.path.dirname(__file__)+"\\ClientAPI")
 from ClientAPI import *
 from Event import *
 import msvcrt
@@ -9,7 +7,7 @@ def call_back(response):
     print ''
     print response["data"]
 
-es_client = ClientAPI(ip_address = "http://172.25.21.88")
+es_client = ClientAPI(ip_address = "127.0.0.1")
 projections = es_client.projections
 stream_id = "chat-1"
 print "Enter your name:"
