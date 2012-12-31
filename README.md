@@ -21,4 +21,3 @@ sync mode, so it easy to use it. To write events you should use WriteEvent class
 Only data field is required. If you are reading events, clientAPI will return you ReadEvent object,
 or list of ReadEvent objects.
 
-4. Simple usage
