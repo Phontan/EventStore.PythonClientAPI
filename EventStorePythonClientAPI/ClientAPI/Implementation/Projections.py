@@ -6,8 +6,8 @@ from SyncResponse import *
 from AsyncRequestSender import TornadoHttpSender
 
 class Projections:
-    def __init__(self, ip_address="http://127.0.0.1", port = 2113):
-        self._base_url = ip_address+":"+str(port)
+    def __init__(self, ip_address="127.0.0.1", port = 2113):
+        self._base_url = "http://"+ip_address+":"+str(port)
         self._headers = {"content-type" : "application/json", "accept" : "application/json", "extensions" : "json"}
         self._tornado_http_sender = TornadoHttpSender()
 
@@ -86,11 +86,11 @@ class Projections:
 
 
 
-    def projections(self):
+    def get_projections(self):
         queue = deque()
         on_success = lambda x: queue.append(self._sync_success(x))
         on_failed = lambda x: queue.append(self._sync_failed(x))
-        self._start_projections_async(on_success, on_failed)
+        self._start_get_projections_async(on_success, on_failed)
         self.wait()
         result = queue.popleft()
         if result.success:
@@ -98,15 +98,15 @@ class Projections:
         else:
             raise result.response
 
-    def _start_projections_async(self, on_success, on_failed):
+    def _start_get_projections_async(self, on_success, on_failed):
         Ensure.is_function(on_success, "on_success")
         Ensure.is_function(on_failed, "on_failed")
 
         url = "{0}/projections".format(self._base_url)
         self._tornado_http_sender.send_async(url, "GET", self._headers, None,
-            lambda s: self._on_projections(s, on_success, on_failed))
+            lambda s: self._on_get_projections(s, on_success, on_failed))
 
-    def _on_projections(self, response, on_success, on_failed):
+    def _on_get_projections(self, response, on_success, on_failed):
         if response.code == 200:
             on_success(json.loads(response.message))
             return

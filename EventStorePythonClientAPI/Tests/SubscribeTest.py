@@ -11,7 +11,7 @@ class SubscribeTest(unittest.TestCase):
             events = []
             for i in range(write_events_count):
                 event_id = stream_id+"_data_"+str(i)
-                events.append(Event(event_id,""))
+                events.append(WriteEvent(event_id,""))
             self.client.subscribe(stream_id, lambda s: self.assertEquals(s, events[0]))
             self.client.append_to_stream(stream_id, events)
             time.sleep(2)
@@ -28,8 +28,8 @@ class SubscribeTest(unittest.TestCase):
             events = []
             for i in range(write_events_count):
                 event_id = stream_id1+"_data_"+str(i)
-                events.append(Event(event_id,""))
-            self.client.subscribe(stream_id1, lambda s: self.assertEquals(s, events[0]))
+                events.append(WriteEvent(event_id,""))
+            self.client.subscribe(stream_id1, lambda s: self.assertEquals(s.data, events[0].data))
             self.client.append_to_stream(stream_id1, events)
 
             time.sleep(3)
@@ -40,8 +40,8 @@ class SubscribeTest(unittest.TestCase):
             events = []
             for i in range(write_events_count):
                 event_id = stream_id2+"_data_"+str(i)
-                events.append(Event(event_id,""))
-            self.client.subscribe(stream_id2, lambda s: self.assertEquals(s, events[0]))
+                events.append(WriteEvent(event_id,""))
+            self.client.subscribe(stream_id2, lambda s: self.assertEquals(s.data, events[0].data))
             self.client.append_to_stream(stream_id2, events)
 
             self.client.unsubscribe(stream_id1)

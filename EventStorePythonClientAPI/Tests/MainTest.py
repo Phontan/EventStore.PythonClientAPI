@@ -5,9 +5,9 @@ from ReadEventTest import *
 from ReadStreamEventsBackwardTest import *
 from ReadStreamEventsForwardTest import *
 from ReadAllEventsBackwardTest import *
-#from ReadAllEventsForwardTest import *
-from SubscribeAllTest import *
+from ReadAllEventsForwardTest import *
 from SubscribeTest import *
+from SubscribeAllTest import *
 import subprocess
 import sys
 

@@ -1,12 +1,11 @@
-import sys, os
-
-from ClientAPI import *
-from Event import *
+import sys
+from ClientAPI.ClientAPI import *
+from ClientAPI.Event import *
 import msvcrt
 
 def call_back(response):
     print""
-    print "user say: ", response["data"]
+    print "user say: ", response.data
 
 num = 0
 done = False
@@ -21,5 +20,5 @@ while not done:
             sys.stdout.write(temp)
             message+=temp
         else:
-            es_client.append_to_stream_async(stream_id, Event(message))
+            es_client.append_to_stream_async(stream_id, WriteEvent(message))
             message=""

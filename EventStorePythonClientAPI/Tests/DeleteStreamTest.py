@@ -2,7 +2,7 @@ from libs import *
 import uuid
 
 class DeleteStreamTest(unittest.TestCase):
-    __client = ClientAPI();
+    __client = ClientAPI()
 
     def test_delete_stream(self):
         stream_id = "DeleteStreamTest_test_delete_stream_stream_id"

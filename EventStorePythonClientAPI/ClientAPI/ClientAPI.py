@@ -15,6 +15,7 @@ from Implementation.Body.DeleteStreamRequestBody import DeleteStreamRequestBody
 from Implementation.Body.AppendToStreamRequestBody import AppendToStreamRequestBody
 from Implementation.ReturnClasses.FailedAnswer import FailedAnswer
 from Implementation.ReturnClasses.AllEventsAnswer import AllEventsAnswer
+from Event import ReadEvent
 
 
 class ClientAPI():
@@ -193,7 +194,7 @@ class ClientAPI():
       return
     responseContent = response.body
     event = json.loads(responseContent)
-    on_success(event)
+    on_success(self._json_to_event(event))
 
 
 
@@ -241,17 +242,17 @@ class ClientAPI():
         params.batch_length = params.count - params.batch_counter
       else :
         params.batch_length = self._read_batch_size
-      url = self._base_url + "/streams/{0}/range/{1}/{2}".format(
+      url = self._base_url + "/streams/{0}/range/{1}/{2}?format=json".format(
           params.stream_id,
           str(params.start_position-params.batch_counter),
           str(params.batch_length))
       params.batch_counter+=self._read_batch_size
       self._tornado_http_sender.send_async(url, "GET", self._headers, None,
-          lambda x: self.read_stream_events_backward_async_callback(x, params, on_success, on_failed))
+          lambda x: self._read_stream_events_backward_async_callback(x, params, on_success, on_failed))
     else:
       on_success(params.events)
 
-  def read_stream_events_backward_async_callback(self, response, params, on_success, on_failed):
+  def _read_stream_events_backward_async_callback(self, response, params, on_success, on_failed):
     if response.code!=200:
       on_failed(FailedAnswer(response.code, "Error occur while reading batch: " + response.error.message))
       return
@@ -269,6 +270,8 @@ class ClientAPI():
       for uri in response["entries"]:
         url = uri["links"]
         for ur in url:
+            if "type" not in ur:
+                continue
             if ur["type"] == "application/json":
               url = ur["uri"]
               self._tornado_http_sender.send_async(url, "GET", self._headers, None,
@@ -300,9 +303,10 @@ class ClientAPI():
       on_failed(FailedAnswer(response.code, response.error.message))
       return
     try:
-      batch_events.append(json.loads(response.body))
+      event = json.loads(response.body)
+      batch_events.append(self._json_to_event(event))
       if len(batch_events)==events_count:
-          batch_events = sorted(batch_events, key=lambda ev: ev["eventNumber"], reverse=True)
+          batch_events = sorted(batch_events, key=lambda ev: ev.event_number, reverse=True)
           params.events+=batch_events
           self._read_batch_events_backward(params, on_success, on_failed, events_count)
     except:
@@ -399,9 +403,10 @@ class ClientAPI():
         else:
           self._start_read_all_events_backward(-1,-1, params.count, on_success, on_failed)
         return
-      events_count=len(body["entries"])
-      batch_events = {}
-      url_number_dictionary = {}
+      params.events_count=len(body["entries"])
+      params.events_count_in_current_butch = len(body["entries"])
+      params.batch_events = {}
+      params.url_number_dictionary = {}
       event_number = 0
       for uri in body["entries"]:
         url = uri["links"]
@@ -409,10 +414,10 @@ class ClientAPI():
           try:
             if ur["type"] == "application/json":
               url = ur["uri"]
-              url_number_dictionary[url] = event_number
+              params.url_number_dictionary[url] = event_number
               event_number+=1
               self._tornado_http_sender.send_async(url, "GET", self._headers, None,
-                  lambda x: self._read_all_events_backward_callback(x, params, batch_events, on_success, on_failed,events_count, url_number_dictionary))
+                  lambda x: self._read_all_events_backward_callback(x, params, on_success, on_failed))
               break
           except:
             continue
@@ -420,20 +425,31 @@ class ClientAPI():
       on_failed(FailedAnswer(response.code,response.error.message))
       return
 
-  def _read_all_events_backward_callback(self, response, params, batch_events, on_success, on_failed, events_count, url_number_dictionary):
-    if response.code!=200:
-      on_failed(FailedAnswer(response.code, response.error.message))
-      return
-    try:
-      batch_events[url_number_dictionary[response.request.url]]=json.loads(response.body)
-      if len(batch_events)==events_count:
-        i = 0
-        while i<events_count:
-          params.events.append(batch_events[i])
-          i+=1
-        self._read_batch_all_events_backward(params, on_success, on_failed, events_count)
-    except:
-      on_failed(FailedAnswer(response.code,"Error occure while reading event: "+response.error.message))
+  def _read_all_events_backward_callback(self, response, params, on_success, on_failed):
+      is_failed = True
+      if response.code == 410:
+          is_failed = False
+          params.events_count_in_current_butch-=1
+      elif response.code == 200:
+          is_failed = False
+          try:
+              event = json.loads(response.body)
+              params.batch_events[params.url_number_dictionary[response.request.url]]= self._json_to_event(event)
+          except:
+              on_failed(FailedAnswer(response.code, "Error occure while reading event: " + response.error.message))
+              return
+      if len(params.batch_events)==params.events_count_in_current_butch:
+          i = 0
+          while i<params.events_count:
+              try:
+                  params.events.append(params.batch_events[i])
+              except:
+                  self._do_nothing(i)
+              i+=1
+          self._read_batch_all_events_backward(params, on_success, on_failed, params.events_count)
+          return
+      if is_failed:
+          on_failed(FailedAnswer(response.code,"Error occure while reading event: "+response.error.message))
 
 
 
@@ -496,12 +512,13 @@ class ClientAPI():
     params.prepare_position = self._get_prepare_position(body["links"][3]["uri"])
     params.commit_position = self._get_commit_position(body["links"][3]["uri"])
     try:
-      if body["entries"] == []:
+      if not body["entries"]:
         on_success(AllEventsAnswer(params.events, params.prepare_position, params.commit_position ))
         return
-      events_count=len(body["entries"])
-      batch_events = {}
-      url_number_dictionary = {}
+      params.events_count=len(body["entries"])
+      params.events_count_in_current_butch = len(body["entries"])
+      params.batch_events = {}
+      params.url_number_dictionary = {}
       event_number = 0
       for uri in body["entries"]:
         url = uri["links"]
@@ -509,10 +526,10 @@ class ClientAPI():
           try:
             if ur["type"] == "application/json":
               url = ur["uri"]
-              url_number_dictionary[url] = event_number
+              params.url_number_dictionary[url] = event_number
               event_number+=1
               self._tornado_http_sender.send_async(url, "GET", self._headers, None,
-                  lambda x: self._read_all_events_forward_callback(x, params, batch_events, on_success, on_failed,events_count, url_number_dictionary))
+                  lambda x: self._read_all_events_forward_callback(x, params, on_success, on_failed))
               break
           except:
             continue
@@ -520,21 +537,31 @@ class ClientAPI():
       on_failed(FailedAnswer(response.code,response.error.message))
       return
 
-  def _read_all_events_forward_callback(self, response, params, batch_events, on_success, on_failed,events_count, url_number_dictionary):
-    if response.code !=200:
-      on_failed(FailedAnswer(response.code,response.error.message))
-      return
-    try:
-
-      batch_events[url_number_dictionary[response.request.url]]=json.loads(response.body)
-      if len(batch_events)==events_count:
-        i = events_count-1
+  def _read_all_events_forward_callback(self, response, params, on_success, on_failed):
+    is_failed = True
+    if response.code == 410:
+        is_failed  = False
+        params.events_count_in_current_butch-=1
+    elif response.code == 200:
+        is_failed  = False
+        try:
+            event = json.loads(response.body)
+            params.batch_events[params.url_number_dictionary[response.request.url]]= self._json_to_event(event)
+        except:
+            on_failed(FailedAnswer(response.code, "Error occure while reading event: " + response.error.message))
+            return
+    if len(params.batch_events)==params.events_count_in_current_butch:
+        i = params.events_count-1
         while i>=0:
-          params.events.append(batch_events[i])
-          i-=1
-        self._read_batch_all_events_forward(params, on_success, on_failed, events_count)
-    except:
-      on_failed(FailedAnswer(response.code, "Error occure while reading event: " + response.error.message))
+            try:
+                params.events.append(params.batch_events[i])
+            except:
+                self._do_nothing(i)
+            i-=1
+        self._read_batch_all_events_forward(params, on_success, on_failed, params.events_count)
+        return
+    if is_failed:
+        on_failed(FailedAnswer(response.code, "Error occure while reading event: " + response.error.message))
 
 
 
@@ -568,7 +595,6 @@ class ClientAPI():
       if len(self._subscribers)>0:
         processed_streams=0
         for i in range(len(self._subscribers)):
-            #print "in handle subscribes. streamId is {0}, start position is {1}, events count is ".format(self._subscribers[i].stream_id, self._subscribers[i].last_position, sys.maxint)
             self.read_stream_events_forward_async(self._subscribers[i].stream_id, self._subscribers[i].last_position, sys.maxint,
                 lambda s: self._handle_subscribers_success(s, len(self._subscribers), processed_streams, i),
                 lambda s: self._handle_subscribers_failed(len(self._subscribers), processed_streams))
@@ -629,9 +655,13 @@ class ClientAPI():
   def _get_stream_event_position(self,stream_id):
     try:
         events = self.read_stream_events_backward(stream_id, -1, 1)
-        return int(events[0]["eventNumber"])
+        return int(events[0].event_number)
     except:
         return 0
 
   def _do_nothing(self, x):
       a=0
+
+  def _json_to_event(self, json):
+      event = ReadEvent(json["data"], json["metadata"], json["eventType"], json["eventNumber"], )
+      return event

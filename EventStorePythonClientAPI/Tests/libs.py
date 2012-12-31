@@ -1,8 +1,7 @@
 import os
 import time
 import sys
-#sys.path.append(os.path.dirname(__file__)+"\\..\\ClientAPI")
-from ClientAPI import *
-from Event import *
+from ClientAPI.ClientAPI import *
+from ClientAPI.Event import *
 import unittest
 
