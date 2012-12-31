@@ -12,9 +12,13 @@ You can easy create, delete streams, write reade events in all orders, from spec
 Also clientAPI has progections methods. Just use property projections in clientAPI, and you can easy use
 post, get, enable, disable and many other options of projections.
 
-3.Implementation
+3. Implementation
 To implement ClientAPI we choese http protocol. We use http tornado client as one of the fastest 
 http python libs. We have sync and async modes for most methods. If you want wait answer on your async method
 you must start ioloop(we have method wait() in clientAPI), and stop it after responce come(we also have 
 method resume() in clientAPI). Dont forget call resume, because ioloop locks your thread. Projections have only
-sync mode, so it easy to use it.
+sync mode, so it easy to use it. To write events you should use WriteEvent class from file Event. 
+Only data field is required. If you are reading events, clientAPI will return you ReadEvent object,
+or list of ReadEvent objects.
+
+4. Simple usage
