@@ -9,8 +9,8 @@ Simply client for EventStore(https://github.com/EventStore/EventStore).
 <h4>Short description.</h4><p> СlientAPI is a python http client for Event Store(https://github.com/EventStore/EventStore). 
 It contains the necessary Event Store options, allows you to feel flexibility of EventStore. 
 You can easy create, delete streams, write, read events in all orders, from special stream or from all.
-Also ClientAPI supports projections. Just use property projections in ClientAPI and you can easy use
-post, get, enable, disable and other options.
+Also ClientAPI supports projections. Just use property projections in ClientAPI and you can easy
+post, get, enable, disable projection.
 
 <h4>Installation.</h4><p>
 <ul><li>Install tornado web server(http://pypi.python.org/pypi/tornado)</li>
@@ -28,8 +28,8 @@ Only <i>data</i> field is required. If you are reading events, clientAPI will re
 or list of <i>ReadEvent</i> objects.
 
 <h4>Functionality description.</h4><p> As I wrote above, we have sync and async modes. If your operation is success,
-sync mode return you some answer, and async mode calls your <i>on_success</i> callback. If your operation failed,
-sync mode throws an exceprion, and async calls your <i>on_failed</i> callback. If you pass some not expected arguments 
+sync mode return to you some answer, and async mode calls your <i>on_success</i> callback. If your operation failed,
+sync mode throws an exception, and async calls your <i>on_failed</i> callback. If you pass some not expected arguments 
 both modes throws error.<p>
 To create stream in Event Store use <i>create_stream or create_stream_async</i> method from ClientAPI.<br>
 <i>create_stream(stream_id, metadata="")</i>:<br>
