@@ -2,27 +2,27 @@ EventStore.PythonClientAPI
 ==========================
 Simply client for EventStore(https://github.com/EventStore/EventStore).
 
-1. Installation 
-To install Client API just go to EventStorePythonClientAPI in console and write python setup.py install
-Note that tornado web server are required for this product(http://www.tornadoweb.org/).
 
-2. Short Description 
-ClientAPI allow you to feel flexibility of EventStore. It contains the necessary EventStore options. 
+1. Short description. СlientAPI is a python http client for Event Store(https://github.com/EventStore/EventStore). 
+It allow you to feel flexibility of EventStore. It contains the necessary Event Store options. 
 You can easy create, delete streams, write reade events in all orders, from special stream of from all.
-Also clientAPI has progections methods. Just use property projections in clientAPI, and you can easy use
+Also clientAPI has projections methods. Just use property projections in clientAPI, and you can easy use
 post, get, enable, disable and many other options of projections.
 
-3. Implementation
-To implement ClientAPI we choese http protocol. We use http tornado client as one of the fastest 
-http python libs. We have sync and async modes for most methods. If you want wait answer on your async method
-you must start ioloop(we have method wait() in clientAPI), and stop it after responce come(we also have 
-method resume() in clientAPI). Dont forget call resume, because ioloop locks your thread. Projections have only
-sync mode, so it easy to use it. To write events you should use WriteEvent class from file Event. 
+2. Installation. To install Client API just go to EventStorePythonClientAPI in console and write python setup.py install.
+Note that tornado web server is required for this product(http://www.tornadoweb.org/).
+
+3. Implementation. To implement ClientAPI we choese http protocol. We use http tornado client as one of the fastest 
+python http libs. We have sync and async modes for almost all methods. If you want wait answer on your async method
+you must call method wait() from ClientAPI, and call resume() after responce come. Dont forget call resume, because method start() locks your thread, what makes async methods dangerous to use.
+Projections have only sync mode, so it easy to use it. To write events you should use WriteEvent class from file Event. 
 Only data field is required. If you are reading events, clientAPI will return you ReadEvent object,
 or list of ReadEvent objects.
 
-4. Functionality description
-To create stream in Event Store use create_stream or create_stream_async method from ClientAPI.
+4. Functionality description. As I wrote above, we have sync and async modes. The difference is that sync mode returns you answer, if success, 
+and throws error if failed. And async mode calls your callbacks. If you pass some not expected arguments, async mode also throws error.
+
+  To create stream in Event Store use create_stream or create_stream_async method from ClientAPI.
 create_stream(stream_id, metadata="")
 stream_id should be type of string object. Metadata is not required argument, and by default is empty string.
 This method does not return value if operation is success and throws an exception if operation failed.
