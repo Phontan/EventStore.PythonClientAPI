@@ -45,7 +45,7 @@ is or one instanse of object <i>Event.WriteEvent</i>, or list of these objects. 
 event_id = None, event_type=None, is_json = False.<p>
 To read one event use method <i>read_event(stream_id, event_number)</i> or 
 <i>read_event_async(self,stream_id, event_number, on_success = None, on_failed = None)</i>.
-If reading success, this methods return <i>ReadEvent</i> object, with fields data, metadata, event_type and event_number.<p>
+If reading is successful, this methods return <i>ReadEvent</i> object, with fields data, metadata, event_type and event_number.<p>
 You can easy read stream events in different orders. Just use one of methods:<br>
 <i>read_stream_events_backward(stream_id, start_position, count)</i><br>
 <i>read_stream_events_backward_async(stream_id, start_position, count, on_success = None, on_failed = None)</i><br>
