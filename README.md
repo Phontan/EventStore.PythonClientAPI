@@ -27,35 +27,28 @@ Projections have only sync mode, so it easy to use it. To write events you shoul
 Only <i>data</i> field is required. If you are reading events, clientAPI will return you <i>ReadEvent</i> object,
 or list of <i>ReadEvent</i> objects.
 
-<h4>Functionality description.</h4><p> As I wrote above, we have sync and async modes. If your operation is success,
-sync mode return to you some answer, and async mode calls your <i>on_success</i> callback. If your operation failed,
+<h4>Functionality description.</h4><p> As I wrote above, we have sync and async modes. If your operation is successful,
+sync mode returns to you some answer, and async mode calls your <i>on_success</i> callback. If your operation failed,
 sync mode throws an exception, and async calls your <i>on_failed</i> callback. If you pass some not expected arguments 
 both modes throws error.<p>
-To create stream in Event Store use <i>create_stream or create_stream_async</i> method from ClientAPI.<br>
+To create stream in Event Store use <i>create_stream</i> method from ClientAPI.<br>
 <i>create_stream(stream_id, metadata="")</i>:<br>
 Here stream_id should be type of string object. Metadata is not required argument, and by default is empty string.
-<i>create_stream_async(stream_id, metadata="", on_success = None, on_failed = None):</i>
-This method have two additional arguments. On success and on failed can be functions with one argument, or lambdas.<p>
-To delete stream from Event Store use <i>delete_stream</i> and <i>delete_stream_async</i> methods.<br>
-<i>delete_stream(stream_id, expected_version=-2)</i> and <i>delete_stream_async(stream_id, expected_version=-2, on_success = None, on_failed = None)</i>
-works in same way as <i>create_stream</i> and <i>create_stream_async</i>.<p>
-If you want to push events in the stream use <i>append_to_stream(stream_id, events, expected_version=-2)</i> and
-<i>append_to_stream_async(stream_id, events, expected_version=-2, on_success = None, on_failed = None)</i>, where <i>events</i> 
+To delete stream from Event Store use <i>delete_stream</i> method.<br>
+<i>delete_stream(stream_id, expected_version=-2)</i> works in same way as <i>create_stream</i>.<p>
+If you want to push events in the stream use <i>append_to_stream(stream_id, events, expected_version=-2)</i>, where <i>events</i> 
 is or one instanse of object <i>Event.WriteEvent</i>, or list of these objects. Class WriteEvent has fields data, metadata="", 
 event_id = None, event_type=None, is_json = False.<p>
-To read one event use method <i>read_event(stream_id, event_number)</i> or 
-<i>read_event_async(self,stream_id, event_number, on_success = None, on_failed = None)</i>.
+To read one event use method <i>read_event(stream_id, event_number)</i>.
 If reading is successful, this methods return <i>ReadEvent</i> object, with fields data, metadata, event_type and event_number.<p>
 You can easy read stream events in different orders. Just use one of methods:<br>
 <i>read_stream_events_backward(stream_id, start_position, count)</i><br>
-<i>read_stream_events_backward_async(stream_id, start_position, count, on_success = None, on_failed = None)</i><br>
 <i>read_stream_events_forward(stream_id, start_position, count)</i><br>
-<i>read_stream_events_forward_async(stream_id, start_position, count, on_success = None, on_failed = None)</i>.<br>
 These methods returns you list of <i>ReadEvent</i> objects.<p>
 To read from all use following:<br>
 <i>read_all_events_backward(prepare_position, commit_position, count)</i><br>
-<i>read_all_events_backward_async(prepare_position, commit_position, count, on_success = None, on_failed = None)</i><br>
 <i>read_all_events_forward(prepare_position, commit_position, count)</i><br>
-<i>read_all_events_forward_async(prepare_position, commit_position, count, on_success = None, on_failed = None)</i>.<br>
 These methods return you object, with fields <i>prepare_position</i>, <i>commit_position</i> and <i>events</i>, where events - list
-of <i>ReadEvent</i> objects.
+of <i>ReadEvent</i> objects.<b>
+All methods discribed above have asyncronus mode: method name ends with _async, and have two additional arguments(on_success and on_failed).
+This two arguments should be functions with one argument, or lambdas.
