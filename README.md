@@ -1,12 +1,12 @@
 EventStore.PythonClientAPI
 ==========================
 Simply client for EventStore(https://github.com/EventStore/EventStore).
-<ul><li>Short description</li>
+<ul><li><a href="#1">Short description</a></li>
 <li>Installation</li>
 <li>Implementation</li>
 <li>Functionality description</li></ul>
 
-1. <b>Short description.</b><p> СlientAPI is a python http client for Event Store(https://github.com/EventStore/EventStore). 
+1. <b><a id="1">Short description.</a></b><p> СlientAPI is a python http client for Event Store(https://github.com/EventStore/EventStore). 
 It allow you to feel flexibility of EventStore. It contains the necessary Event Store options. 
 You can easy create, delete streams, write reade events in all orders, from special stream of from all.
 Also clientAPI has projections methods. Just use property projections in clientAPI, and you can easy use
