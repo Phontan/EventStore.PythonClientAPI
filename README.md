@@ -49,6 +49,6 @@ To read from all use following:<br>
 <i>read_all_events_backward(prepare_position, commit_position, count)</i><br>
 <i>read_all_events_forward(prepare_position, commit_position, count)</i><br>
 These methods return you object, with fields <i>prepare_position</i>, <i>commit_position</i> and <i>events</i>, where events - list
-of <i>ReadEvent</i> objects.<b>
+of <i>ReadEvent</i> objects.<br>
 All methods discribed above have asyncronus mode: method name ends with _async, and have two additional arguments(on_success and on_failed).
 This two arguments should be functions with one argument, or lambdas.
