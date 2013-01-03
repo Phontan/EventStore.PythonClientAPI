@@ -2,7 +2,7 @@ EventStore.PythonClientAPI
 ==========================
 Simply client for EventStore(https://github.com/EventStore/EventStore).
 <ul><li><a href="#short-description">Short description</a></li>
-<li><a href="#nstallation">Installation</a></li>
+<li><a href="#installation">Installation</a></li>
 <li><a href="#implementation">Implementation</a></li>
 <li><a href="#functionality-description">Functionality description</a></li></ul>
 
