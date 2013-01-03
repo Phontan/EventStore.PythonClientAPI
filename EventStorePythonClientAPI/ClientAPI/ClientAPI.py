@@ -69,7 +69,6 @@ class ClientAPI():
 
   def _start_create_stream(self, stream_id, metadata, on_success, on_failed):
     Ensure.is_not_empty_string(stream_id, "stream_id")
-    Ensure.is_string(metadata, "metadata")
     Ensure.is_function(on_success, "on_success")
     Ensure.is_function(on_failed, "on_failed")
     body = to_json(CreateStreamRequestBody(stream_id, metadata))
@@ -121,7 +120,7 @@ class ClientAPI():
 
 
 
-  def append_to_stream(self,stream_id, events, expected_version=-2):
+  def append_to_stream(self, stream_id, events, expected_version=-2):
     queue = deque()
     on_success = lambda x: queue.append(self._sync_success(x))
     on_failed = lambda x: queue.append(self._sync_failed(x))
@@ -133,7 +132,7 @@ class ClientAPI():
     else:
       raise result.response
 
-  def append_to_stream_async(self,stream_id, events, expected_version=-2, on_success = None, on_failed = None):
+  def append_to_stream_async(self, stream_id, events, expected_version=-2, on_success = None, on_failed = None):
       if on_success is None: on_success = lambda x: self._do_nothing(x)
       if on_failed is None: on_failed = lambda x: self._do_nothing(x)
       self._start_append_to_stream(stream_id, events, expected_version, on_success, on_failed)
@@ -278,8 +277,8 @@ class ClientAPI():
                   lambda x: self._event_read_callback(x, params,batch_events, on_success, on_failed,len(response["entries"])))
               break
     except:
-      on_failed(FailedAnswer(response.code, "Error occur while process batch: " + response.error.message))
-      return
+        on_failed(FailedAnswer(response, response))
+        return
 
   def _on_read_events_first_response_entries_empty(self, response, params, on_success, on_failed):
     if response.code!=200:
