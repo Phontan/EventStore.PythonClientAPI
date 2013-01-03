@@ -11,6 +11,6 @@ query = "fromStream('chat-1').when({'message': function(state,event) {return ['u
         ").emitStateUpdated();"
 try:
     projections.post_continuous(query, name, enabled = "1", emit = "1")
+    print "Started"
 except BaseException, ex:
     print "Not started: ", str(ex.message)
-print "Started"
