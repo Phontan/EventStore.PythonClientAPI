@@ -19,10 +19,12 @@ Current API is wrtten for Python 2.7 and tested on Windows 7 x64 and Ubuntu Linu
 but should work fine everywhere where Python 2.7 is supported.
 
 <h4>Installation</h4>
-<ul><li>Install tornado web server(http://pypi.python.org/pypi/tornado)</li>
-<li>Download zip from github(http://github.com/Phontan/EventStore.PythonClientAPI)</li>
+<ul>
+<li>Make sure you have Python 2.7 installed on your machine (or install it from here http://www.python.org/getit/ )</li>
+<li>Install tornado web server (http://pypi.python.org/pypi/tornado)</li>
+<li>Download PythonClientAPI zip from github (http://github.com/Phontan/EventStore.PythonClientAPI)</li>
 <li>Unpackage it and open console in this folder as admin(sudo).</li>
-<li>Write <i>python setup.py install</i></li></ul>
+<li>Run this code in python intepreter <i>setup.py install</i></li></ul>
 Now you can use ClientAPI. You can check if it works by typing <i>from ClientAPI import *</i>. 
 If there are no errors everything is fine.
 
