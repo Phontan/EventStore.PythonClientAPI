@@ -1,5 +1,5 @@
 import sys
-from ClientAPI.ClientAPI import *
+from ClientAPI.EventStoreClient import *
 from ClientAPI.Event import *
 import msvcrt
 
@@ -9,7 +9,7 @@ def call_back(response):
 
 num = 0
 done = False
-es_client = ClientAPI()
+es_client = Client()
 stream_id = "chat-3"
 es_client.subscribe(stream_id, call_back)
 message = ""

@@ -1,6 +1,6 @@
-from ClientAPI.ClientAPI import *
+from ClientAPI.EventStoreClient import *
 
-es_client = ClientAPI(ip_address = "127.0.0.1")
+es_client = Client(ip_address = "127.0.0.1")
 projections = es_client.projections
 stream_id = "chat-1"
 es_client.create_stream(stream_id)

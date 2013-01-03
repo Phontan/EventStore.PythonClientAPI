@@ -1,7 +1,7 @@
 from libs import *
 
 class ReadEventTest(unittest.TestCase):
-    __client = ClientAPI()
+    __client = Client()
 
     def test_read_event(self):
         stream_id = "ReadEventTest_test_read_event_stream_id"

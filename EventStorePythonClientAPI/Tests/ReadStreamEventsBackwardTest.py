@@ -1,7 +1,7 @@
 from libs import *
 
 class ReadStreamEventsBackwardTest(unittest.TestCase):
-    client = ClientAPI()
+    client = Client()
 
     def test_read_more_than_one_batch_from_last_position(self):
         stream_id = "ReadStreamEventsBackwardTest_test_read_more_than_one_batch_from_last_position_stream_id"

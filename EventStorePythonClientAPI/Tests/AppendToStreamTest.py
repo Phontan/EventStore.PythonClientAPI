@@ -1,7 +1,7 @@
 from libs import *
 
 class AppendToStreamTest(unittest.TestCase):
-    client = ClientAPI()
+    client = Client()
 
 
     def test_appent_events_to_stream(self):

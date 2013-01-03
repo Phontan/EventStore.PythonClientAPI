@@ -23,44 +23,10 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainTest.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Tests/MainTest.py">
+      <file leaf-file-name="setup.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/setup.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#0#30#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DeleteStreamTest.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tests/DeleteStreamTest.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="5" column="0" selection-start="102" selection-end="404" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-                <marker date="1357214790667" expanded="true" signature="103:404" placeholder="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ClientAPI.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ClientAPI/ClientAPI.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="110" column="27" selection-start="4409" selection-end="4409" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DeleteStreamRequestBody.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ClientAPI/Implementation/Body/DeleteStreamRequestBody.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="2" column="27" selection-start="100" selection-end="100" vertical-scroll-proportion="0.0">
+            <state line="4" column="22" selection-start="96" selection-end="96" vertical-scroll-proportion="0.078071184">
               <folding />
             </state>
           </provider>
@@ -76,22 +42,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
+        <option value="$PROJECT_DIR$/Tests/MainTest.py" />
+        <option value="$PROJECT_DIR$/ClientAPI/EventStoreClient.py" />
+        <option value="$PROJECT_DIR$/Tests/libs.py" />
+        <option value="$PROJECT_DIR$/Tests/AppendToStreamTest.py" />
+        <option value="$PROJECT_DIR$/Tests/CreateStreamTest.py" />
+        <option value="$PROJECT_DIR$/Tests/DeleteStreamTest.py" />
         <option value="$PROJECT_DIR$/Tests/ReadAllEventsBackwardTest.py" />
         <option value="$PROJECT_DIR$/Tests/ReadAllEventsForwardTest.py" />
-        <option value="$PROJECT_DIR$/Tests/CreateStreamTest.py" />
-        <option value="$PROJECT_DIR$/Tests/SubscribeAllTest.py" />
-        <option value="$PROJECT_DIR$/Demo/start-chat-projections.py" />
-        <option value="C:/Python27/Lib/site-packages/ClientAPI/Implementation/Projections.py" />
-        <option value="$PROJECT_DIR$/Tests/SubscribeTest.py" />
-        <option value="$PROJECT_DIR$/ClientAPI/Implementation/Projections.py" />
-        <option value="C:/Python27/Lib/site-packages/ClientAPI/ClientAPI.py" />
-        <option value="$PROJECT_DIR$/Demo/chat-without-pojections.py" />
-        <option value="$PROJECT_DIR$/Demo/chat-with-pojections.py" />
         <option value="$PROJECT_DIR$/Tests/ReadEventTest.py" />
-        <option value="$PROJECT_DIR$/ClientAPI/ClientAPI.py" />
-        <option value="$PROJECT_DIR$/ClientAPI/Implementation/Body/DeleteStreamRequestBody.py" />
-        <option value="$PROJECT_DIR$/Tests/DeleteStreamTest.py" />
-        <option value="$PROJECT_DIR$/Tests/MainTest.py" />
+        <option value="$PROJECT_DIR$/Tests/ReadStreamEventsBackwardTest.py" />
+        <option value="$PROJECT_DIR$/Tests/ReadStreamEventsForwardTest.py" />
+        <option value="$PROJECT_DIR$/Tests/SubscribeAllTest.py" />
+        <option value="$PROJECT_DIR$/Tests/SubscribeTest.py" />
+        <option value="$PROJECT_DIR$/Demo/chat-with-pojections.py" />
+        <option value="$PROJECT_DIR$/Demo/start-chat-projections.py" />
+        <option value="$PROJECT_DIR$/Demo/chat-without-pojections.py" />
       </list>
     </option>
   </component>
@@ -185,8 +151,8 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="recentsLimit" value="5" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/setup.py" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Tests/libs.py" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -395,102 +361,38 @@
           <option name="timeStamp" value="82" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="90" />
+      <option name="time" value="91" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Tests/SubscribeTest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="48" column="33" selection-start="1935" selection-end="1935" vertical-scroll-proportion="0.875502" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ClientAPI/Implementation/AsyncRequestSender.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="0" selection-start="552" selection-end="552" vertical-scroll-proportion="0.3642857" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ClientAPI/Implementation/Projections.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="249" column="0" selection-start="9156" selection-end="9156" vertical-scroll-proportion="1.1428572">
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Demo/start-chat-projections.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="26" selection-start="182" selection-end="201" vertical-scroll-proportion="0.24285714" />
-      </provider>
-    </entry>
-    <entry file="file://C:/Python27/Lib/site-packages/ClientAPI/ClientAPI.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="567" column="97" selection-start="24555" selection-end="24555" vertical-scroll-proportion="-0.2744755">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Demo/chat-without-pojections.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="12" selection-start="186" selection-end="186" vertical-scroll-proportion="0.19517796" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Demo/chat-with-pojections.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="21" selection-start="799" selection-end="799" vertical-scroll-proportion="0.58553386" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ClientAPI/Event.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="63" selection-start="612" selection-end="652" vertical-scroll-proportion="0.3708381">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Tests/libs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tests/ReadStreamEventsBackwardTest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="34" selection-start="1782" selection-end="1782" vertical-scroll-proportion="0.64761907" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tests/ReadEventTest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="23" selection-start="1142" selection-end="1142" vertical-scroll-proportion="0.4738095" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ClientAPI/ClientAPI.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="110" column="27" selection-start="4409" selection-end="4409" vertical-scroll-proportion="0.0">
+        <state line="6" column="0" selection-start="120" selection-end="120" vertical-scroll-proportion="0.11710677">
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ClientAPI/Implementation/Body/DeleteStreamRequestBody.py">
+    <entry file="file://$PROJECT_DIR$/Tests/AppendToStreamTest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="27" selection-start="100" selection-end="100" vertical-scroll-proportion="0.0">
+        <state line="3" column="19" selection-start="84" selection-end="84" vertical-scroll-proportion="0.058553386">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Python27/Lib/unittest/case.py">
+    <entry file="file://$PROJECT_DIR$/Tests/CreateStreamTest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="317" column="0" selection-start="10566" selection-end="10566" vertical-scroll-proportion="0.33216783">
+        <state line="3" column="21" selection-start="84" selection-end="84" vertical-scroll-proportion="0.058553386">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Tests/DeleteStreamTest.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="0" selection-start="102" selection-end="404" vertical-scroll-proportion="0.0">
+        <state line="4" column="21" selection-start="96" selection-end="96" vertical-scroll-proportion="0.058553386">
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
-            <marker date="1357214790667" expanded="true" signature="103:404" placeholder="..." />
+            <marker date="1357226115297" expanded="true" signature="100:401" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -501,6 +403,87 @@
           <folding>
             <element signature="e#0#30#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/ReadAllEventsBackwardTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="19" selection-start="91" selection-end="91" vertical-scroll-proportion="0.058553386">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/ReadAllEventsForwardTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="21" selection-start="92" selection-end="92" vertical-scroll-proportion="0.058553386">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/ReadEventTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="21" selection-start="81" selection-end="81" vertical-scroll-proportion="0.058553386">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/ReadStreamEventsBackwardTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="19" selection-start="94" selection-end="94" vertical-scroll-proportion="0.058553386">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/ReadStreamEventsForwardTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="19" selection-start="93" selection-end="93" vertical-scroll-proportion="0.058553386">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/SubscribeAllTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="19" selection-start="82" selection-end="82" vertical-scroll-proportion="0.058553386">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/SubscribeTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="19" selection-start="79" selection-end="79" vertical-scroll-proportion="0.058553386">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Demo/chat-with-pojections.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="18" selection-start="178" selection-end="178" vertical-scroll-proportion="0.17566016">
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Demo/start-chat-projections.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="18" selection-start="60" selection-end="60" vertical-scroll-proportion="0.039035592">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Demo/chat-without-pojections.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="18" selection-start="212" selection-end="212" vertical-scroll-proportion="0.21469575">
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="22" selection-start="96" selection-end="96" vertical-scroll-proportion="0.078071184">
+          <folding />
         </state>
       </provider>
     </entry>

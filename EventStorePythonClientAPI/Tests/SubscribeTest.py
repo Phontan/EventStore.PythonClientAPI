@@ -1,7 +1,7 @@
 from libs import *
 
 class SubscribeTest(unittest.TestCase):
-    client = ClientAPI()
+    client = Client()
 
     def test_subscribe(self):
         try:

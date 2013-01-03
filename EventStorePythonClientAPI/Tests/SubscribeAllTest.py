@@ -1,7 +1,7 @@
 from libs import *
 
 class SubscribeAllTest(unittest.TestCase):
-    client = ClientAPI()
+    client = Client()
 
     def test_subscribe_all(self):
         streamId = "SubscribeAllTest_test_subscribe_all_stream_id"
