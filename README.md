@@ -6,6 +6,7 @@ Simple client for EventStore(https://github.com/EventStore/EventStore).
 <li><a href="#implementation">Implementation</a></li>
 <li><a href="#functionality-description">Functionality description</a></li>
 <li><a href="#hello-world">Hello World</a></li>
+<li><a href="#hello-world">Demo application - Сhat</a></li>
 </ul>
 
 <h4>Short description</h4>
@@ -25,7 +26,7 @@ but should work fine everywhere where Python 2.7 is supported.
 <li>Download PythonClientAPI zip from github (http://github.com/Phontan/EventStore.PythonClientAPI)</li>
 <li>Unpackage it and open console in this folder as admin(sudo).</li>
 <li>Run this code in python intepreter <i>setup.py install</i></li></ul>
-Now you can use ClientAPI. You can check if it works by typing <i>from ClientAPI import *</i>. 
+Now you can use ClientAPI. You can check if it works by typing <i>from ClientAPI.EventStoreClient import *</i>. 
 If there are no errors everything is fine.
 
 <h4>Implementation</h4>
@@ -79,10 +80,10 @@ where events is a list of <i>ReadEvent</i> objects.<br>
 Make sure you are running compatible version of Event Store on default address(127.0.0.1:2113) and run following code:
 
 <pre>
-from ClientAPI.ClientAPI import *
+from ClientAPI.EventStoreClient import *
 from ClientAPI.Event import *
 
-client = ClientAPI("127.0.0.1", 2113)
+client = Client("127.0.0.1", 2113)
 stream_id = "some_stream"
 client.create_stream(stream_id)
 client.append_to_stream(stream_id, WriteEvent("hello, Event Store!"))
@@ -98,3 +99,8 @@ Type: &lt;type 'str' &gt;, Data: hello, Event Store!
 Type: $stream-created, Data: 
 </pre>
 
+<h4>Demo application - Сhat</h4>
+For wider demonstration of this API you can look at small chat application. 
+Take a look at EventStorePythonClientAPI/Demo/chat-with-pojections.py for implementation with projections. 
+First run file start-chat-with-pojections.py(it creates projection), and than you can use chat-with-pojections.py as
+a chat based on Event Store.
