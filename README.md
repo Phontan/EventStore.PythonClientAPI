@@ -51,4 +51,21 @@ To read from all use following:<br>
 These methods return you object, with fields <i>prepare_position</i>, <i>commit_position</i> and <i>events</i>, where events - list
 of <i>ReadEvent</i> objects.<br>
 All methods discribed above have asyncronus mode: method name ends with _async, and have two additional arguments(on_success and on_failed).
-This two arguments should be functions with one argument, or lambdas.
+This two arguments should be functions with one argument, or lambdas.<p>
+<h4>Simply usage</h4><p>
+
+<pre>
+from ClientAPI.ClientAPI import *
+from ClientAPI.Event import *
+
+client = ClientAPI("127.0.0.1", 2113)
+stream_id = "some_stream"
+client.create_stream(stream_id)
+client.append_to_stream(stream_id, WriteEvent("some data"))
+events = client.read_stream_events_backward(stream_id, 5, 100)
+for event in events:
+  print event.data
+client.delete_stream(stream_id)
+</pre>
+
+
