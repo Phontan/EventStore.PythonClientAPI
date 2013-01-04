@@ -67,13 +67,24 @@ If operation succeeded, this method returns instance of <i>ReadEvent</i> class.
 To read stream events use one of methods:<br>
 <i>read_stream_events_backward(stream_id, start_position, count)</i><br>
 <i>read_stream_events_forward(stream_id, start_position, count)</i><br>
-These methods return you list of <i>ReadEvent</i> objects.<p>
+These methods return you list of <i>ReadEvent</i> objects.
 
 To read from all streams use<br>
 <i>read_all_events_backward(prepare_position, commit_position, count)</i><br>
 <i>read_all_events_forward(prepare_position, commit_position, count)</i><br>
 These methods return you object, with fields <i>prepare_position</i>, <i>commit_position</i> and <i>events</i>,
-where events is a list of <i>ReadEvent</i> objects.<br>
+where events is a list of <i>ReadEvent</i> objects.
+
+To subscribe on some stream use following:<br>
+<i>subscribe(stream_id, callback, start_from_begining = False)</i><br>
+<i>unsubscribe(stream_id)</i><br>
+First method subscribes on some stream, and second unsubscribes. Also you can subscribe on many streams.
+
+To subscribe on all Event Store changes use:<br>
+<i>subscribe_all(self, callback, start_from_begining = False)</i><br>
+<i>subscribe_all()</i><br>
+You can only one time subscribe on all. 
+
 
 <h4>Hello World</h4>
 
