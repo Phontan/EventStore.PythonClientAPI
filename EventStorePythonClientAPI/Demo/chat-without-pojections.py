@@ -16,9 +16,10 @@ message = ""
 while not done:
     if msvcrt.kbhit():
         temp = msvcrt.getch()
-        if temp!="z":
+        if temp!="\r":
             sys.stdout.write(temp)
             message+=temp
         else:
+            sys.stdout.write("\n")
             es_client.append_to_stream_async(stream_id, WriteEvent(message))
             message=""
