@@ -33,6 +33,9 @@ while not done:
             message+=temp
         else:
             sys.stdout.write("\n")
-            es_client.append_to_stream_async(stream_id, WriteEvent({"user":user_name, "message": message}, event_type = "message", is_json = True))
+            if message=='exit':
+                break
+            else:
+                es_client.append_to_stream_async(stream_id, WriteEvent({"user":user_name, "message": message}, event_type = "message", is_json = True))
             message=""
 es_client.append_to_stream(stream_id, WriteEvent({"user":user_name}, event_type = "logout", is_json = True))
